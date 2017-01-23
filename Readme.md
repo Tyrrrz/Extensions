@@ -1,6 +1,6 @@
-# Tyrrrz Extension Library
+# Tyrrrz Extensions Library
 
-My extension library for rapid development
+My extensions library for rapid development
 
 **Download and install:**
 
