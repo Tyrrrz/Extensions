@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>Tyrrrz.Extensions</RootNamespace>
     <OutputType>Library</OutputType>
-    <AssemblyName>Extensions</AssemblyName>
+    <AssemblyName>Tyrrrz.Extensions</AssemblyName>
     <ProjectGuid>{2634DF4E-F422-40B3-9A63-2810954DE768}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.5|AnyCPU' ">
@@ -16,7 +16,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug 4.5\Extensions.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug 4.5\Tyrrrz.Extensions.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5|AnyCPU' ">
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release 4.5\Extensions.XML</DocumentationFile>
+    <DocumentationFile>bin\Release 4.5\Tyrrrz.Extensions.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 4.0|AnyCPU'">
@@ -38,7 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Release 4.0\Extensions.XML</DocumentationFile>
+    <DocumentationFile>bin\Release 4.0\Tyrrrz.Extensions.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
