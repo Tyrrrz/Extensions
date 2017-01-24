@@ -12,8 +12,11 @@ namespace Tyrrrz.Extensions
         /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise has the same affect as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
         /// </summary>
         [Pure]
-        public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable, Func<T, bool> predicate)
+        public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
             return enumerable != null && enumerable.Any(predicate);
         }
 
@@ -55,36 +58,10 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items equal to <paramref name="value"/>
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> Only<T>([NotNull] this IEnumerable<T> enumerable, T value)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.Where(i => Equals(i, value));
-        }
-
-        /// <summary>
-        /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items equal to <paramref name="value"/>
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> Only<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (comparer == null)
-                throw new ArgumentNullException(nameof(comparer));
-
-            return enumerable.Where(i => comparer.Equals(i, value));
-        }
-
-        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Not<T>([NotNull] this IEnumerable<T> enumerable, T value)
+        public static IEnumerable<T> Without<T>([NotNull] this IEnumerable<T> enumerable, T value)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -96,7 +73,7 @@ namespace Tyrrrz.Extensions
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Not<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
+        public static IEnumerable<T> Without<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -110,24 +87,24 @@ namespace Tyrrrz.Extensions
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that are not null
         /// </summary>
         [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<T> NotNull<T>([NotNull] this IEnumerable<T> enumerable) where T : class
+        public static IEnumerable<T> WithoutNull<T>([NotNull] this IEnumerable<T> enumerable) where T : class
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            return Not(enumerable, null);
+            return Without(enumerable, null);
         }
 
         /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that don't have default value
         /// </summary>
         [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<T> NotDefault<T>([NotNull] this IEnumerable<T> enumerable)
+        public static IEnumerable<T> WithoutDefault<T>([NotNull] this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            return Not(enumerable, default(T));
+            return Without(enumerable, default(T));
         }
 
         /// <summary>
