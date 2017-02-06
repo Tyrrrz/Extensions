@@ -115,7 +115,7 @@ namespace Tyrrrz.Extensions
         /// Returns the given string, without any of the substrings occuring
         /// </summary>
         [Pure, NotNull]
-        public static string Except([NotNull] this string str, params string[] subStrings)
+        public static string Without([NotNull] this string str, params string[] subStrings)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -134,7 +134,7 @@ namespace Tyrrrz.Extensions
         /// Returns the given string, without any of the characters occuring
         /// </summary>
         [Pure, NotNull]
-        public static string Except([NotNull] this string str, params char[] characters)
+        public static string Without([NotNull] this string str, params char[] characters)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
