@@ -705,6 +705,9 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string TrimToString([NotNull] this Version version)
         {
+            if (version == null)
+                throw new ArgumentNullException(nameof(version));
+
             if (version.Revision <= 0)
             {
                 if (version.Build <= 0)
