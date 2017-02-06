@@ -268,7 +268,7 @@ namespace Tyrrrz.Extensions
         /// Split string into substrings using separator strings.
         /// Separators are also included.
         /// </summary>
-        [Pure, NotNull]
+        [Pure, NotNull, ItemNotNull]
         public static string[] SplitInclusive([NotNull] this string str, StringComparison comparison = StringComparison.Ordinal, params string[] separators)
         {
             if (str == null)
@@ -697,6 +697,27 @@ namespace Tyrrrz.Extensions
 #else
             return Uri.UnescapeDataString(data);
 #endif
+        }
+
+        /// <summary>
+        /// Trims trailing zeroes in the version object and returns its string representation
+        /// </summary>
+        [Pure, NotNull]
+        public static string TrimToString([NotNull] this Version version)
+        {
+            if (version.Revision <= 0)
+            {
+                if (version.Build <= 0)
+                {
+                    if (version.Minor <= 0)
+                    {
+                        return $"{version.Major}";
+                    }
+                    return $"{version.Major}.{version.Minor}";
+                }
+                return $"{version.Major}.{version.Minor}.{version.Build}";
+            }
+            return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
     }
 }
