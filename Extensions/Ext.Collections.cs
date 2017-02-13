@@ -12,6 +12,7 @@ namespace Tyrrrz.Extensions
         /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise has the same affect as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
         /// </summary>
         [Pure]
+        [ContractAnnotation("enumerable:null => false")]
         public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
             if (predicate == null)
@@ -24,6 +25,7 @@ namespace Tyrrrz.Extensions
         /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise has the same affect as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
         /// </summary>
         [Pure]
+        [ContractAnnotation("enumerable:null => false")]
         public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable)
         {
             return enumerable != null && enumerable.Any();

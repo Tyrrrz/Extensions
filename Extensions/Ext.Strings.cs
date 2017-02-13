@@ -12,7 +12,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Gets the array of non-mutual chars between two strings
         /// </summary>
-        [Pure, NotNull, ItemNotNull]
+        [Pure, NotNull]
         public static char[] StringDifference([NotNull] this string source, [NotNull] string other)
         {
             if (source == null)
@@ -409,6 +409,7 @@ namespace Tyrrrz.Extensions
         /// Returns true if the string is empty, null or whitespace
         /// </summary>
         [Pure]
+        [ContractAnnotation("str:null => true")]
         public static bool IsBlank([CanBeNull] this string str)
         {
             return string.IsNullOrWhiteSpace(str);
@@ -418,6 +419,7 @@ namespace Tyrrrz.Extensions
         /// Returns true if the string is neither empty, null nor whitespace
         /// </summary>
         [Pure]
+        [ContractAnnotation("str:null => false")]
         public static bool IsNotBlank([CanBeNull] this string str)
         {
             return !string.IsNullOrWhiteSpace(str);
