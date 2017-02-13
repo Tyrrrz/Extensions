@@ -1,5 +1,5 @@
 ﻿using System;
-using Tyrrrz.Extensions.Annotations;
+using JetBrains.Annotations;
 #if Net45
 using System.Threading.Tasks;
 #endif

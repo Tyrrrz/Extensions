@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Tyrrrz.Extensions.Annotations;
+using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
 {

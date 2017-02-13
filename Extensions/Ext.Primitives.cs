@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tyrrrz.Extensions.Annotations;
+using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
 {
