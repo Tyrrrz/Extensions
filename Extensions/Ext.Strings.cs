@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
@@ -505,33 +506,7 @@ namespace Tyrrrz.Extensions
             word = word.Trim();
 
             if (str.Equals(word, DefaultStringComparison)) return true;
-
-            // Find the position of word
-            var wordBoundaries = new[] { '\n', '\r', ' ' };
-            foreach (int pos in str.IndicesOf(word))
-            {
-                bool leftCheck = false, rightCheck = false;
-
-                // See if the word starts at the start or ends at the end
-                if (pos == 0) leftCheck = true;
-                if (pos + word.Length == str.Length) rightCheck = true;
-
-                // Check the bounding characters
-                if (!leftCheck)
-                {
-                    char leftChar = str[pos - 1];
-                    if (wordBoundaries.Contains(leftChar)) leftCheck = true;
-                }
-                if (!rightCheck)
-                {
-                    char rightChar = str[pos + word.Length];
-                    if (wordBoundaries.Contains(rightChar)) rightCheck = true;
-                }
-
-                if (leftCheck && rightCheck) return true;
-            }
-
-            return false;
+            return Regex.IsMatch(str, @"\b(hi)\b");
         }
 
         /// <summary>
