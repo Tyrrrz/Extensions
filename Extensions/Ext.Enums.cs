@@ -43,20 +43,20 @@ namespace Tyrrrz.Extensions
         /// Converts an integer to an enum value that it corresponds to
         /// </summary>
         [Pure]
-        public static TEnum ToEnum<TEnum>(this int enumIntegerValue) where TEnum : struct
+        public static TEnum ToEnum<TEnum>(this int enumInt) where TEnum : struct
         {
-            return (TEnum) Enum.ToObject(typeof (TEnum), enumIntegerValue);
+            return (TEnum) Enum.ToObject(typeof (TEnum), enumInt);
         }
 
         /// <summary>
         /// Converts an integer to an enum value that it corresponds to or a default value if not successful
         /// </summary>
         [Pure]
-        public static TEnum ToEnumOrDefault<TEnum>(this int enumIntegerValue, TEnum defaultValue = default(TEnum)) where TEnum : struct
+        public static TEnum ToEnumOrDefault<TEnum>(this int enumInt, TEnum defaultValue = default(TEnum)) where TEnum : struct
         {
             try
             {
-                return ToEnum<TEnum>(enumIntegerValue);
+                return ToEnum<TEnum>(enumInt);
             }
             catch
             {
@@ -90,6 +90,16 @@ namespace Tyrrrz.Extensions
             Environment.SpecialFolderOption option = Environment.SpecialFolderOption.None)
         {
             return Environment.GetFolderPath(specialFolder, option);
+        }
+
+        /// <summary>
+        /// Returns a random bool
+        /// </summary>
+        [Pure]
+        public static TEnum RandomEnum<TEnum>() where TEnum : struct
+        {
+            var values = GetAllEnumValues<TEnum>();
+            return GetRandom(values);
         }
     }
 }
