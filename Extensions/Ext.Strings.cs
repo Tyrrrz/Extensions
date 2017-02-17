@@ -174,7 +174,7 @@ namespace Tyrrrz.Extensions
         /// Makes sure the given string ends with the given other substring
         /// </summary>
         [Pure, NotNull]
-        public static string EndWith([NotNull] this string str, [NotNull] string end)
+        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -188,7 +188,7 @@ namespace Tyrrrz.Extensions
         /// Makes sure the given string starts with the given other substring
         /// </summary>
         [Pure, NotNull]
-        public static string StartWith([NotNull] this string str, [NotNull] string start)
+        public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
