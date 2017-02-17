@@ -40,31 +40,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts an integer to an enum value that it corresponds to
-        /// </summary>
-        [Pure]
-        public static TEnum ToEnum<TEnum>(this int enumInt) where TEnum : struct
-        {
-            return (TEnum) Enum.ToObject(typeof (TEnum), enumInt);
-        }
-
-        /// <summary>
-        /// Converts an integer to an enum value that it corresponds to or a default value if not successful
-        /// </summary>
-        [Pure]
-        public static TEnum ToEnumOrDefault<TEnum>(this int enumInt, TEnum defaultValue = default(TEnum)) where TEnum : struct
-        {
-            try
-            {
-                return ToEnum<TEnum>(enumInt);
-            }
-            catch
-            {
-                return defaultValue;
-            }
-        }
-
-        /// <summary>
         /// Gets all possible values of an enumeration
         /// </summary>
         [Pure]
