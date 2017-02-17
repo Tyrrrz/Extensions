@@ -51,6 +51,28 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Repeats the given string <paramref name="count"/> times
+        /// </summary>
+        [Pure, NotNull]
+        public static string Repeat([NotNull] this string str, int count)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            if (count == 0)
+                return string.Empty;
+            if (count == 1)
+                return str;
+
+            var sb = new StringBuilder(str, count);
+            for (int i = 2; i <= count; i++)
+                sb.Append(str);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Returns the string, taking only <paramref name="charCount"/> characters
         /// </summary>
         [Pure, NotNull]
