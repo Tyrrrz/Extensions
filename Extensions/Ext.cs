@@ -18,5 +18,10 @@ namespace Tyrrrz.Extensions
         public delegate bool TryParseDelegate<T>(string str, out T result);
 
         private static readonly Random Random = new Random();
+
+        /// <summary>
+        /// Default comparison for methods that compare strings
+        /// </summary>
+        public static StringComparison DefaultStringComparison { get; set; } = StringComparison.InvariantCultureIgnoreCase;
     }
 }

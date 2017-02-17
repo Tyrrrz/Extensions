@@ -143,11 +143,11 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(str));
 
             string match;
-            int pos = IndexOfAny(str, subStrings, 0, StringComparison.Ordinal, out match);
+            int pos = IndexOfAny(str, subStrings, 0, out match);
             while (pos >= 0)
             {
                 str = str.Remove(pos, match.Length);
-                pos = IndexOfAny(str, subStrings, 0, StringComparison.Ordinal, out match);
+                pos = IndexOfAny(str, subStrings, 0, out match);
             }
             return str;
         }
@@ -203,14 +203,14 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns full string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringUntil([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.Ordinal)
+        public static string SubstringUntil([NotNull] this string str, [NotNull] string sub)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.IndexOf(sub, comparison);
+            int index = str.IndexOf(sub, DefaultStringComparison);
             if (index < 0) return str;
             return str.Substring(0, index);
         }
@@ -220,14 +220,14 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns full string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringAfter([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.Ordinal)
+        public static string SubstringAfter([NotNull] this string str, [NotNull] string sub)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.IndexOf(sub, comparison);
+            int index = str.IndexOf(sub, DefaultStringComparison);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
@@ -291,7 +291,7 @@ namespace Tyrrrz.Extensions
         /// Separators are also included.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
-        public static string[] SplitInclusive([NotNull] this string str, StringComparison comparison = StringComparison.Ordinal, params string[] separators)
+        public static string[] SplitInclusive([NotNull] this string str, params string[] separators)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -304,7 +304,7 @@ namespace Tyrrrz.Extensions
             {
                 // Find a separator and figure out which one
                 string separator;
-                i = IndexOfAny(str, separators, start, comparison, out separator);
+                i = IndexOfAny(str, separators, start, out separator);
 
                 // Extract substring before separator
                 string sub = i >= 0
@@ -494,8 +494,7 @@ namespace Tyrrrz.Extensions
         /// Determines whether the first string contains the second string, surrounded by spaces or linebreaks
         /// </summary>
         [Pure]
-        public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
-            StringComparison comparison = StringComparison.Ordinal)
+        public static bool ContainsWord([NotNull] this string str, [NotNull] string word)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -505,11 +504,11 @@ namespace Tyrrrz.Extensions
             str = str.Trim();
             word = word.Trim();
 
-            if (str.Equals(word, comparison)) return true;
+            if (str.Equals(word, DefaultStringComparison)) return true;
 
             // Find the position of word
             var wordBoundaries = new[] { '\n', '\r', ' ' };
-            foreach (int pos in str.IndicesOf(word, 0, comparison))
+            foreach (int pos in str.IndicesOf(word))
             {
                 bool leftCheck = false, rightCheck = false;
 
@@ -567,8 +566,7 @@ namespace Tyrrrz.Extensions
         /// Get the number of occurrences of a substring inside a string
         /// </summary>
         [Pure]
-        public static int GetNumberOfOccurences([NotNull] this string str, [NotNull] string sub, int start = 0,
-            StringComparison comparison = StringComparison.Ordinal)
+        public static int GetNumberOfOccurences([NotNull] this string str, [NotNull] string sub, int start = 0)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -578,11 +576,11 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(start), "Cannot be negative");
 
             int result = 0;
-            int index = str.IndexOf(sub, start, comparison);
+            int index = str.IndexOf(sub, start, DefaultStringComparison);
             while (index >= 0)
             {
                 result++;
-                index = str.IndexOf(sub, index + sub.Length + 1, comparison);
+                index = str.IndexOf(sub, index + sub.Length + 1, DefaultStringComparison);
             }
             return result;
         }
@@ -591,8 +589,7 @@ namespace Tyrrrz.Extensions
         /// Returns the first occurence of any substrings in enumerable
         /// </summary>
         [Pure]
-        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start,
-            StringComparison comparison, [NotNull] out string match)
+        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start, [NotNull] out string match)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -606,7 +603,7 @@ namespace Tyrrrz.Extensions
 
             foreach (string sub in subStrings)
             {
-                int curIndex = str.IndexOf(sub, start, comparison);
+                int curIndex = str.IndexOf(sub, start, DefaultStringComparison);
                 if (curIndex < 0 || curIndex >= index) continue;
 
                 match = str.Substring(curIndex, sub.Length);
@@ -621,18 +618,17 @@ namespace Tyrrrz.Extensions
         /// Returns the first occurence of any substrings in enumerable
         /// </summary>
         [Pure]
-        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start = 0,
-            StringComparison comparison = StringComparison.Ordinal)
+        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start = 0)
         {
             string match;
-            return IndexOfAny(str, subStrings, start, comparison, out match);
+            return IndexOfAny(str, subStrings, start, out match);
         }
 
         /// <summary>
         /// Returns all position indices of given substring inside given string
         /// </summary>
         [Pure, NotNull]
-        public static int[] IndicesOf([NotNull] this string str, [NotNull] string sub, int start = 0, StringComparison comparison = StringComparison.Ordinal)
+        public static int[] IndicesOf([NotNull] this string str, [NotNull] string sub, int start = 0)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -642,11 +638,11 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(start), "Cannot be negative");
 
             var result = new List<int>();
-            int index = str.IndexOf(sub, start, comparison);
+            int index = str.IndexOf(sub, start, DefaultStringComparison);
             while (index >= 0)
             {
                 result.Add(index);
-                index = str.IndexOf(sub, index + sub.Length, comparison);
+                index = str.IndexOf(sub, index + sub.Length, DefaultStringComparison);
             }
             return result.ToArray();
         }
