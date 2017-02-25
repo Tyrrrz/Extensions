@@ -5,7 +5,7 @@ namespace Tyrrrz.Extensions
     /// <summary>
     /// Extension methods for rapid development
     /// </summary>
-    public partial class Ext
+    public static partial class Ext
     {
         /// <summary>
         /// Generic string parse delegate
@@ -16,8 +16,6 @@ namespace Tyrrrz.Extensions
         /// Generic string try-parse delegate
         /// </summary>
         public delegate bool TryParseDelegate<T>(string str, out T result);
-
-        private static readonly Random Random = new Random();
 
         /// <summary>
         /// Default comparison for methods that compare strings

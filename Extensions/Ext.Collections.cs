@@ -42,7 +42,7 @@ namespace Tyrrrz.Extensions
 
             var list = enumerable as IList<T> ?? enumerable.ToArray();
             if (list.Count <= 1) return list.First();
-            return list[Random.Next(0, list.Count)];
+            return list[SharedInstances.Random.Next(0, list.Count)];
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace Tyrrrz.Extensions
                         list.RemoveAt(list.Count - 1);
                         break;
                     case EnsureMaxCountMode.DeleteRandom:
-                        list.RemoveAt(Random.Next(0, list.Count));
+                        list.RemoveAt(SharedInstances.Random.Next(0, list.Count));
                         break;
                     case EnsureMaxCountMode.DeleteAll:
                         list.Clear();

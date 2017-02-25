@@ -305,7 +305,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int RandomInt()
         {
-            return Random.Next();
+            return SharedInstances.Random.Next();
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int RandomInt(int maxValue)
         {
-            return Random.Next(maxValue + 1);
+            return SharedInstances.Random.Next(maxValue + 1);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int RandomInt(int minValue, int maxValue)
         {
-            return Random.Next(minValue, maxValue + 1);
+            return SharedInstances.Random.Next(minValue, maxValue + 1);
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static double RandomDouble(double minValue, double maxValue)
         {
-            return Random.NextDouble()*(maxValue - minValue) + minValue;
+            return SharedInstances.Random.NextDouble()*(maxValue - minValue) + minValue;
         }
 
         /// <summary>
