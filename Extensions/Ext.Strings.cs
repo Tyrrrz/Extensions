@@ -24,7 +24,7 @@ namespace Tyrrrz.Extensions
             var diff1 = source.Where(c => !other.Contains(c));
             var diff2 = other.Where(c => !source.Contains(c));
             var union = diff1.Union(diff2);
-            return union.ToArray();
+            return union.Distinct().ToArray();
         }
 
         /// <summary>
@@ -63,14 +63,35 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
             if (count == 0)
                 return string.Empty;
+
+            // Optimization
             if (count == 1)
                 return str;
+            if (count == 2)
+                return str + str;
+            if (count == 3)
+                return str + str + str;
 
-            var sb = new StringBuilder(str, count);
+            // StringBuilder for count >= 4
+            var sb = new StringBuilder(str, str.Length*count);
             for (int i = 2; i <= count; i++)
                 sb.Append(str);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Repeats the given character <paramref name="count"/> times
+        /// </summary>
+        [Pure, NotNull]
+        public static string Repeat(this char c, int count)
+        {
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            if (count == 0)
+                return string.Empty;
+
+            return new string(c, count);
         }
 
         /// <summary>
