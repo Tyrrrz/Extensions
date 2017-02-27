@@ -398,6 +398,14 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Filters out blank strings from an enumerable
+        /// </summary>
+        public static IEnumerable<string> WithoutBlank([NotNull] this IEnumerable<string> enumerable)
+        {
+            return enumerable.Where(IsNotBlank);
+        }
+
+        /// <summary>
         /// Determines whether the string enumerable contains second string.
         /// Casing and culture are ignored, useless spaces are trimmed.
         /// </summary>
