@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
@@ -62,7 +61,7 @@ namespace Tyrrrz.Extensions
         /// Returns true if the object is equal to one of the parameters
         /// </summary>
         [Pure]
-        public static bool IsEither<T>(this object obj, params T[] objs)
+        public static bool IsEither<T>(this T obj, params T[] objs)
         {
             foreach (var other in objs)
             {
