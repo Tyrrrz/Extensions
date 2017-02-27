@@ -45,23 +45,6 @@ namespace Tyrrrz.Extensions
         /// Returns true if the object is equal to one of the items in an <see cref="IEnumerable{T}"/>
         /// </summary>
         [Pure]
-        public static bool IsEither(this object obj, [NotNull] IEnumerable enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            foreach (var other in enumerable)
-            {
-                if (Equals(obj, other))
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if the object is equal to one of the items in an <see cref="IEnumerable{T}"/>
-        /// </summary>
-        [Pure]
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable)
         {
             if (enumerable == null)
@@ -74,12 +57,12 @@ namespace Tyrrrz.Extensions
             }
             return false;
         }
-
+        
         /// <summary>
         /// Returns true if the object is equal to one of the parameters
         /// </summary>
         [Pure]
-        public static bool IsEither(this object obj, params object[] objs)
+        public static bool IsEither<T>(this object obj, params T[] objs)
         {
             foreach (var other in objs)
             {
