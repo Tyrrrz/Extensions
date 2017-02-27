@@ -218,7 +218,7 @@ namespace Tyrrrz.Extensions
 
         /// <summary>
         /// Returns substring of a string after the occurence of the other string
-        /// If the other string is not found, returns full string
+        /// If the other string is not found, returns empty string
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfter([NotNull] this string str, [NotNull] string sub)
@@ -331,10 +331,31 @@ namespace Tyrrrz.Extensions
 
         /// <summary>
         /// Split string into substrings using separator string.
-        /// Empty items are removed and existing are trimmed.
+        /// Empty strings are removed and existing are trimmed.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
-        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator, params char[] trimChars)
+        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator, [NotNull] params char[] trimChars)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (separator == null)
+                throw new ArgumentNullException(nameof(separator));
+            if (trimChars == null)
+                throw new ArgumentNullException(nameof(trimChars));
+
+            return str
+                .Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(sub => sub.Trim(trimChars))
+                .Where(IsNotBlank)
+                .ToArray();
+        }
+
+        /// <summary>
+        /// Split string into substrings using separator string.
+        /// Empty strings are removed and existing are trimmed.
+        /// </summary>
+        [Pure, NotNull, ItemNotNull]
+        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -342,19 +363,10 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(separator));
 
             return str
-                .Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(sub => sub.Trim(trimChars))
+                .Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(sub => sub.Trim())
+                .Where(IsNotBlank)
                 .ToArray();
-        }
-
-        /// <summary>
-        /// Split string into substrings using separator string.
-        /// Empty items are removed and existing are trimmed.
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator)
-        {
-            return str.SplitTrim(separator, ' ');
         }
 
         /// <summary>
@@ -417,10 +429,24 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the same enumerable, with all its elements trimmed
+        /// Trims strings in an enumerable
         /// </summary>
         [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<string> TrimElements([NotNull] this IEnumerable<string> enumerable)
+        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable, [NotNull] params char[] trimChars)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (trimChars == null)
+                throw new ArgumentNullException(nameof(trimChars));
+
+            return enumerable.Select(str => str.Trim(trimChars));
+        }
+
+        /// <summary>
+        /// Trims strings in an enumerable
+        /// </summary>
+        [Pure, NotNull, ItemNotNull]
+        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
