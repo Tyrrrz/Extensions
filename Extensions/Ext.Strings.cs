@@ -330,6 +330,34 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Split string into substrings using separator strings, removing empty strings
+        /// </summary>
+        [Pure, NotNull, ItemNotNull]
+        public static string[] Split([NotNull] this string str, [NotNull] params string[] separators)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (separators == null)
+                throw new ArgumentNullException(nameof(separators));
+
+            return str.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        /// <summary>
+        /// Split string into substrings using separator characters, removing empty strings
+        /// </summary>
+        [Pure, NotNull, ItemNotNull]
+        public static string[] Split([NotNull] this string str, [NotNull] params char[] separators)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (separators == null)
+                throw new ArgumentNullException(nameof(separators));
+
+            return str.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        /// <summary>
         /// Split string into substrings using separator string.
         /// Empty strings are removed and existing are trimmed.
         /// </summary>
