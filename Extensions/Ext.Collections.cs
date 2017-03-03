@@ -378,6 +378,20 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Returns the value of a <see cref="IDictionary{TKey,TValue}"/>, based on key or default if it doesn't exist
+        /// </summary>
+        [Pure]
+        public static TValue GetOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key,
+            TValue defaultValue = default(TValue))
+        {
+            if (dic == null)
+                throw new ArgumentNullException(nameof(dic));
+
+            TValue result;
+            return dic.TryGetValue(key, out result) ? result : defaultValue;
+        }
+
+        /// <summary>
         /// Sets all values in an <see cref="IList{T}"/> to given <paramref name="value"/>
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value)
@@ -469,20 +483,6 @@ namespace Tyrrrz.Extensions
             }
             dic.Add(key, value);
             return false;
-        }
-
-        /// <summary>
-        /// Returns the value of a <see cref="IDictionary{TKey,TValue}"/>, based on key or default if it doesn't exist
-        /// </summary>
-        [Pure]
-        public static TValue GetOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key,
-            TValue defaultValue = default(TValue))
-        {
-            if (dic == null)
-                throw new ArgumentNullException(nameof(dic));
-
-            TValue result;
-            return dic.TryGetValue(key, out result) ? result : defaultValue;
         }
     }
 }
