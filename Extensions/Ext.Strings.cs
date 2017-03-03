@@ -31,7 +31,10 @@ namespace Tyrrrz.Extensions
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
-            return new string(str.Reverse<char>().ToArray());
+            var sb = new StringBuilder(str.Length);
+            for (int i = str.Length - 1; i >= 0; i--)
+                sb.Append(str[i]);
+            return sb.ToString();
         }
 
         /// <summary>
