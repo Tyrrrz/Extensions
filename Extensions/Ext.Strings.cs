@@ -147,8 +147,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
 
             if (charCount == 0) return str;
-            if (charCount >= str.Length)
-                return string.Empty;
+            if (charCount >= str.Length)return string.Empty;
             return str.Substring(charCount);
         }
 
@@ -163,6 +162,8 @@ namespace Tyrrrz.Extensions
             if (charCount < 0)
                 throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
 
+            if (charCount == 0) return string.Empty;
+            if (charCount >= str.Length) return str;
             return Skip(str, str.Length - charCount);
         }
 
@@ -177,6 +178,8 @@ namespace Tyrrrz.Extensions
             if (charCount < 0)
                 throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
 
+            if (charCount == 0) return str;
+            if (charCount >= str.Length) return string.Empty;
             return Take(str, str.Length - charCount);
         }
 
@@ -189,13 +192,9 @@ namespace Tyrrrz.Extensions
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
-            string match;
-            int pos = IndexOfAny(str, subStrings, 0, out match);
-            while (pos >= 0)
-            {
-                str = str.Remove(pos, match.Length);
-                pos = IndexOfAny(str, subStrings, 0, out match);
-            }
+            foreach (string sub in subStrings)
+                str = str.Replace(sub, string.Empty);
+
             return str;
         }
 
@@ -333,47 +332,6 @@ namespace Tyrrrz.Extensions
             return Convert.FromBase64String(str);
         }
 
-        /// <summary>
-        /// Split string into substrings using separator strings.
-        /// Separators are also included.
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static string[] SplitInclusive([NotNull] this string str, params string[] separators)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
-            var result = new List<string>();
-
-            var start = 0;
-            int i;
-            do
-            {
-                // Find a separator and figure out which one
-                string separator;
-                i = IndexOfAny(str, separators, start, out separator);
-
-                // Extract substring before separator
-                string sub = i >= 0
-                    ? str.Substring(start, i - start) // separator
-                    : str.Substring(start); // no separator
-
-                // Add substring to result
-                if (!string.IsNullOrEmpty(sub))
-                    result.Add(sub);
-
-                // If a separator was found - add separator to result
-                if (!string.IsNullOrEmpty(separator))
-                    result.Add(separator);
-
-                // Increment start
-                if (i >= 0 && !string.IsNullOrEmpty(separator))
-                    start = i + separator.Length;
-            } while (i >= 0);
-
-            // Returns array to be consistent with .NET's .Split() method
-            return result.ToArray();
-        }
 
         /// <summary>
         /// Split string into substrings using separator strings, removing empty strings
@@ -632,7 +590,7 @@ namespace Tyrrrz.Extensions
         /// Get the number of occurrences of a substring inside a string
         /// </summary>
         [Pure]
-        public static int GetNumberOfOccurences([NotNull] this string str, [NotNull] string sub, int start = 0)
+        public static int NumberOfOccurences([NotNull] this string str, [NotNull] string sub, int start = 0)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -649,45 +607,6 @@ namespace Tyrrrz.Extensions
                 index = str.IndexOf(sub, index + sub.Length + 1, DefaultStringComparison);
             }
             return result;
-        }
-
-        /// <summary>
-        /// Returns the first occurence of any substrings in enumerable
-        /// </summary>
-        [Pure]
-        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start, [NotNull] out string match)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (subStrings == null)
-                throw new ArgumentNullException(nameof(subStrings));
-            if (start < 0)
-                throw new ArgumentOutOfRangeException(nameof(start), "Cannot be negative");
-
-            int index = -1;
-            match = string.Empty;
-
-            foreach (string sub in subStrings)
-            {
-                int curIndex = str.IndexOf(sub, start, DefaultStringComparison);
-                if (curIndex < 0 || curIndex >= index) continue;
-
-                match = str.Substring(curIndex, sub.Length);
-                if (curIndex == 0) return 0;
-                index = curIndex;
-            }
-
-            return index;
-        }
-
-        /// <summary>
-        /// Returns the first occurence of any substrings in enumerable
-        /// </summary>
-        [Pure]
-        public static int IndexOfAny([NotNull] this string str, [NotNull] IEnumerable<string> subStrings, int start = 0)
-        {
-            string match;
-            return IndexOfAny(str, subStrings, start, out match);
         }
 
         /// <summary>

@@ -255,13 +255,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void GetNumberOfOccurencesTest()
         {
-            Assert.AreEqual(3, "qwe qsd qzxc".GetNumberOfOccurences("q"));
-        }
-
-        [TestMethod]
-        public void IndexOfAnyTest()
-        {
-            Assert.AreEqual(3, "skdfgh".IndexOfAny(new[] {"f", "h"}));
+            Assert.AreEqual(3, "qwe qsd qzxc".NumberOfOccurences("q"));
         }
 
         [TestMethod]
