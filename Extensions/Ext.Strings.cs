@@ -405,6 +405,18 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Joins members of an <see cref="IEnumerable{T}"/> into a string, separated by given string
+        /// </summary>
+        [Pure, NotNull]
+        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, string separator = ", ")
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return string.Join(separator, enumerable);
+        }
+
+        /// <summary>
         /// Filters out blank strings from an enumerable
         /// </summary>
         public static IEnumerable<string> WithoutBlank([NotNull] this IEnumerable<string> enumerable)

@@ -168,18 +168,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Joins member of an <see cref="IEnumerable{T}"/> into a string, separated by given string
-        /// </summary>
-        [Pure, NotNull]
-        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, string separator = ", ")
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return string.Join(separator, enumerable);
-        }
-
-        /// <summary>
         /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
         /// </summary>
         /// <returns>True if it wasn't there, false if it was</returns>
