@@ -11,6 +11,45 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
+        /// Returns true if the string is empty, null or whitespace
+        /// </summary>
+        [Pure]
+        [ContractAnnotation("str:null => true")]
+        public static bool IsBlank([CanBeNull] this string str)
+        {
+            return string.IsNullOrWhiteSpace(str);
+        }
+
+        /// <summary>
+        /// Returns true if the string is neither empty, null nor whitespace
+        /// </summary>
+        [Pure]
+        [ContractAnnotation("str:null => false")]
+        public static bool IsNotBlank([CanBeNull] this string str)
+        {
+            return !string.IsNullOrWhiteSpace(str);
+        }
+
+        /// <summary>
+        /// Checks whether the string only consists of numeric characters
+        /// </summary>
+        [Pure]
+        public static bool IsNumeric([NotNull] this string str)
+        {
+            return str.All(char.IsDigit);
+        }
+
+        /// <summary>
+        /// Returns null if the string is blank, otherwise returns original string
+        /// </summary>
+        [Pure, CanBeNull]
+        [ContractAnnotation("str:null => null")]
+        public static string NullIfBlank([CanBeNull] this string str)
+        {
+            return IsBlank(str) ? null : str;
+        }
+
+        /// <summary>
         /// Formats the given string identically to <see cref="string.Format(string,object[])"/>
         /// </summary>
         [Pure, NotNull, StringFormatMethod("str")]
@@ -507,35 +546,6 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(enumerable));
 
             return enumerable.Select(str => str.Trim());
-        }
-
-        /// <summary>
-        /// Returns true if the string is empty, null or whitespace
-        /// </summary>
-        [Pure]
-        [ContractAnnotation("str:null => true")]
-        public static bool IsBlank([CanBeNull] this string str)
-        {
-            return string.IsNullOrWhiteSpace(str);
-        }
-
-        /// <summary>
-        /// Returns true if the string is neither empty, null nor whitespace
-        /// </summary>
-        [Pure]
-        [ContractAnnotation("str:null => false")]
-        public static bool IsNotBlank([CanBeNull] this string str)
-        {
-            return !string.IsNullOrWhiteSpace(str);
-        }
-
-        /// <summary>
-        /// Checks whether the string only consists of numeric characters
-        /// </summary>
-        [Pure]
-        public static bool IsNumeric([NotNull] this string str)
-        {
-            return str.All(char.IsDigit);
         }
 
         /// <summary>
