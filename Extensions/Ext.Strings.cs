@@ -11,23 +11,6 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Gets the array of non-mutual chars between two strings
-        /// </summary>
-        [Pure, NotNull]
-        public static char[] StringDifference([NotNull] this string source, [NotNull] string other)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (other == null)
-                throw new ArgumentNullException(nameof(other));
-
-            var diff1 = source.Where(c => !other.Contains(c));
-            var diff2 = other.Where(c => !source.Contains(c));
-            var union = diff1.Union(diff2);
-            return union.Distinct().ToArray();
-        }
-
-        /// <summary>
         /// Formats the given string identically to <see cref="string.Format(string,object[])"/>
         /// </summary>
         [Pure, NotNull, StringFormatMethod("str")]
