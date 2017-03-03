@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise has the same affect as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
+        /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise works the same as <see cref="Enumerable.Any{T}(IEnumerable{T},Func{T,bool})"/>
         /// </summary>
         [Pure]
         [ContractAnnotation("enumerable:null => false")]
@@ -22,7 +22,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise has the same affect as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
+        /// If the <see cref="IEnumerable{T}"/> is null returns false, otherwise works the same as <see cref="Enumerable.Any{T}(IEnumerable{T})"/>
         /// </summary>
         [Pure]
         [ContractAnnotation("enumerable:null => false")]
@@ -165,6 +165,20 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(enumerable));
 
             return new HashSet<T>(enumerable);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="HashSet{T}"/> from a <see cref="IEnumerable{T}"/>
+        /// </summary>
+        [Pure, NotNull]
+        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
+
+            return new HashSet<T>(enumerable, comparer);
         }
 
         /// <summary>
@@ -392,16 +406,18 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Sets all values in an <see cref="IList{T}"/> to given <paramref name="value"/>
         /// </summary>
-        public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int endIndex)
+        public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int count)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
             if (startIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(startIndex), "Cannot be negative");
-            if (endIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(endIndex), "Cannot be negative");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            if (count == 0)
+                return;
 
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = startIndex; i < startIndex + count; i++)
                 list[i] = value;
         }
 

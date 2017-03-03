@@ -437,7 +437,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(separator));
 
             return str
-                .Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(sub => sub.Trim())
                 .Where(IsNotBlank)
                 .ToArray();
@@ -594,10 +594,10 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(word));
 
             str = str.Trim();
-            word = word.Trim();
+            word = Regex.Escape(word.Trim());
 
             if (str.Equals(word, DefaultStringComparison)) return true;
-            return Regex.IsMatch(str, @"\b(hi)\b");
+            return Regex.IsMatch(str, $@"\b({word})\b");
         }
 
         /// <summary>
