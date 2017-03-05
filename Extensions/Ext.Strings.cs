@@ -50,6 +50,26 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Returns an empty string if given is null
+        /// </summary>
+        [Pure, NotNull]
+        [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
+        public static string EmptyIfNull([CanBeNull] this string str)
+        {
+            return str ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Returns an empty string if given is blank
+        /// </summary>
+        [Pure, NotNull]
+        [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
+        public static string EmptyIfBlank([CanBeNull] this string str)
+        {
+            return IsBlank(str) ? string.Empty : str;
+        }
+
+        /// <summary>
         /// Formats the given string identically to <see cref="string.Format(string,object[])"/>
         /// </summary>
         [Pure, NotNull, StringFormatMethod("str")]
