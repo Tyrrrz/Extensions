@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 #if Net45
 using System.Threading.Tasks;
@@ -37,6 +39,33 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(task));
 
             task.GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Executes an action on all elements of enumerable in parallel asynchronously
+        /// </summary>
+        public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task> action)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            var tasks = enumerable.Select(async i => await action(i));
+            await Task.WhenAll(tasks);
+        }
+
+        /// <summary>
+        /// Executes an action on all elements of enumerable in parallel asynchronously
+        /// </summary>
+        public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            await ParallelForEachAsync(enumerable, i => Task.Run(() => action(i)));
         }
 #endif
     }

@@ -68,14 +68,9 @@ namespace Tyrrrz.Extensions
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            var asList = enumerable as IList<T>;
-            if (asList == null || asList.IsReadOnly)
-                asList = enumerable.ToList();
-
-            foreach (var obj in additional.SelectMany(i => i))
-                asList.Add(obj);
-
-            return asList;
+            var list = enumerable.ToList();
+            list.AddRange(additional.SelectMany(i => i));
+            return list;
         }
 
         /// <summary>
@@ -87,14 +82,9 @@ namespace Tyrrrz.Extensions
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            var asList = enumerable as IList<T>;
-            if (asList == null || asList.IsReadOnly)
-                asList = enumerable.ToList();
-
-            foreach (var obj in objects)
-                asList.Add(obj);
-
-            return asList;
+            var list = enumerable.ToList();
+            list.AddRange(objects);
+            return list;
         }
 
         /// <summary>
