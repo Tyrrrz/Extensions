@@ -147,7 +147,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
 
             if (charCount == 0) return str;
-            if (charCount >= str.Length)return string.Empty;
+            if (charCount >= str.Length) return string.Empty;
             return str.Substring(charCount);
         }
 

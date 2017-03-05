@@ -253,7 +253,7 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void GetNumberOfOccurencesTest()
+        public void NumberOfOccurencesTest()
         {
             Assert.AreEqual(3, "qwe qsd qzxc".NumberOfOccurences("q"));
         }

@@ -52,6 +52,7 @@
     <Compile Include="Ext.Primitives.cs" />
     <Compile Include="Ext.Reflection.cs" />
     <Compile Include="Ext.cs" />
+    <Compile Include="Ext.Regex.cs" />
     <Compile Include="Ext.Strings.cs" />
     <Compile Include="Ext.Threading.cs" />
     <Compile Include="Properties\Annotations.cs" />
