@@ -91,7 +91,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(key));
 
             // Find existing parameter
-            var existingMatch = Regex.Match(uri, $@"[?&]({key}(?:=.*?)?)(?:&|$)");
+            var existingMatch = Regex.Match(uri, $@"[?&]({key}=?.*?)(?:&|$)");
 
             // Parameter already set to something
             if (existingMatch.Success)
