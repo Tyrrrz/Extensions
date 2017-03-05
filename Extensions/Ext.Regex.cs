@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Matches input with a regular expression and returns the match value if successful or null if not
         /// </summary>
-        [Pure]
+        [Pure, CanBeNull]
         public static string MatchOrNull([NotNull] this Regex regex, [NotNull] string input)
         {
             if (regex == null)
@@ -26,7 +26,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Matches input with a regular expression and returns the match value of selected group if successful or null if not
         /// </summary>
-        [Pure]
+        [Pure, CanBeNull]
         public static string MatchOrNull([NotNull] this Regex regex, [NotNull] string input, int group)
         {
             if (regex == null)
@@ -45,7 +45,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Matches input with a regular expression and returns the match value of selected group if successful or null if not
         /// </summary>
-        [Pure]
+        [Pure, CanBeNull]
         public static string MatchOrNull([NotNull] this Regex regex, [NotNull] string input, [NotNull] string group)
         {
             if (regex == null)
