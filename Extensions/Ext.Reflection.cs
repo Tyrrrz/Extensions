@@ -11,7 +11,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T ShallowCopy<T>(this T obj)
         {
-            var method = typeof (object).GetMethod(nameof(MemberwiseClone),
+            var method = typeof(object).GetMethod(nameof(MemberwiseClone),
                 BindingFlags.NonPublic | BindingFlags.Instance);
             var result = method.Invoke(obj, null);
             return (T) result;

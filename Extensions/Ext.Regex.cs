@@ -37,7 +37,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentOutOfRangeException(nameof(group), "Cannot be negative");
 
             var match = regex.Match(input);
-            if (match.Success)
+            if (match.Success && match.Groups[group].Success)
                 return match.Groups[group].Value;
             return null;
         }
@@ -56,7 +56,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(group));
 
             var match = regex.Match(input);
-            if (match.Success)
+            if (match.Success && match.Groups[group].Success)
                 return match.Groups[group].Value;
             return null;
         }

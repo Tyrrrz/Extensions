@@ -39,6 +39,58 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Determines whether first string equals second.
+        /// Casing and culture are ignored, useless spaces are trimmed.
+        /// </summary>
+        [Pure]
+        public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
+        {
+            if (IsBlank(a) && IsBlank(b)) return true;
+            if (IsBlank(a) || IsBlank(b)) return false;
+
+            a = a.Trim();
+            b = b.Trim();
+            return a.Equals(b, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Determines whether first string contains second.
+        /// Casing and culture are ignored, useless spaces are trimmed.
+        /// </summary>
+        [Pure]
+        public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            if (IsBlank(str)) return IsBlank(sub);
+
+            str = str.Trim();
+            sub = sub.Trim();
+            return str.IndexOf(sub, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        }
+
+        /// <summary>
+        /// Determines whether the first string contains the second string, surrounded by spaces or linebreaks
+        /// </summary>
+        [Pure]
+        public static bool ContainsWord([NotNull] this string str, [NotNull] string word)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (word == null)
+                throw new ArgumentNullException(nameof(word));
+
+            str = str.Trim();
+            word = Regex.Escape(word.Trim());
+
+            if (str.Equals(word, DefaultStringComparison)) return true;
+            return Regex.IsMatch(str, $@"\b({word})\b");
+        }
+
+        /// <summary>
         /// Returns null if the string is blank, otherwise returns original string
         /// </summary>
         [Pure, CanBeNull]
@@ -298,57 +350,96 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts byte array to string
+        /// Determines whether the string enumerable contains second string.
+        /// Casing and culture are ignored, useless spaces are trimmed.
         /// </summary>
         [Pure]
-        public static string GetString(this byte[] data, Encoding encoding)
+        public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)
         {
-            return encoding.GetString(data);
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return enumerable.Any(sub.EqualsInvariant);
         }
 
         /// <summary>
-        /// Converts byte array to string using UTF8 encoding
+        /// Filters out blank strings from an enumerable
         /// </summary>
-        [Pure]
-        public static string GetString(this byte[] data)
+        public static IEnumerable<string> WithoutBlank([NotNull] this IEnumerable<string> enumerable)
         {
-            return GetString(data, Encoding.UTF8);
+            return enumerable.Where(IsNotBlank);
         }
 
         /// <summary>
-        /// Converts string to byte array
+        /// Strips the longest common string for the given enumerable of string, which has its origin at string start
         /// </summary>
-        [Pure]
-        public static byte[] GetBytes(this string str, Encoding encoding)
+        [Pure, NotNull]
+        public static IEnumerable<string> StripCommonStart([NotNull] this IEnumerable<string> enumerable)
         {
-            return encoding.GetBytes(str);
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            var array = enumerable as string[] ?? enumerable.ToArray();
+            if (!array.Any()) return array;
+
+            // Get the longest common string
+            string common = array[0];
+            while (common.IsNotBlank() && !array.All(s => s.StartsWith(common)))
+                common = common.SkipLast(1);
+
+            // Strip input strings
+            return common.IsNotBlank()
+                ? array.Select(s => s.Skip(common.Length))
+                : array;
         }
 
         /// <summary>
-        /// Converts string to byte array using UTF8 encoding
+        /// Strips the longest common string for the given enumerable of string, which has its origin at string end
         /// </summary>
-        [Pure]
-        public static byte[] GetBytes(this string str)
+        [Pure, NotNull]
+        public static IEnumerable<string> StripCommonEnd([NotNull] this IEnumerable<string> enumerable)
         {
-            return GetBytes(str, Encoding.UTF8);
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            var array = enumerable as string[] ?? enumerable.ToArray();
+            if (!array.Any()) return array;
+
+            // Get the longest common string
+            string common = array[0];
+            while (common.IsNotBlank() && !array.All(s => s.EndsWith(common)))
+                common = common.Skip(1);
+
+            // Strip input strings
+            return common.IsNotBlank()
+                ? array.Select(s => s.SkipLast(common.Length))
+                : array;
         }
 
         /// <summary>
-        /// Converts an array of bytes to a base64 string
+        /// Trims strings in an enumerable
         /// </summary>
-        [Pure]
-        public static string ToBase64(this byte[] bytes)
+        [Pure, NotNull, ItemNotNull]
+        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable, [NotNull] params char[] trimChars)
         {
-            return Convert.ToBase64String(bytes);
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (trimChars == null)
+                throw new ArgumentNullException(nameof(trimChars));
+
+            return enumerable.Select(str => str.Trim(trimChars));
         }
 
         /// <summary>
-        /// Converts a base64 string to a byte array
+        /// Trims strings in an enumerable
         /// </summary>
-        [Pure]
-        public static byte[] FromBase64(this string str)
+        [Pure, NotNull, ItemNotNull]
+        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable)
         {
-            return Convert.FromBase64String(str);
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return enumerable.Select(str => str.Trim());
         }
 
         /// <summary>
@@ -429,225 +520,6 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(enumerable));
 
             return string.Join(separator, enumerable);
-        }
-
-        /// <summary>
-        /// Filters out blank strings from an enumerable
-        /// </summary>
-        public static IEnumerable<string> WithoutBlank([NotNull] this IEnumerable<string> enumerable)
-        {
-            return enumerable.Where(IsNotBlank);
-        }
-
-        /// <summary>
-        /// Determines whether the string enumerable contains second string.
-        /// Casing and culture are ignored, useless spaces are trimmed.
-        /// </summary>
-        [Pure]
-        public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.Any(sub.EqualsInvariant);
-        }
-
-        /// <summary>
-        /// Strips the longest common string for the given enumerable of string, which has it's origin at string start
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<string> StripCommonStart([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var array = enumerable as string[] ?? enumerable.ToArray();
-            if (!array.Any()) return array;
-
-            // Get the longest common string
-            string common = array[0];
-            while (common.IsNotBlank() && !array.All(s => s.StartsWith(common)))
-                common = common.SkipLast(1);
-
-            // Strip input strings
-            return common.IsNotBlank()
-                ? array.Select(s => s.Skip(common.Length))
-                : array;
-        }
-
-        /// <summary>
-        /// Strips the longest common string for the given enumerable of string, which has it's origin at string end
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<string> StripCommonEnd([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var array = enumerable as string[] ?? enumerable.ToArray();
-            if (!array.Any()) return array;
-
-            // Get the longest common string
-            string common = array[0];
-            while (common.IsNotBlank() && !array.All(s => s.EndsWith(common)))
-                common = common.Skip(1);
-
-            // Strip input strings
-            return common.IsNotBlank()
-                ? array.Select(s => s.SkipLast(common.Length))
-                : array;
-        }
-
-        /// <summary>
-        /// Trims strings in an enumerable
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable, [NotNull] params char[] trimChars)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (trimChars == null)
-                throw new ArgumentNullException(nameof(trimChars));
-
-            return enumerable.Select(str => str.Trim(trimChars));
-        }
-
-        /// <summary>
-        /// Trims strings in an enumerable
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.Select(str => str.Trim());
-        }
-
-        /// <summary>
-        /// Determines whether first string equals second.
-        /// Casing and culture are ignored, useless spaces are trimmed.
-        /// </summary>
-        [Pure]
-        public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
-        {
-            if (IsBlank(a) && IsBlank(b)) return true;
-            if (IsBlank(a) || IsBlank(b)) return false;
-
-            a = a.Trim();
-            b = b.Trim();
-            return a.Equals(b, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        /// <summary>
-        /// Determines whether first string contains second.
-        /// Casing and culture are ignored, useless spaces are trimmed.
-        /// </summary>
-        [Pure]
-        public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
-
-            if (IsBlank(str)) return IsBlank(sub);
-
-            str = str.Trim();
-            sub = sub.Trim();
-            return str.IndexOf(sub, StringComparison.InvariantCultureIgnoreCase) >= 0;
-        }
-
-        /// <summary>
-        /// Determines whether the first string contains the second string, surrounded by spaces or linebreaks
-        /// </summary>
-        [Pure]
-        public static bool ContainsWord([NotNull] this string str, [NotNull] string word)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (word == null)
-                throw new ArgumentNullException(nameof(word));
-
-            str = str.Trim();
-            word = Regex.Escape(word.Trim());
-
-            if (str.Equals(word, DefaultStringComparison)) return true;
-            return Regex.IsMatch(str, $@"\b({word})\b");
-        }
-
-        /// <summary>
-        /// Compute Levenshtein distance (cost) between two strings
-        /// </summary>
-        [Pure]
-        public static int LevenshteinDistance([NotNull] this string s1, [NotNull] string s2)
-        {
-            if (s1 == null)
-                throw new ArgumentNullException(nameof(s1));
-            if (s2 == null)
-                throw new ArgumentNullException(nameof(s2));
-
-            int len1 = s1.Length;
-            int len2 = s2.Length;
-
-            if (len1 == 0) return len2;
-            if (len2 == 0) return len1;
-
-            int cost = s1.Last() == s2.Last() ? 0 : 1;
-
-            var i = new[]
-            {
-                LevenshteinDistance(s1.SkipLast(1), s2) + 1,
-                LevenshteinDistance(s1, s2.SkipLast(1)) + 1,
-                LevenshteinDistance(s1.SkipLast(1), s2.SkipLast(1)) + cost
-            };
-            return i.Min();
-        }
-
-        /// <summary>
-        /// Get the number of occurrences of a substring inside a string
-        /// </summary>
-        [Pure]
-        public static int NumberOfOccurences([NotNull] this string str, [NotNull] string sub, int start = 0)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
-            if (start < 0)
-                throw new ArgumentOutOfRangeException(nameof(start), "Cannot be negative");
-
-            int result = 0;
-            int index = str.IndexOf(sub, start, DefaultStringComparison);
-            while (index >= 0)
-            {
-                result++;
-                index = str.IndexOf(sub, index + sub.Length + 1, DefaultStringComparison);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Returns all position indices of given substring inside given string
-        /// </summary>
-        [Pure, NotNull]
-        public static int[] IndicesOf([NotNull] this string str, [NotNull] string sub, int start = 0)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
-            if (start < 0)
-                throw new ArgumentOutOfRangeException(nameof(start), "Cannot be negative");
-
-            var result = new List<int>();
-            int index = str.IndexOf(sub, start, DefaultStringComparison);
-            while (index >= 0)
-            {
-                result.Add(index);
-                index = str.IndexOf(sub, index + sub.Length, DefaultStringComparison);
-            }
-            return result.ToArray();
         }
 
         #region Parse methods

@@ -43,15 +43,6 @@ namespace Tyrrrz.Extensions
         /// Gets all possible values of an enumeration
         /// </summary>
         [Pure]
-        public static IEnumerable<TEnum> GetAllEnumValues<TEnum>() where TEnum : struct
-        {
-            return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
-        }
-
-        /// <summary>
-        /// Gets all possible values of an enumeration
-        /// </summary>
-        [Pure]
         public static IEnumerable<TEnum> GetAllEnumValues<TEnum>(this Type enumType) where TEnum : struct
         {
             return Enum.GetValues(enumType).Cast<TEnum>();
@@ -73,7 +64,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static TEnum RandomEnum<TEnum>() where TEnum : struct
         {
-            var values = GetAllEnumValues<TEnum>();
+            var values = GetAllEnumValues<TEnum>(typeof(TEnum));
             return GetRandom(values);
         }
     }

@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ext.Collections.cs" />
+    <Compile Include="Ext.Data.cs" />
     <Compile Include="Ext.Enums.cs" />
     <Compile Include="Ext.Primitives.cs" />
     <Compile Include="Ext.Reflection.cs" />

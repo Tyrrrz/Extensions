@@ -251,22 +251,5 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsTrue("qwe asd zxc".ContainsWord("asd zxc"));
             Assert.IsFalse("qwe asd zxc".ContainsWord("qw"));
         }
-
-        [TestMethod]
-        public void NumberOfOccurencesTest()
-        {
-            Assert.AreEqual(3, "qwe qsd qzxc".NumberOfOccurences("q"));
-        }
-
-        [TestMethod]
-        public void IndicesOfTest()
-        {
-            var io = "asdaiuoxacv".IndicesOf("a");
-
-            Assert.AreEqual(3, io.Length);
-            Assert.AreEqual(0, io[0]);
-            Assert.AreEqual(3, io[1]);
-            Assert.AreEqual(8, io[2]);
-        }
     }
 }

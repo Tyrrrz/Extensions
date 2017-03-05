@@ -20,6 +20,8 @@ namespace Tyrrrz.Extensions.Tests
             string mn = regex.MatchOrNull(imn);
             string mngi = regex.MatchOrNull(imn, 2);
             string mngn = regex.MatchOrNull(imn, "g2");
+            string mngio = regex.MatchOrNull(imn, 5);
+            string mngno = regex.MatchOrNull(imn, "g5");
 
             Assert.AreEqual("value1=asd&value2=qwe", m);
             Assert.AreEqual("qwe", mgi);
@@ -27,6 +29,8 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsNull(mn);
             Assert.IsNull(mngi);
             Assert.IsNull(mngn);
+            Assert.IsNull(mngio);
+            Assert.IsNull(mngno);
         }
     }
 }
