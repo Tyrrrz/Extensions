@@ -90,6 +90,9 @@ namespace Tyrrrz.Extensions
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
+            if (value == null)
+                value = string.Empty;
+
             // Find existing parameter
             var existingMatch = Regex.Match(uri, $@"[?&]({key}=?.*?)(?:&|$)");
 
@@ -102,7 +105,7 @@ namespace Tyrrrz.Extensions
                 uri = uri.Remove(group.Index, group.Length);
 
                 // Insert new one
-                uri = uri.Insert(group.Index, value != null ? $"{key}={value}" : $"{key}=");
+                uri = uri.Insert(group.Index, $"{key}={value}");
 
                 return uri;
             }
