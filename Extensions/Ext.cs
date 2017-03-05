@@ -20,6 +20,6 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Default comparison for methods that compare strings
         /// </summary>
-        public static StringComparison DefaultStringComparison { get; set; } = StringComparison.InvariantCultureIgnoreCase;
+        public static StringComparison DefaultStringComparison { get; set; }
     }
 }

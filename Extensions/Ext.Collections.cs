@@ -128,8 +128,8 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that don't have default value
         /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<T> WithoutDefault<T>([NotNull] this IEnumerable<T> enumerable)
+        [Pure, NotNull]
+        public static IEnumerable<T> WithoutDefault<T>([NotNull] this IEnumerable<T> enumerable) where T : struct
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));

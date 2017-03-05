@@ -350,6 +350,40 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Returns substring of a string until the last occurence of the other string
+        /// If the other string is not found, returns full string
+        /// </summary>
+        [Pure, NotNull]
+        public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            int index = str.LastIndexOf(sub, DefaultStringComparison);
+            if (index < 0) return str;
+            return str.Substring(0, index);
+        }
+
+        /// <summary>
+        /// Returns substring of a string after the last occurence of the other string
+        /// If the other string is not found, returns empty string
+        /// </summary>
+        [Pure, NotNull]
+        public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            int index = str.LastIndexOf(sub, DefaultStringComparison);
+            if (index < 0) return string.Empty;
+            return str.Substring(index + sub.Length, str.Length - index - sub.Length);
+        }
+
+        /// <summary>
         /// Determines whether the string enumerable contains second string.
         /// Casing and culture are ignored, useless spaces are trimmed.
         /// </summary>

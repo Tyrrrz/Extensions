@@ -188,6 +188,26 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
+        public void SubstringUntilLastTest()
+        {
+            string str = "qwe=asd=zxc=cvb";
+
+            string su = str.SubstringUntilLast("=");
+
+            Assert.AreEqual("qwe=asd=zxc", su);
+        }
+
+        [TestMethod]
+        public void SubstringAfterLastTest()
+        {
+            string str = "qwe=asd=zxc=cvb";
+
+            string sa = str.SubstringAfterLast("=");
+
+            Assert.AreEqual("cvb", sa);
+        }
+
+        [TestMethod]
         public void WithoutBlankTest()
         {
             var a = new[] {"asd", "  ", "", null, "qwe"};
