@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
@@ -76,6 +77,61 @@ namespace Tyrrrz.Extensions
 #else
             return Uri.UnescapeDataString(data);
 #endif
+        }
+
+        /// <summary>
+        /// Sets the given parameter to the given value in a query uri
+        /// </summary>
+        [Pure, NotNull]
+        public static string SetQueryParameter([NotNull] this string uri, [NotNull] string key, [CanBeNull] string value)
+        {
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            // Find existing parameter
+            var existingMatch = Regex.Match(uri, $@"[?&]({key}(?:=.*?)?)(?:&|$)");
+
+            // Parameter already set to something
+            if (existingMatch.Success)
+            {
+                var group = existingMatch.Groups[1];
+
+                // Remove existing
+                uri = uri.Remove(group.Index, group.Length);
+
+                // Insert new one
+                uri = uri.Insert(group.Index, value != null ? $"{key}={value}" : $"{key}=");
+
+                return uri;
+            }
+            // Parameter hasn't been set yet
+            else
+            {
+                // See if there are other parameters
+                bool hasOtherParams = uri.IndexOf('?') >= 0;
+
+                // Prepend either & or ? depending on that
+                string separator = hasOtherParams ? "&" : "?";
+
+                // Assemble new query string
+                return uri + separator + key + "=" + value;
+            }
+        }
+
+        /// <summary>
+        /// Sets the given parameter to the given value in a query uri
+        /// </summary>
+        [Pure, NotNull]
+        public static Uri SetQueryParameter([NotNull] this Uri uri, [NotNull] string key, [CanBeNull] string value)
+        {
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            return ToUri(SetQueryParameter(uri.ToString(), key, value));
         }
     }
 }
