@@ -35,6 +35,9 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsNumeric([NotNull] this string str)
         {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
             return str.All(char.IsDigit);
         }
 
@@ -44,6 +47,9 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsAlphabetic([NotNull] this string str)
         {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
             return str.All(char.IsLetter);
         }
 
@@ -53,6 +59,9 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsAlphanumeric([NotNull] this string str)
         {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
             return str.All(char.IsLetterOrDigit);
         }
 
