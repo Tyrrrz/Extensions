@@ -55,6 +55,7 @@
     <Compile Include="Ext.Regex.cs" />
     <Compile Include="Ext.Strings.cs" />
     <Compile Include="Ext.Threading.cs" />
+    <Compile Include="Ext.Uri.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedInstances.cs" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -352,7 +351,6 @@ namespace Tyrrrz.Extensions
             return Convert.FromBase64String(str);
         }
 
-
         /// <summary>
         /// Split string into substrings using separator strings, removing empty strings
         /// </summary>
@@ -652,77 +650,176 @@ namespace Tyrrrz.Extensions
             return result.ToArray();
         }
 
+        #region Parse methods
         /// <summary>
-        /// Converts a string to URI
+        /// Parses the string into an object of generic type using a <see cref="ParseDelegate{T}"/> handler
         /// </summary>
-        [Pure, NotNull]
-        public static Uri ToUri([NotNull] this string uri)
+        [Pure]
+        public static T Parse<T>([NotNull] this string str, [NotNull] ParseDelegate<T> handler)
         {
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uri));
+            if (IsBlank(str))
+                throw new ArgumentNullException(nameof(str));
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
 
-            return new UriBuilder(uri).Uri;
+            return handler(str);
         }
 
         /// <summary>
-        /// Converts a string to relative uri, with a given base uri
+        /// Parses the string into an object of generic type using a <see cref="TryParseDelegate{T}"/> handler
         /// </summary>
-        [Pure, NotNull]
-        public static Uri ToUri([NotNull] this string uri, [NotNull] string baseUri)
+        [Pure]
+        public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler, T defaultValue = default(T))
         {
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uri));
-            if (baseUri == null)
-                throw new ArgumentNullException(nameof(baseUri));
+            if (IsBlank(str))
+                return defaultValue;
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
 
-            return new Uri(ToUri(baseUri), new Uri(uri, UriKind.Relative));
+            T result;
+            return handler(str, out result) ? result : defaultValue;
         }
 
         /// <summary>
-        /// Converts a string to relative uri, with a given base uri
+        /// Parses the string into float
         /// </summary>
-        [Pure, NotNull]
-        public static Uri ToUri([NotNull] this string uri, [NotNull] Uri baseUri)
-        {
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uri));
-            if (baseUri == null)
-                throw new ArgumentNullException(nameof(baseUri));
-
-            return new Uri(baseUri, new Uri(uri, UriKind.Relative));
-        }
+        [Pure]
+        public static float ParseFloat([NotNull] this string str)
+            => Parse(str, float.Parse);
 
         /// <summary>
-        /// Returns URL encoded version of the given string
+        /// Parses the string into float or returns the default value if it fails
         /// </summary>
-        [Pure, NotNull]
-        public static string UrlEncode([NotNull] this string data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-#if Net45
-            return WebUtility.UrlEncode(data);
-#else
-            return Uri.EscapeDataString(data);
-#endif
-        }
+        [Pure]
+        public static float ParseFloatOrDefault(this string str, float defaultValue = default(float))
+            => ParseOrDefault(str, float.TryParse, defaultValue);
 
         /// <summary>
-        /// Returns URL decoded version of the given string
+        /// Parses the string into double
         /// </summary>
-        [Pure, NotNull]
-        public static string UrlDecode([NotNull] this string data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
+        [Pure]
+        public static double ParseDouble([NotNull] this string str)
+            => Parse(str, double.Parse);
 
-#if Net45
-            return WebUtility.UrlDecode(data);
-#else
-            return Uri.UnescapeDataString(data);
-#endif
-        }
+        /// <summary>
+        /// Parses the string into double or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static double ParseDoubleOrDefault(this string str, double defaultValue = default(double))
+            => ParseOrDefault(str, double.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into decimal
+        /// </summary>
+        [Pure]
+        public static decimal ParseDecimal([NotNull] this string str)
+            => Parse(str, decimal.Parse);
+
+        /// <summary>
+        /// Parses the string into decimal or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static decimal ParseDecimalOrDefault(this string str, decimal defaultValue = default(decimal))
+            => ParseOrDefault(str, decimal.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into short
+        /// </summary>
+        [Pure]
+        public static short ParseShort([NotNull] this string str)
+            => Parse(str, short.Parse);
+
+        /// <summary>
+        /// Parses the string into short or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static short ParseShortOrDefault(this string str, short defaultValue = default(short))
+            => ParseOrDefault(str, short.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into int
+        /// </summary>
+        [Pure]
+        public static int ParseInt([NotNull] this string str)
+            => Parse(str, int.Parse);
+
+        /// <summary>
+        /// Parses the string into int or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static int ParseIntOrDefault(this string str, int defaultValue = default(int))
+            => ParseOrDefault(str, int.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into long
+        /// </summary>
+        [Pure]
+        public static long ParseLong([NotNull] this string str)
+            => Parse(str, long.Parse);
+
+        /// <summary>
+        /// Parses the string into long or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static long ParseLongOrDefault(this string str, long defaultValue = default(long))
+            => ParseOrDefault(str, long.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into byte
+        /// </summary>
+        [Pure]
+        public static byte ParseByte([NotNull] this string str)
+            => Parse(str, byte.Parse);
+
+        /// <summary>
+        /// Parses the string into byte or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static byte ParseByteOrDefault(this string str, byte defaultValue = default(byte))
+            => ParseOrDefault(str, byte.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into uint
+        /// </summary>
+        [Pure]
+        public static uint ParseUint([NotNull] this string str)
+            => Parse(str, uint.Parse);
+
+        /// <summary>
+        /// Parses the string into uint or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static uint ParseUintOrDefault(this string str, uint defaultValue = default(uint))
+            => ParseOrDefault(str, uint.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into ulong
+        /// </summary>
+        [Pure]
+        public static ulong ParseUlong([NotNull] this string str)
+            => Parse(str, ulong.Parse);
+
+        /// <summary>
+        /// Parses the string into ulong or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static ulong ParseUlongOrDefault(this string str, ulong defaultValue = default(ulong))
+            => ParseOrDefault(str, ulong.TryParse, defaultValue);
+
+        /// <summary>
+        /// Parses the string into DateTime
+        /// </summary>
+        [Pure]
+        public static DateTime ParseDateTime([NotNull] this string str)
+            => Parse(str, DateTime.Parse);
+
+        /// <summary>
+        /// Parses the string into DateTime or returns the default value if it fails
+        /// </summary>
+        [Pure]
+        public static DateTime ParseDateTimeOrDefault(this string str, DateTime defaultValue = default(DateTime))
+            => ParseOrDefault(str, DateTime.TryParse, defaultValue);
+        #endregion
 
         /// <summary>
         /// Trims trailing zeroes in the version object and returns its string representation
