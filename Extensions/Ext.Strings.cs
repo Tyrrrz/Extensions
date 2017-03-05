@@ -39,6 +39,24 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Checks whether the string only consists of letters
+        /// </summary>
+        [Pure]
+        public static bool IsAlphabetic([NotNull] this string str)
+        {
+            return str.All(char.IsLetter);
+        }
+
+        /// <summary>
+        /// Checks whether the string only consists of letters and digits
+        /// </summary>
+        [Pure]
+        public static bool IsAlphanumeric([NotNull] this string str)
+        {
+            return str.All(char.IsLetterOrDigit);
+        }
+
+        /// <summary>
         /// Determines whether first string equals second.
         /// Casing and culture are ignored, useless spaces are trimmed.
         /// </summary>
@@ -84,10 +102,10 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(word));
 
             str = str.Trim();
-            word = Regex.Escape(word.Trim());
+            word = word.Trim();
 
             if (str.Equals(word, DefaultStringComparison)) return true;
-            return Regex.IsMatch(str, $@"\b({word})\b");
+            return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b");
         }
 
         /// <summary>
