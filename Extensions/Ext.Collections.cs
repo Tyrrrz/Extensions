@@ -72,9 +72,8 @@ namespace Tyrrrz.Extensions
             if (asList == null || asList.IsReadOnly)
                 asList = enumerable.ToList();
 
-            foreach (var additionalEnumerable in additional)
-                foreach (var additionalObj in additionalEnumerable)
-                    asList.Add(additionalObj);
+            foreach (var obj in additional.SelectMany(i => i))
+                asList.Add(obj);
 
             return asList;
         }
