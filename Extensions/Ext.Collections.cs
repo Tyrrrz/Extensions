@@ -60,6 +60,45 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Concats two enumerables, returning the new composite enumerable
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> With<T>([NotNull] this IEnumerable<T> enumerable, params IEnumerable<T>[] additional)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            var asList = enumerable as IList<T>;
+            if (asList == null || asList.IsReadOnly)
+                asList = enumerable.ToList();
+
+            foreach (var additionalEnumerable in additional)
+                foreach (var additionalObj in additionalEnumerable)
+                    asList.Add(additionalObj);
+
+            return asList;
+        }
+
+        /// <summary>
+        /// Adds objects to enumerable, returning the new composite enumerable
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> With<T>([NotNull] this IEnumerable<T> enumerable, params T[] objects)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            var asList = enumerable as IList<T>;
+            if (asList == null || asList.IsReadOnly)
+                asList = enumerable.ToList();
+
+            foreach (var obj in objects)
+                asList.Add(obj);
+
+            return asList;
+        }
+
+        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
