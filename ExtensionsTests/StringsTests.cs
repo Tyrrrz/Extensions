@@ -230,30 +230,6 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void StripCommonStartTest()
-        {
-            var a = new[] { "asd213", "asd44", "asdzxc" };
-
-            var scs = a.StripCommonStart().ToArray();
-
-            Assert.AreEqual("213", scs[0]);
-            Assert.AreEqual("44", scs[1]);
-            Assert.AreEqual("zxc", scs[2]);
-        }
-
-        [TestMethod]
-        public void StripCommonEndTest()
-        {
-            var a = new[] { "213qw", "44qw", "zxcqw" };
-
-            var scs = a.StripCommonEnd().ToArray();
-
-            Assert.AreEqual("213", scs[0]);
-            Assert.AreEqual("44", scs[1]);
-            Assert.AreEqual("zxc", scs[2]);
-        }
-
-        [TestMethod]
         public void EqualsInvariantTest()
         {
             Assert.IsTrue("asd".EqualsInvariant("asd"));

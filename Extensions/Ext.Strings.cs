@@ -432,52 +432,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Strips the longest common string for the given enumerable of string, which has its origin at string start
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<string> StripCommonStart([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var array = enumerable as string[] ?? enumerable.ToArray();
-            if (!array.Any()) return array;
-
-            // Get the longest common string
-            string common = array[0];
-            while (common.IsNotBlank() && !array.All(s => s.StartsWith(common)))
-                common = common.SkipLast(1);
-
-            // Strip input strings
-            return common.IsNotBlank()
-                ? array.Select(s => s.Skip(common.Length))
-                : array;
-        }
-
-        /// <summary>
-        /// Strips the longest common string for the given enumerable of string, which has its origin at string end
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<string> StripCommonEnd([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var array = enumerable as string[] ?? enumerable.ToArray();
-            if (!array.Any()) return array;
-
-            // Get the longest common string
-            string common = array[0];
-            while (common.IsNotBlank() && !array.All(s => s.EndsWith(common)))
-                common = common.Skip(1);
-
-            // Strip input strings
-            return common.IsNotBlank()
-                ? array.Select(s => s.SkipLast(common.Length))
-                : array;
-        }
-
-        /// <summary>
         /// Trims strings in an enumerable
         /// </summary>
         [Pure, NotNull, ItemNotNull]
