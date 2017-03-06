@@ -20,23 +20,23 @@ namespace Tyrrrz.Extensions
         /// Parses string to enum
         /// </summary>
         [Pure]
-        public static TEnum ParseEnum<TEnum>([NotNull] this string str) where TEnum : struct
+        public static TEnum ParseEnum<TEnum>([NotNull] this string str, bool ignoreCase = true) where TEnum : struct
         {
             if (IsBlank(str))
                 throw new ArgumentNullException(nameof(str));
 
-            return (TEnum) Enum.Parse(typeof (TEnum), str, true);
+            return (TEnum) Enum.Parse(typeof (TEnum), str, ignoreCase);
         }
 
         /// <summary>
         /// Parses string to enum or default value
         /// </summary>
         [Pure]
-        public static TEnum ParseEnumOrDefault<TEnum>(this string str, TEnum defaultValue = default(TEnum)) where TEnum : struct
+        public static TEnum ParseEnumOrDefault<TEnum>(this string str, bool ignoreCase = true, TEnum defaultValue = default(TEnum)) where TEnum : struct
         {
             if (IsBlank(str)) return defaultValue;
             TEnum result;
-            return Enum.TryParse(str, true, out result) ? result : defaultValue;
+            return Enum.TryParse(str, ignoreCase, out result) ? result : defaultValue;
         }
 
         /// <summary>
