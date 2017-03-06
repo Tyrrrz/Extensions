@@ -486,46 +486,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Split string into substrings using separator string.
-        /// Empty strings are removed and existing are trimmed.
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator, [NotNull] params char[] trimChars)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (separator == null)
-                throw new ArgumentNullException(nameof(separator));
-            if (trimChars == null)
-                throw new ArgumentNullException(nameof(trimChars));
-
-            return str
-                .Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(sub => sub.Trim(trimChars))
-                .Where(IsNotBlank)
-                .ToArray();
-        }
-
-        /// <summary>
-        /// Split string into substrings using separator string.
-        /// Empty strings are removed and existing are trimmed.
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static string[] SplitTrim([NotNull] this string str, [NotNull] string separator)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (separator == null)
-                throw new ArgumentNullException(nameof(separator));
-
-            return str
-                .Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(sub => sub.Trim())
-                .Where(IsNotBlank)
-                .ToArray();
-        }
-
-        /// <summary>
         /// Joins members of an <see cref="IEnumerable{T}"/> into a string, separated by given string
         /// </summary>
         [Pure, NotNull]
