@@ -60,6 +60,25 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Returns distinct elements from a sequence by using a selector delegate to compare values
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable, [NotNull] Func<TSource, TKey> keySelector)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+
+            var existing = new HashSet<TKey>();
+            foreach (var element in enumerable)
+            {
+                if (existing.Add(keySelector(element)))
+                    yield return element;
+            }
+        }
+
+        /// <summary>
         /// Projects each element of a sequence to an <see cref="IEnumerable{T}"/> and flattens the resulting sequences into one sequence.
         /// </summary>
         [Pure, NotNull]
