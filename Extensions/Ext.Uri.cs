@@ -94,7 +94,7 @@ namespace Tyrrrz.Extensions
                 value = string.Empty;
 
             // Find existing parameter
-            var existingMatch = Regex.Match(uri, $@"[?&]({key}=?.*?)(?:&|$)");
+            var existingMatch = Regex.Match(uri, $@"[?&]({Regex.Escape(key)}=?.*?)(?:&|$)");
 
             // Parameter already set to something
             if (existingMatch.Success)
@@ -116,7 +116,7 @@ namespace Tyrrrz.Extensions
                 bool hasOtherParams = uri.IndexOf('?') >= 0;
 
                 // Prepend either & or ? depending on that
-                string separator = hasOtherParams ? "&" : "?";
+                char separator = hasOtherParams ? '&' : '?';
 
                 // Assemble new query string
                 return uri + separator + key + "=" + value;
