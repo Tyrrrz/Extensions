@@ -270,7 +270,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for an item in an <see cref="IList{T}"/> returning index of it's last occurence
+        /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
         /// <returns>Item index if found, -1 if not found</returns>
         /// </summary>
         [Pure]
@@ -288,7 +288,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for an item in an <see cref="IList{T}"/> returning index of it's last occurence
+        /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
         /// <returns>Item index if found, -1 if not found</returns>
         /// </summary>
         [Pure]
@@ -306,7 +306,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for an item in an <see cref="IList{T}"/> returning index of it's last occurence
+        /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
         /// <returns>Item index if found, -1 if not found</returns>
         /// </summary>
         [Pure]
