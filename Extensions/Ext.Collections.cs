@@ -60,38 +60,10 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Concats two enumerables, returning the new composite enumerable
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> With<T>([NotNull] this IEnumerable<T> enumerable, params IEnumerable<T>[] additional)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var list = enumerable.ToList();
-            list.AddRange(additional.SelectMany(i => i));
-            return list;
-        }
-
-        /// <summary>
-        /// Adds objects to enumerable, returning the new composite enumerable
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> With<T>([NotNull] this IEnumerable<T> enumerable, params T[] objects)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            var list = enumerable.ToList();
-            list.AddRange(objects);
-            return list;
-        }
-
-        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Without<T>([NotNull] this IEnumerable<T> enumerable, T value)
+        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -103,7 +75,7 @@ namespace Tyrrrz.Extensions
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Without<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
+        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -114,27 +86,15 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that are not null
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<T> WithoutNull<T>([NotNull] this IEnumerable<T> enumerable) where T : class
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return Without(enumerable, null);
-        }
-
-        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that don't have default value
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> WithoutDefault<T>([NotNull] this IEnumerable<T> enumerable) where T : struct
+        public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            return Without(enumerable, default(T));
+            return Except(enumerable, default(T));
         }
 
         /// <summary>

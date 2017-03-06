@@ -1,5 +1,4 @@
-﻿using Tyrrrz.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,32 +48,12 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void WithTest()
+        public void ExceptTest()
         {
             var a = new[] { "asd", "qwe", "dfg" };
 
-            var ws = a.With("zzz").ToArray();
-            var wsm = a.With("123", "456").ToArray();
-            var wse = a.With(new[] {"kkk", "lll"}, new[] {"ppp"}).ToArray();
-
-            Assert.AreEqual(4, ws.Length);
-            Assert.IsTrue(ws.Contains("zzz"));
-            Assert.AreEqual(5, wsm.Length);
-            Assert.IsTrue(wsm.Contains("123"));
-            Assert.IsTrue(wsm.Contains("456"));
-            Assert.AreEqual(6, wse.Length);
-            Assert.IsTrue(wse.Contains("kkk"));
-            Assert.IsTrue(wse.Contains("lll"));
-            Assert.IsTrue(wse.Contains("ppp"));
-        }
-
-        [TestMethod]
-        public void WithoutTest()
-        {
-            var a = new[] { "asd", "qwe", "dfg" };
-
-            var wa = a.Without("qwe").ToArray();
-            var wea = a.Without("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
+            var wa = a.Except("qwe").ToArray();
+            var wea = a.Except("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
 
             Assert.AreEqual(2, wa.Length);
             Assert.IsFalse(wa.Contains("qwe"));
@@ -84,25 +63,18 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void WithoutNullTest()
-        {
-            var a = new[] { "asd", "qwe", "dfg", null, "null" };
-
-            var wna = a.WithoutNull().ToArray();
-
-            Assert.AreEqual(4, wna.Length);
-            Assert.IsFalse(wna.Contains(null));
-        }
-
-        [TestMethod]
-        public void WithoutDefaultTest()
+        public void ExceptDefaultTest()
         {
             var a = new[] { 0, 1, 2, 3, 4, 5 };
+            var b = new[] {"asd", "qwe", null};
 
-            var wda = a.WithoutDefault().ToArray();
+            var wda = a.ExceptDefault().ToArray();
+            var wdb = b.ExceptDefault().ToArray();
 
             Assert.AreEqual(5, wda.Length);
             Assert.IsFalse(wda.Contains(0));
+            Assert.AreEqual(2, wdb.Length);
+            Assert.IsFalse(wdb.Contains(null));
         }
 
         [TestMethod]

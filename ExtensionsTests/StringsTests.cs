@@ -132,12 +132,12 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void WithoutTest()
+        public void ExceptTest()
         {
             string str = "Hello World";
 
-            string w = str.Without("He", " ", "d");
-            string wc = str.Without('H', 'o');
+            string w = str.Except("He", " ", "d");
+            string wc = str.Except('H', 'o');
 
             Assert.AreEqual("lloWorl", w);
             Assert.AreEqual("ell Wrld", wc);
