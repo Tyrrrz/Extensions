@@ -504,7 +504,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T Parse<T>([NotNull] this string str, [NotNull] ParseDelegate<T> handler)
         {
-            if (IsBlank(str))
+            if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
@@ -518,7 +518,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler, T defaultValue = default(T))
         {
-            if (IsBlank(str))
+            if (str == null)
                 return defaultValue;
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
