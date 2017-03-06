@@ -325,7 +325,7 @@ namespace Tyrrrz.Extensions
             if (end == null)
                 throw new ArgumentNullException(nameof(end));
 
-            return str.EndsWith(end) ? str : str + end;
+            return str.EndsWith(end, DefaultStringComparison) ? str : str + end;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace Tyrrrz.Extensions
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
 
-            return str.StartsWith(start) ? str : start + str;
+            return str.StartsWith(start, DefaultStringComparison) ? str : start + str;
         }
 
         /// <summary>
