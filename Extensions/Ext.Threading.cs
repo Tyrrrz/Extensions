@@ -65,7 +65,8 @@ namespace Tyrrrz.Extensions
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
-            await ParallelForEachAsync(enumerable, i => Task.Run(() => action(i)));
+            var tasks = enumerable.Select(async i => await Task.Run(() => action(i)));
+            await Task.WhenAll(tasks);
         }
 #endif
     }

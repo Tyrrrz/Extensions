@@ -445,26 +445,29 @@ namespace Tyrrrz.Extensions
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
 
-            while (list.Count > count && list.Count > 0)
+            // Set up cleaner
+            Action cleaner;
+            switch (mode)
             {
-                switch (mode)
-                {
-                    case EnsureMaxCountMode.DeleteFirst:
-                        list.RemoveAt(0);
-                        break;
-                    case EnsureMaxCountMode.DeleteLast:
-                        list.RemoveAt(list.Count - 1);
-                        break;
-                    case EnsureMaxCountMode.DeleteRandom:
-                        list.RemoveAt(SharedInstances.Random.Next(0, list.Count));
-                        break;
-                    case EnsureMaxCountMode.DeleteAll:
-                        list.Clear();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
-                }
+                case EnsureMaxCountMode.DeleteFirst:
+                    cleaner = () => list.RemoveAt(0);
+                    break;
+                case EnsureMaxCountMode.DeleteLast:
+                    cleaner = () => list.RemoveAt(list.Count - 1);
+                    break;
+                case EnsureMaxCountMode.DeleteRandom:
+                    cleaner = () => list.RemoveAt(SharedInstances.Random.Next(0, list.Count));
+                    break;
+                case EnsureMaxCountMode.DeleteAll:
+                    cleaner = list.Clear;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
+
+            // Run cleaner
+            while (list.Count > count && list.Count > 0)
+                cleaner();
         }
 
         /// <summary>
