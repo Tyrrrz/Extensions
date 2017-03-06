@@ -56,7 +56,6 @@
     <Compile Include="CollectionsTests.cs" />
     <Compile Include="PrimitivesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegexTests.cs" />
     <Compile Include="StringsTests.cs" />
     <Compile Include="ThreadingTests.cs" />
     <Compile Include="UriTests.cs" />
