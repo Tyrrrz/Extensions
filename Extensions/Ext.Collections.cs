@@ -60,6 +60,18 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Projects each element of a sequence to an <see cref="IEnumerable{T}"/> and flattens the resulting sequences into one sequence.
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> SelectMany<T>([NotNull] this IEnumerable<IEnumerable<T>> enumerable)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return enumerable.SelectMany(i => i);
+        }
+
+        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
