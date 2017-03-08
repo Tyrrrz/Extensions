@@ -94,7 +94,7 @@ namespace Tyrrrz.Extensions
                 value = string.Empty;
 
             // Find existing parameter
-            var existingMatch = Regex.Match(uri, $@"[?&]({Regex.Escape(key)}=?.*?)(?:&|$)");
+            var existingMatch = Regex.Match(uri, $@"[?&]({Regex.Escape(key)}=?.*?)(?:&|/|$)");
 
             // Parameter already set to something
             if (existingMatch.Success)
@@ -119,7 +119,7 @@ namespace Tyrrrz.Extensions
                 char separator = hasOtherParams ? '&' : '?';
 
                 // Assemble new query string
-                return uri + separator + key + "=" + value;
+                return uri + separator + key + '=' + value;
             }
         }
 

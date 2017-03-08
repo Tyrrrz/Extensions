@@ -31,7 +31,7 @@ namespace Tyrrrz.Extensions.Tests
             var a = new[] { 1, 2, 3, 4, 5 };
             var r = a.GetRandom();
 
-            Assert.IsTrue(a.Contains(r));
+            CollectionAssert.Contains(a, r);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace Tyrrrz.Extensions.Tests
             var ar = a.GetRandomOrDefault();
             var br = b.GetRandomOrDefault();
 
-            Assert.IsTrue(a.Contains(ar));
+            CollectionAssert.Contains(a, ar);
             Assert.AreEqual(0, br);
         }
 
@@ -56,10 +56,10 @@ namespace Tyrrrz.Extensions.Tests
             var wea = a.Except("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
 
             Assert.AreEqual(2, wa.Length);
-            Assert.IsFalse(wa.Contains("qwe"));
+            CollectionAssert.DoesNotContain(wa, "qwe");
 
             Assert.AreEqual(2, wea.Length);
-            Assert.IsFalse(wea.Contains("qwe"));
+            CollectionAssert.DoesNotContain(wea, "qwe");
         }
 
         [TestMethod]
@@ -72,9 +72,9 @@ namespace Tyrrrz.Extensions.Tests
             var wdb = b.ExceptDefault().ToArray();
 
             Assert.AreEqual(5, wda.Length);
-            Assert.IsFalse(wda.Contains(0));
+            CollectionAssert.DoesNotContain(wda, 0);
             Assert.AreEqual(2, wdb.Length);
-            Assert.IsFalse(wdb.Contains(null));
+            CollectionAssert.DoesNotContain(wdb, null);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Tyrrrz.Extensions.Tests
             var tlla = a.TakeLast(0).ToArray();
 
             Assert.AreEqual(2, tla.Length);
-            Assert.IsFalse(tla.Contains("asd"));
+            CollectionAssert.DoesNotContain(tla, "asd");
             Assert.AreEqual(a.Length, tlma.Length);
             Assert.AreEqual(0, tlla.Length);
         }
@@ -102,8 +102,8 @@ namespace Tyrrrz.Extensions.Tests
             var slla = a.SkipLast(0).ToArray();
 
             Assert.AreEqual(1, sla.Length);
-            Assert.IsFalse(sla.Contains("qwe"));
-            Assert.IsFalse(sla.Contains("dfg"));
+            CollectionAssert.DoesNotContain(sla, "qwe");
+            CollectionAssert.DoesNotContain(sla, "dfg");
             Assert.AreEqual(0, slma.Length);
             Assert.AreEqual(a.Length, slla.Length);
         }

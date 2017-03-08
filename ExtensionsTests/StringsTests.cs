@@ -215,8 +215,7 @@ namespace Tyrrrz.Extensions.Tests
             var wb = a.WithoutBlank().ToArray();
 
             Assert.AreEqual(2, wb.Length);
-            Assert.AreEqual("asd", wb[0]);
-            Assert.AreEqual("qwe", wb[1]);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe"}, wb);
         }
 
         [TestMethod]
