@@ -60,6 +60,16 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// If the given <see cref="IEnumerable{T}"/> is null, returns an empty <see cref="IEnumerable{T}"/>.
+        /// Otherwise returns given <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> enumerable)
+        {
+            return enumerable ?? Enumerable.Empty<T>();
+        }
+
+        /// <summary>
         /// Returns distinct elements from a sequence by using a selector delegate to compare values
         /// </summary>
         [Pure, NotNull]
