@@ -70,7 +70,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns distinct elements from a sequence by using a selector delegate to compare values
+        /// Returns distinct elements from an <see cref="IEnumerable{T}"/> by using a selector delegate to compare values
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable, [NotNull] Func<TSource, TKey> keySelector)
@@ -185,7 +185,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> from a <see cref="IEnumerable{T}"/>
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>
         /// </summary>
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
@@ -197,7 +197,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> from a <see cref="IEnumerable{T}"/>
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>
         /// </summary>
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
@@ -366,19 +366,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the last index of an <see cref="IList{T}"/>
-        /// <returns>Last index if there are any items, -1 if there aren't</returns>
-        /// </summary>
-        [Pure]
-        public static int LastIndex<T>([NotNull] this IList<T> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            return list.Count - 1;
-        }
-
-        /// <summary>
         /// Returns the last index of an array for the given dimension
         /// <returns>Last index if there are any items, -1 if there aren't</returns>
         /// </summary>
@@ -389,6 +376,8 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(array));
             if (dimension < 0)
                 throw new ArgumentOutOfRangeException(nameof(dimension), "Cannot be negative");
+            if (dimension > array.Rank - 1)
+                return -1;
 
             return array.GetUpperBound(dimension);
         }

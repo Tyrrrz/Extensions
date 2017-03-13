@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tyrrrz.Extensions.Types;
 
 namespace Tyrrrz.Extensions.Tests
 {
@@ -29,9 +30,10 @@ namespace Tyrrrz.Extensions.Tests
         public void GetRandomTest()
         {
             var a = new[] { 1, 2, 3, 4, 5 };
-            var r = a.GetRandom();
 
-            CollectionAssert.Contains(a, r);
+            var random = a.GetRandom();
+
+            CollectionAssert.Contains(a, random);
         }
 
         [TestMethod]
@@ -40,11 +42,51 @@ namespace Tyrrrz.Extensions.Tests
             var a = new[] { 1, 2, 3, 4, 5 };
             var b = new int[0];
 
-            var ar = a.GetRandomOrDefault();
-            var br = b.GetRandomOrDefault();
+            var aRandom = a.GetRandomOrDefault();
+            var bRandom = b.GetRandomOrDefault();
 
-            CollectionAssert.Contains(a, ar);
-            Assert.AreEqual(0, br);
+            CollectionAssert.Contains(a, aRandom);
+            Assert.AreEqual(0, bRandom);
+        }
+
+        [TestMethod]
+        public void EmptyIfNullTest()
+        {
+            var a = new[] {1, 2, 3, 4, 5};
+            var b = new int[0];
+            int[] c = null;
+
+            var aEmptyIfNull = a.EmptyIfNull().ToArray();
+            var bEmptyIfNull = b.EmptyIfNull().ToArray();
+            // ReSharper disable once ExpressionIsAlwaysNull
+            var cEmptyIfNull = c.EmptyIfNull().ToArray();
+
+            CollectionAssert.AreEqual(new[] {1, 2, 3, 4, 5}, aEmptyIfNull);
+            CollectionAssert.AreEqual(new int[0], bEmptyIfNull);
+            CollectionAssert.AreEqual(new int[0], cEmptyIfNull);
+        }
+
+        [TestMethod]
+        public void DistinctTest()
+        {
+            var a = new[] { "qqq", "www", "www", "qqq", "dfg" };
+            var b = new[] { 1, 2, 3, 4 };
+
+            var aDistinct = a.Distinct().ToArray();
+            var bDistinct = b.Distinct().ToArray();
+
+            CollectionAssert.AreEqual(new[] {"qqq", "www", "dfg"}, aDistinct);
+            CollectionAssert.AreEqual(new[] {1, 2, 3, 4}, bDistinct);
+        }
+
+        [TestMethod]
+        public void SelectManyTest()
+        {
+            var a = new[] {new[] {"qqq", "www"}, new[] {"asd", "zzz"}};
+
+            var aSelectMany = a.SelectMany().ToArray();
+
+            CollectionAssert.AreEqual(new[] {"qqq", "www", "asd", "zzz"}, aSelectMany);
         }
 
         [TestMethod]
@@ -52,14 +94,11 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] { "asd", "qwe", "dfg" };
 
-            var wa = a.Except("qwe").ToArray();
-            var wea = a.Except("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
+            var aExcept = a.Except("qwe").ToArray();
+            var aExceptComparer = a.Except("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
 
-            Assert.AreEqual(2, wa.Length);
-            CollectionAssert.DoesNotContain(wa, "qwe");
-
-            Assert.AreEqual(2, wea.Length);
-            CollectionAssert.DoesNotContain(wea, "qwe");
+            CollectionAssert.AreEqual(new[] {"asd", "dfg"}, aExcept);
+            CollectionAssert.AreEqual(new[] {"asd", "dfg"}, aExceptComparer);
         }
 
         [TestMethod]
@@ -68,44 +107,39 @@ namespace Tyrrrz.Extensions.Tests
             var a = new[] { 0, 1, 2, 3, 4, 5 };
             var b = new[] {"asd", "qwe", null};
 
-            var wda = a.ExceptDefault().ToArray();
-            var wdb = b.ExceptDefault().ToArray();
+            var aExceptDefault = a.ExceptDefault().ToArray();
+            var bExceptDefault = b.ExceptDefault().ToArray();
 
-            Assert.AreEqual(5, wda.Length);
-            CollectionAssert.DoesNotContain(wda, 0);
-            Assert.AreEqual(2, wdb.Length);
-            CollectionAssert.DoesNotContain(wdb, null);
+            CollectionAssert.AreEqual(new[] {1, 2, 3, 4, 5}, aExceptDefault);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe"}, bExceptDefault);
         }
 
         [TestMethod]
         public void TakeLastTest()
         {
-            var a = new[] { "asd", "qwe", "dfg" };
+            var a = new[] { "asd", "qwe", "dfg", "zzz" };
 
-            var tla = a.TakeLast(2).ToArray();
-            var tlma = a.TakeLast(100).ToArray();
-            var tlla = a.TakeLast(0).ToArray();
+            var aTakeLast = a.TakeLast(2).ToArray();
+            var aTakeLastTooMany = a.TakeLast(100).ToArray();
+            var aTakeLastNone = a.TakeLast(0).ToArray();
 
-            Assert.AreEqual(2, tla.Length);
-            CollectionAssert.DoesNotContain(tla, "asd");
-            Assert.AreEqual(a.Length, tlma.Length);
-            Assert.AreEqual(0, tlla.Length);
+            CollectionAssert.AreEqual(new[] {"dfg", "zzz"}, aTakeLast);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "zzz"}, aTakeLastTooMany);
+            CollectionAssert.AreEqual(new string[0], aTakeLastNone);
         }
 
         [TestMethod]
         public void SkipLastTest()
         {
-            var a = new[] { "asd", "qwe", "dfg" };
+            var a = new[] {"asd", "qwe", "dfg", "zzz"};
 
-            var sla = a.SkipLast(2).ToArray();
-            var slma = a.SkipLast(100).ToArray();
-            var slla = a.SkipLast(0).ToArray();
+            var aSkipLast = a.SkipLast(2).ToArray();
+            var aSkipLastTooMany = a.SkipLast(100).ToArray();
+            var aSkipLastNone = a.SkipLast(0).ToArray();
 
-            Assert.AreEqual(1, sla.Length);
-            CollectionAssert.DoesNotContain(sla, "qwe");
-            CollectionAssert.DoesNotContain(sla, "dfg");
-            Assert.AreEqual(0, slma.Length);
-            Assert.AreEqual(a.Length, slla.Length);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe"}, aSkipLast);
+            CollectionAssert.AreEqual(new string[0], aSkipLastTooMany);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "zzz"}, aSkipLastNone);
         }
 
         [TestMethod]
@@ -122,26 +156,28 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe" };
 
-            var hs = a.ToHashSet();
-            var hse = a.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var aHashSet = a.ToHashSet().ToArray();
+            var aHashSetComparer = a.ToHashSet(StringComparer.OrdinalIgnoreCase).ToArray();
 
-            Assert.AreEqual(5, hs.Count);
-            Assert.AreEqual(3, hse.Count);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "ASD", "QWE"}, aHashSet);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg"}, aHashSetComparer);
         }
 
         [TestMethod]
         public void AddIfDistinctTest()
         {
-            var a = new List<string> { "asd", "qwe", "dfg", "DFG" };
+            var a = new List<string> {"asd", "qwe", "dfg", "DFG"};
 
-            bool aida = a.AddIfDistinct("xxx");
-            bool aidn = a.AddIfDistinct("asd");
-            bool aidne = a.AddIfDistinct("DFG", StringComparer.OrdinalIgnoreCase);
+            bool aAddIfDistinct = a.AddIfDistinct("xxx");
+            bool aAddIfDistinctExists = a.AddIfDistinct("asd");
+            bool aAddIfDistinctExistsComparer = a.AddIfDistinct("DFG", StringComparer.OrdinalIgnoreCase);
 
-            Assert.IsTrue(aida);
-            Assert.IsFalse(aidn);
-            Assert.IsFalse(aidne);
-            Assert.AreEqual(5, a.Count);
+            Assert.IsTrue(aAddIfDistinct);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
+            Assert.IsFalse(aAddIfDistinctExists);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
+            Assert.IsFalse(aAddIfDistinctExistsComparer);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
         }
 
         [TestMethod]
@@ -149,15 +185,15 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
 
-            int io = a.IndexOf("QWE");
-            int ion = a.IndexOf("qqq");
-            int ioe = a.IndexOf("QWE", StringComparer.OrdinalIgnoreCase);
-            int iop = a.IndexOf(s => s == "ASD");
+            int aIndexOf = a.IndexOf("QWE");
+            int aIndexOfNonExisting = a.IndexOf("qqq");
+            int aIndexOfComparer = a.IndexOf("QWE", StringComparer.OrdinalIgnoreCase);
+            int aIndexOfPredicate = a.IndexOf(s => s == "ASD");
 
-            Assert.AreEqual(4, io);
-            Assert.AreEqual(-1, ion);
-            Assert.AreEqual(1, ioe);
-            Assert.AreEqual(3, iop);
+            Assert.AreEqual(4, aIndexOf);
+            Assert.AreEqual(-1, aIndexOfNonExisting);
+            Assert.AreEqual(1, aIndexOfComparer);
+            Assert.AreEqual(3, aIndexOfPredicate);
         }
 
         [TestMethod]
@@ -165,15 +201,15 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
 
-            int lio = a.LastIndexOf("qwe");
-            int lion = a.LastIndexOf("qqq");
-            int lioe = a.LastIndexOf("qwe", StringComparer.OrdinalIgnoreCase);
-            int liop = a.LastIndexOf(s => s == "ASD");
+            int aLastIndexOf = a.LastIndexOf("qwe");
+            int aLastIndexOfNonExisting = a.LastIndexOf("qqq");
+            int aLastIndexOfComparer = a.LastIndexOf("qwe", StringComparer.OrdinalIgnoreCase);
+            int aLastIndexOfPredicate = a.LastIndexOf(s => s == "ASD");
 
-            Assert.AreEqual(1, lio);
-            Assert.AreEqual(-1, lion);
-            Assert.AreEqual(4, lioe);
-            Assert.AreEqual(3, liop);
+            Assert.AreEqual(1, aLastIndexOf);
+            Assert.AreEqual(-1, aLastIndexOfNonExisting);
+            Assert.AreEqual(4, aLastIndexOfComparer);
+            Assert.AreEqual(3, aLastIndexOfPredicate);
         }
 
         [TestMethod]
@@ -181,9 +217,9 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
 
-            int li = a.LastIndex();
+            int aLastIndex = a.LastIndex();
 
-            Assert.AreEqual(4, li);
+            Assert.AreEqual(4, aLastIndex);
         }
 
         [TestMethod]
@@ -196,34 +232,50 @@ namespace Tyrrrz.Extensions.Tests
                 {"zxc", "bnm"}
             };
 
-            string x = a.GetOrDefault(1);
-            string xn = a.GetOrDefault(15);
-            string xd = d.GetOrDefault("zxc");
-            string xdn = d.GetOrDefault("qoeo");
+            string aGetOrDefault = a.GetOrDefault(1);
+            string aGetOrDefaultOutOfBounds = a.GetOrDefault(15);
+            string dGetOrDefault = d.GetOrDefault("zxc");
+            string dGetOrDefaultNonExisting = d.GetOrDefault("qoeo");
 
-            Assert.AreEqual("qwe", x);
-            Assert.AreEqual(null, xn);
-            Assert.AreEqual("bnm", xd);
-            Assert.AreEqual(null, xdn);
+            Assert.AreEqual("qwe", aGetOrDefault);
+            Assert.AreEqual(null, aGetOrDefaultOutOfBounds);
+            Assert.AreEqual("bnm", dGetOrDefault);
+            Assert.AreEqual(null, dGetOrDefaultNonExisting);
         }
 
         [TestMethod]
         public void FillTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
+            var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE"};
+            var b = new[] {"asd", "qwe", "dfg", "ASD", "QWE"};
+            var c = new[] {"asd", "qwe", "dfg", "ASD", "QWE"};
 
             a.Fill("xxx");
-            Assert.AreEqual(5, a.Length);
-            Assert.IsTrue(a.All(s => s == "xxx"));
+            b.Fill("xxx", 2);
+            c.Fill("xxx", 1, 2);
+
+            CollectionAssert.AreEqual(new[] {"xxx", "xxx", "xxx", "xxx", "xxx"}, a);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "xxx", "xxx", "xxx"}, b);
+            CollectionAssert.AreEqual(new[] {"asd", "xxx", "xxx", "ASD", "QWE"}, c);
         }
 
         [TestMethod]
         public void EnsureMaxCountTest()
         {
-            var a = new List<string> { "asd", "qwe", "dfg", "DFG" };
+            var a = new List<string> {"asd", "qwe", "dfg", "DFG"};
+            var b = new List<string> {"asd", "qwe", "dfg", "DFG"};
+            var c = new List<string> {"asd", "qwe", "dfg", "DFG"};
+            var d = new List<string> {"asd", "qwe", "dfg", "DFG"};
 
             a.EnsureMaxCount(3);
-            Assert.AreEqual(3, a.Count);
+            b.EnsureMaxCount(3, EnsureMaxCountMode.DeleteLast);
+            c.EnsureMaxCount(3, EnsureMaxCountMode.DeleteRandom);
+            d.EnsureMaxCount(3, EnsureMaxCountMode.DeleteAll);
+
+            CollectionAssert.AreEqual(new[] {"qwe", "dfg", "DFG"}, a);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg"}, b);
+            Assert.AreEqual(3, c.Count);
+            CollectionAssert.AreEqual(new string[0], d);
         }
 
         [TestMethod]
@@ -235,14 +287,13 @@ namespace Tyrrrz.Extensions.Tests
                 {"zxc", "bnm"}
             };
 
-            bool s = d.SetOrAdd("zxc", "ooo");
-            bool a = d.SetOrAdd("123", "456");
+            bool dSetOrAddExisting = d.SetOrAdd("zxc", "ooo");
+            Assert.IsTrue(dSetOrAddExisting);
+            CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}}, d);
 
-            Assert.IsTrue(s);
-            Assert.IsFalse(a);
-            Assert.AreEqual(3, d.Count);
-            Assert.AreEqual("ooo", d["zxc"]);
-            Assert.AreEqual("456", d["123"]);
+            bool dSetOrAddNonExisting = d.SetOrAdd("123", "456");
+            Assert.IsFalse(dSetOrAddNonExisting);
+            CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}}, d);
         }
     }
 }
