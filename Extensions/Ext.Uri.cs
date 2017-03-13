@@ -56,11 +56,7 @@ namespace Tyrrrz.Extensions
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-#if Net45
             return WebUtility.UrlEncode(data);
-#else
-            return Uri.EscapeDataString(data);
-#endif
         }
 
         /// <summary>
@@ -72,11 +68,7 @@ namespace Tyrrrz.Extensions
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-#if Net45
             return WebUtility.UrlDecode(data);
-#else
-            return Uri.UnescapeDataString(data);
-#endif
         }
 
         /// <summary>
