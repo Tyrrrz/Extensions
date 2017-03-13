@@ -30,7 +30,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Checks whether the string only consists of numeric characters
+        /// Checks whether the string only consists of digits
         /// </summary>
         [Pure]
         public static bool IsNumeric([NotNull] this string str)
@@ -72,12 +72,9 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
         {
-            if (IsBlank(a) && IsBlank(b)) return true;
-            if (IsBlank(a) || IsBlank(b)) return false;
-
-            a = a.Trim();
-            b = b.Trim();
-            return a.Equals(b, StringComparison.InvariantCultureIgnoreCase);
+            a = a?.Trim();
+            b = b?.Trim();
+            return string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -103,7 +100,8 @@ namespace Tyrrrz.Extensions
         /// Determines whether the first string contains the second string, surrounded by spaces or linebreaks
         /// </summary>
         [Pure]
-        public static bool ContainsWord([NotNull] this string str, [NotNull] string word)
+        public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -113,7 +111,7 @@ namespace Tyrrrz.Extensions
             str = str.Trim();
             word = word.Trim();
 
-            if (str.Equals(word, DefaultStringComparison)) return true;
+            if (string.Equals(str, word, comparison)) return true;
             return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b");
         }
 
@@ -318,28 +316,30 @@ namespace Tyrrrz.Extensions
         /// Makes sure the given string ends with the given other substring
         /// </summary>
         [Pure, NotNull]
-        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end)
+        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (end == null)
                 throw new ArgumentNullException(nameof(end));
 
-            return str.EndsWith(end, DefaultStringComparison) ? str : str + end;
+            return str.EndsWith(end, comparison) ? str : str + end;
         }
 
         /// <summary>
         /// Makes sure the given string starts with the given other substring
         /// </summary>
         [Pure, NotNull]
-        public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start)
+        public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
 
-            return str.StartsWith(start, DefaultStringComparison) ? str : start + str;
+            return str.StartsWith(start, comparison) ? str : start + str;
         }
 
         /// <summary>
@@ -347,14 +347,15 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns full string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringUntil([NotNull] this string str, [NotNull] string sub)
+        public static string SubstringUntil([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.IndexOf(sub, DefaultStringComparison);
+            int index = str.IndexOf(sub, comparison);
             if (index < 0) return str;
             return str.Substring(0, index);
         }
@@ -364,14 +365,15 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns empty string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringAfter([NotNull] this string str, [NotNull] string sub)
+        public static string SubstringAfter([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.IndexOf(sub, DefaultStringComparison);
+            int index = str.IndexOf(sub, comparison);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
@@ -381,14 +383,15 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns full string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub)
+        public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparsion = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.LastIndexOf(sub, DefaultStringComparison);
+            int index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return str;
             return str.Substring(0, index);
         }
@@ -398,14 +401,15 @@ namespace Tyrrrz.Extensions
         /// If the other string is not found, returns empty string
         /// </summary>
         [Pure, NotNull]
-        public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub)
+        public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparsion = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            int index = str.LastIndexOf(sub, DefaultStringComparison);
+            int index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
@@ -426,35 +430,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Filters out blank strings from an enumerable
         /// </summary>
-        public static IEnumerable<string> WithoutBlank([NotNull] this IEnumerable<string> enumerable)
+        public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
         {
             return enumerable.Where(IsNotBlank);
-        }
-
-        /// <summary>
-        /// Trims strings in an enumerable
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable, [NotNull] params char[] trimChars)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (trimChars == null)
-                throw new ArgumentNullException(nameof(trimChars));
-
-            return enumerable.Select(str => str.Trim(trimChars));
-        }
-
-        /// <summary>
-        /// Trims strings in an enumerable
-        /// </summary>
-        [Pure, NotNull, ItemNotNull]
-        public static IEnumerable<string> TrimAll([NotNull] this IEnumerable<string> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.Select(str => str.Trim());
         }
 
         /// <summary>
@@ -489,15 +467,18 @@ namespace Tyrrrz.Extensions
         /// Joins members of an <see cref="IEnumerable{T}"/> into a string, separated by given string
         /// </summary>
         [Pure, NotNull]
-        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, string separator = ", ")
+        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] string separator = ", ")
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
+            if (separator == null)
+                throw new ArgumentNullException(nameof(separator));
 
             return string.Join(separator, enumerable);
         }
 
         #region Parse methods
+
         /// <summary>
         /// Parses the string into an object of generic type using a <see cref="ParseDelegate{T}"/> handler
         /// </summary>
@@ -516,7 +497,8 @@ namespace Tyrrrz.Extensions
         /// Parses the string into an object of generic type using a <see cref="TryParseDelegate{T}"/> handler
         /// </summary>
         [Pure]
-        public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler, T defaultValue = default(T))
+        public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler,
+            T defaultValue = default(T))
         {
             if (str == null)
                 return defaultValue;
@@ -666,30 +648,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static DateTime ParseDateTimeOrDefault(this string str, DateTime defaultValue = default(DateTime))
             => ParseOrDefault(str, DateTime.TryParse, defaultValue);
+
         #endregion
-
-        /// <summary>
-        /// Trims trailing zeroes in the version object and returns its string representation
-        /// </summary>
-        [Pure, NotNull]
-        public static string TrimToString([NotNull] this Version version)
-        {
-            if (version == null)
-                throw new ArgumentNullException(nameof(version));
-
-            if (version.Revision <= 0)
-            {
-                if (version.Build <= 0)
-                {
-                    if (version.Minor <= 0)
-                    {
-                        return $"{version.Major}";
-                    }
-                    return $"{version.Major}.{version.Minor}";
-                }
-                return $"{version.Major}.{version.Minor}.{version.Build}";
-            }
-            return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
-        }
     }
 }

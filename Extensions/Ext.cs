@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tyrrrz.Extensions
+﻿namespace Tyrrrz.Extensions
 {
     /// <summary>
     /// Extension methods for rapid development
@@ -16,10 +14,5 @@ namespace Tyrrrz.Extensions
         /// Generic string try-parse delegate
         /// </summary>
         public delegate bool TryParseDelegate<T>(string str, out T result);
-
-        /// <summary>
-        /// Default comparison for methods that compare strings
-        /// </summary>
-        public static StringComparison DefaultStringComparison { get; set; }
     }
 }
