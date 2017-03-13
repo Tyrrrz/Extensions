@@ -16,19 +16,10 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts an object to one of another type
-        /// </summary>
-        [Pure]
-        public static object ConvertTo(this object obj, Type newType)
-        {
-            return Convert.ChangeType(obj, newType);
-        }
-
-        /// <summary>
         /// Tries to convert an object to a different type, returns the new value if successful or default value if not
         /// </summary>
         [Pure]
-        public static T ConvertOrDefault<T>(this object obj, T defaultValue = default(T))
+        public static T ConvertToOrDefault<T>(this object obj, T defaultValue = default(T))
         {
             try
             {
@@ -162,32 +153,26 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random double
-        /// </summary>
-        [Pure]
-        public static double RandomDouble()
-        {
-            return RandomDouble(double.MinValue, double.MaxValue);
-        }
-
-        /// <summary>
-        /// Returns a random double, smaller than given
-        /// </summary>
-        [Pure]
-        public static double RandomDouble(double maxValue)
-        {
-            return RandomDouble(double.MinValue, maxValue);
-        }
-
-        /// <summary>
         /// Returns a random double in range
         /// </summary>
         /// <returns></returns>
         [Pure]
         public static double RandomDouble(double minValue, double maxValue)
         {
-            return SharedInstances.Random.NextDouble()*(maxValue - minValue) + minValue;
+            return SharedInstances.Random.NextDouble() * (maxValue - minValue) + minValue;
         }
+
+        /// <summary>
+        /// Returns a random double, smaller than given
+        /// </summary>
+        [Pure]
+        public static double RandomDouble(double maxValue) => RandomDouble(double.MinValue, maxValue);
+
+        /// <summary>
+        /// Returns a random double
+        /// </summary>
+        [Pure]
+        public static double RandomDouble() => RandomDouble(double.MinValue, double.MaxValue);
 
         /// <summary>
         /// Returns a random bool
@@ -205,9 +190,6 @@ namespace Tyrrrz.Extensions
         /// Returns a random bool
         /// </summary>
         [Pure]
-        public static bool RandomBool()
-        {
-            return RandomInt(0, 1) == 1;
-        }
+        public static bool RandomBool() => RandomInt(0, 1) == 1;
     }
 }

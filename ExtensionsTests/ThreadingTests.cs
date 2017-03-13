@@ -10,21 +10,22 @@ namespace Tyrrrz.Extensions.Tests
         public async Task ParallelForEachAsyncTest()
         {
             var a = new[] {1, 5, 9, -5, 11};
-            int t1 = 0;
-            int t2 = 0;
+
+            int aSum1 = 0;
+            int aSum2 = 0;
 
             await a.ParallelForEachAsync(i =>
             {
-                t1 += i;
+                aSum1 += i;
             });
             await a.ParallelForEachAsync(async i =>
             {
                 await Task.Yield();
-                t2 += i;
+                aSum2 += i;
             });
 
-            Assert.AreEqual(21, t1);
-            Assert.AreEqual(21, t2);
+            Assert.AreEqual(21, aSum1);
+            Assert.AreEqual(21, aSum2);
         }
     }
 }

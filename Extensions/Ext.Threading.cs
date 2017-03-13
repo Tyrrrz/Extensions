@@ -42,16 +42,16 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Executes an action on all elements of enumerable in parallel asynchronously
+        /// Executes a task on all elements of enumerable in parallel asynchronously
         /// </summary>
-        public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task> action)
+        public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task> task)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            if (task == null)
+                throw new ArgumentNullException(nameof(task));
 
-            var tasks = enumerable.Select(async i => await action(i));
+            var tasks = enumerable.Select(async i => await task(i));
             await Task.WhenAll(tasks);
         }
 

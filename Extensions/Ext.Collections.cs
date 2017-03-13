@@ -41,6 +41,7 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(enumerable));
 
             var list = enumerable as IList<T> ?? enumerable.ToArray();
+            if (!list.Any()) throw new ArgumentException("No items in enumerable", nameof(enumerable));
             if (list.Count <= 1) return list.First();
             return list[SharedInstances.Random.Next(0, list.Count)];
         }
@@ -73,20 +74,31 @@ namespace Tyrrrz.Extensions
         /// Returns distinct elements from an <see cref="IEnumerable{T}"/> by using a selector delegate to compare values
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable, [NotNull] Func<TSource, TKey> keySelector)
+        public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
+            [NotNull] Func<TSource, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
             if (keySelector == null)
                 throw new ArgumentNullException(nameof(keySelector));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
-            var existing = new HashSet<TKey>();
+            var keys = new HashSet<TKey>();
             foreach (var element in enumerable)
             {
-                if (existing.Add(keySelector(element)))
+                if (keys.Add(keySelector(element)))
                     yield return element;
             }
         }
+
+        /// <summary>
+        /// Returns distinct elements from an <see cref="IEnumerable{T}"/> by using a selector delegate to compare values
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
+                [NotNull] Func<TSource, TKey> keySelector)
+            => Distinct(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
         /// Projects each element of a sequence to an <see cref="IEnumerable{T}"/> and flattens the resulting sequences into one sequence.
@@ -104,18 +116,6 @@ namespace Tyrrrz.Extensions
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.Where(i => !Equals(i, value));
-        }
-
-        /// <summary>
-        /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
-        /// </summary>
-        [Pure, NotNull]
         public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
@@ -127,16 +127,18 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items NOT equal to <paramref name="value"/>
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value)
+            => Except(enumerable, value, EqualityComparer<T>.Default);
+
+        /// <summary>
         /// Filters the given <see cref="IEnumerable{T}"/> returning a new one, consisting only of items that don't have default value
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return Except(enumerable, default(T));
-        }
+            => Except(enumerable, default(T));
 
         /// <summary>
         /// Trims the <see cref="IEnumerable{T}"/> returning a new one, consisting only of the last <paramref name="count"/> items
@@ -188,18 +190,6 @@ namespace Tyrrrz.Extensions
         /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>
         /// </summary>
         [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return new HashSet<T>(enumerable);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>
-        /// </summary>
-        [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
@@ -211,18 +201,11 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>
         /// </summary>
-        /// <returns>True if it was added, false if it was already there</returns>
-        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj)
-        {
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-
-            bool isDistinct = !collection.Contains(obj);
-            if (isDistinct) collection.Add(obj);
-            return isDistinct;
-        }
+        [Pure, NotNull]
+        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
+            => ToHashSet(enumerable, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
@@ -241,22 +224,11 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for an item in an <see cref="IList{T}"/> returning its index
-        /// <returns>Item index if found, -1 if not found</returns>
+        /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
         /// </summary>
-        [Pure]
-        public static int IndexOf<T>([NotNull] this IList<T> list, T element)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (Equals(list[i], element))
-                    return i;
-            }
-            return -1;
-        }
+        /// <returns>True if it was added, false if it was already there</returns>
+        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj)
+            => AddIfDistinct(collection, obj, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Searches for an item in an <see cref="IList{T}"/> returning its index
@@ -283,6 +255,14 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, -1 if not found</returns>
         /// </summary>
         [Pure]
+        public static int IndexOf<T>([NotNull] this IList<T> list, T element)
+            => IndexOf(list, element, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Searches for an item in an <see cref="IList{T}"/> returning its index
+        /// <returns>Item index if found, -1 if not found</returns>
+        /// </summary>
+        [Pure]
         public static int IndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
         {
             if (list == null)
@@ -293,24 +273,6 @@ namespace Tyrrrz.Extensions
             for (int i = 0; i < list.Count; i++)
             {
                 if (predicate(list[i]))
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
-        /// <returns>Item index if found, -1 if not found</returns>
-        /// </summary>
-        [Pure]
-        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            for (int i = list.Count - 1; i >= 0; i--)
-            {
-                if (Equals(list[i], element))
                     return i;
             }
             return -1;
@@ -333,6 +295,14 @@ namespace Tyrrrz.Extensions
             }
             return -1;
         }
+
+        /// <summary>
+        /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
+        /// <returns>Item index if found, -1 if not found</returns>
+        /// </summary>
+        [Pure]
+        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element)
+            => LastIndexOf(list, element, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Searches for an item in an <see cref="IList{T}"/> returning index of its last occurence
@@ -386,8 +356,7 @@ namespace Tyrrrz.Extensions
         /// Returns the value of an <see cref="IList{T}"/> by given <paramref name="index"/> or default if out of bounds
         /// </summary>
         [Pure]
-        public static T GetOrDefault<T>([NotNull] this IList<T> list, int index,
-            T defaultValue = default(T))
+        public static T GetOrDefault<T>([NotNull] this IList<T> list, int index, T defaultValue = default(T))
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
@@ -412,12 +381,22 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Sets all values in an <see cref="IList{T}"/> to given <paramref name="value"/>
         /// </summary>
-        public static void Fill<T>([NotNull] this IList<T> list, T value)
+        public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int count)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "Cannot be negative");
+            if (startIndex >= list.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "Out of bounds");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            if (startIndex + count > list.Count)
+                throw new ArgumentOutOfRangeException(nameof(count), "Out of bounds");
+            if (count == 0)
+                return;
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = startIndex; i < startIndex + count; i++)
                 list[i] = value;
         }
 
@@ -425,33 +404,13 @@ namespace Tyrrrz.Extensions
         /// Sets all values in an <see cref="IList{T}"/> to given <paramref name="value"/>
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), "Cannot be negative");
-
-            for (int i = startIndex; i < list.Count; i++)
-                list[i] = value;
-        }
+            => Fill(list, value, startIndex, list.Count - startIndex);
 
         /// <summary>
         /// Sets all values in an <see cref="IList{T}"/> to given <paramref name="value"/>
         /// </summary>
-        public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int count)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), "Cannot be negative");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
-            if (count == 0)
-                return;
-
-            for (int i = startIndex; i < startIndex + count; i++)
-                list[i] = value;
-        }
+        public static void Fill<T>([NotNull] this IList<T> list, T value)
+            => Fill(list, value, 0, list.Count);
 
         /// <summary>
         /// Makes sure that the <see cref="IList{T}"/> has no more items than specified by removing other items

@@ -8,24 +8,20 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void SetQueryParameterTest()
         {
-            string q = "http://www.asd.com/?a=123&b=&c=ve";
-            string qnv = "http://www.asd.com/?a=123&b&c=ve";
-            string qe = "http://www.asd.com/";
-            string qer = "http://www.asd.com/path/";
+            string a = "http://www.asd.com/?a=123&b=&c=ve&d";
+            string b = "http://www.asd.com/";
 
-            string nqr = q.SetQueryParameter("a", "345");
-            string nqa = q.SetQueryParameter("d", "xxx");
-            string nqre = q.SetQueryParameter("b", "ppp");
-            string qnvre = qnv.SetQueryParameter("b", "ggg");
-            string qenqa = qe.SetQueryParameter("qwe", "aaa");
-            string qera = qer.SetQueryParameter("a", "qop");
+            string aExisting = a.SetQueryParameter("a", "345");
+            string aNew = a.SetQueryParameter("e", "xxx");
+            string aExistingEmpty = a.SetQueryParameter("b", "ppp");
+            string aExistingStub = a.SetQueryParameter("d", "ggg");
+            string bNew = b.SetQueryParameter("qwe", "aaa");
 
-            Assert.AreEqual("http://www.asd.com/?a=345&b=&c=ve", nqr);
-            Assert.AreEqual("http://www.asd.com/?a=123&b=&c=ve&d=xxx", nqa);
-            Assert.AreEqual("http://www.asd.com/?a=123&b=ppp&c=ve", nqre);
-            Assert.AreEqual("http://www.asd.com/?a=123&b=ggg&c=ve", qnvre);
-            Assert.AreEqual("http://www.asd.com/?qwe=aaa", qenqa);
-            Assert.AreEqual("http://www.asd.com/path/?a=qop", qera);
+            Assert.AreEqual("http://www.asd.com/?a=345&b=&c=ve&d", aExisting);
+            Assert.AreEqual("http://www.asd.com/?a=123&b=&c=ve&d&e=xxx", aNew);
+            Assert.AreEqual("http://www.asd.com/?a=123&b=ppp&c=ve&d", aExistingEmpty);
+            Assert.AreEqual("http://www.asd.com/?a=123&b=&c=ve&d=ggg", aExistingStub);
+            Assert.AreEqual("http://www.asd.com/?qwe=aaa", bNew);
         }
     }
 }
