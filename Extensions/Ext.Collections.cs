@@ -74,8 +74,8 @@ namespace Tyrrrz.Extensions
         /// Returns distinct elements from an <see cref="IEnumerable{T}"/> by using a selector delegate to compare values
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
-            [NotNull] Func<TSource, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
+        public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> enumerable,
+            [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -84,12 +84,9 @@ namespace Tyrrrz.Extensions
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
 
-            var keys = new HashSet<TKey>();
-            foreach (var element in enumerable)
-            {
-                if (keys.Add(keySelector(element)))
-                    yield return element;
-            }
+            Func<T, T, bool> del = (x, y) => comparer.Equals(keySelector(x), keySelector(y));
+            Func<T, int> hasher = obj => keySelector(obj).GetHashCode();
+            return enumerable.Distinct(new DelegateEqualityComparer<T>(del, hasher));
         }
 
         /// <summary>
@@ -206,6 +203,33 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
             => ToHashSet(enumerable, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/> using selector to compare values
+        /// </summary>
+        [Pure, NotNull]
+        public static HashSet<T> ToHashSet<T, TKey>([NotNull] this IEnumerable<T> enumerable,
+            [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
+
+            Func<T, T, bool> del = (x, y) => comparer.Equals(keySelector(x), keySelector(y));
+            Func<T, int> hasher = obj => keySelector(obj).GetHashCode();
+            return new HashSet<T>(enumerable, new DelegateEqualityComparer<T>(del, hasher));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/> using selector to compare values
+        /// </summary>
+        [Pure, NotNull]
+        public static HashSet<T> ToHashSet<T, TKey>([NotNull] this IEnumerable<T> enumerable,
+                [NotNull] Func<T, TKey> keySelector)
+            => ToHashSet(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
         /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet

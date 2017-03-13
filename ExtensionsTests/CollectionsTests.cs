@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tyrrrz.Extensions.Types;
@@ -69,14 +68,11 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void DistinctTest()
         {
-            var a = new[] { "qqq", "www", "www", "qqq", "dfg" };
-            var b = new[] { 1, 2, 3, 4 };
+            var a = new[] { "qqq", "ww", "zz", "qqq", "11111" };
 
-            var aDistinct = a.Distinct().ToArray();
-            var bDistinct = b.Distinct().ToArray();
+            var aDistinct = a.Distinct(i => i.Length).ToArray();
 
-            CollectionAssert.AreEqual(new[] {"qqq", "www", "dfg"}, aDistinct);
-            CollectionAssert.AreEqual(new[] {1, 2, 3, 4}, bDistinct);
+            CollectionAssert.AreEqual(new[] {"qqq", "ww", "11111"}, aDistinct);
         }
 
         [TestMethod]
@@ -95,10 +91,10 @@ namespace Tyrrrz.Extensions.Tests
             var a = new[] { "asd", "qwe", "dfg" };
 
             var aExcept = a.Except("qwe").ToArray();
-            var aExceptComparer = a.Except("qWE", StringComparer.OrdinalIgnoreCase).ToArray();
+            var aExceptNonExisting = a.Except("zzz").ToArray();
 
             CollectionAssert.AreEqual(new[] {"asd", "dfg"}, aExcept);
-            CollectionAssert.AreEqual(new[] {"asd", "dfg"}, aExceptComparer);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg"}, aExceptNonExisting);
         }
 
         [TestMethod]
@@ -154,13 +150,13 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void ToHashSetTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe" };
+            var a = new[] { "asd", "q", "we", "ASD", "WE", "we" };
 
             var aHashSet = a.ToHashSet().ToArray();
-            var aHashSetComparer = a.ToHashSet(StringComparer.OrdinalIgnoreCase).ToArray();
+            var aHashSetSelector = a.ToHashSet(i => i.Length).ToArray();
 
-            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "ASD", "QWE"}, aHashSet);
-            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg"}, aHashSetComparer);
+            CollectionAssert.AreEqual(new[] {"asd", "q", "we", "ASD", "WE"}, aHashSet);
+            CollectionAssert.AreEqual(new[] {"asd", "q", "we"}, aHashSetSelector);
         }
 
         [TestMethod]
@@ -170,13 +166,10 @@ namespace Tyrrrz.Extensions.Tests
 
             bool aAddIfDistinct = a.AddIfDistinct("xxx");
             bool aAddIfDistinctExists = a.AddIfDistinct("asd");
-            bool aAddIfDistinctExistsComparer = a.AddIfDistinct("DFG", StringComparer.OrdinalIgnoreCase);
 
             Assert.IsTrue(aAddIfDistinct);
             CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
             Assert.IsFalse(aAddIfDistinctExists);
-            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
-            Assert.IsFalse(aAddIfDistinctExistsComparer);
             CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
         }
 
@@ -187,12 +180,10 @@ namespace Tyrrrz.Extensions.Tests
 
             int aIndexOf = a.IndexOf("QWE");
             int aIndexOfNonExisting = a.IndexOf("qqq");
-            int aIndexOfComparer = a.IndexOf("QWE", StringComparer.OrdinalIgnoreCase);
             int aIndexOfPredicate = a.IndexOf(s => s == "ASD");
 
             Assert.AreEqual(4, aIndexOf);
             Assert.AreEqual(-1, aIndexOfNonExisting);
-            Assert.AreEqual(1, aIndexOfComparer);
             Assert.AreEqual(3, aIndexOfPredicate);
         }
 
@@ -203,12 +194,10 @@ namespace Tyrrrz.Extensions.Tests
 
             int aLastIndexOf = a.LastIndexOf("qwe");
             int aLastIndexOfNonExisting = a.LastIndexOf("qqq");
-            int aLastIndexOfComparer = a.LastIndexOf("qwe", StringComparer.OrdinalIgnoreCase);
             int aLastIndexOfPredicate = a.LastIndexOf(s => s == "ASD");
 
             Assert.AreEqual(1, aLastIndexOf);
             Assert.AreEqual(-1, aLastIndexOfNonExisting);
-            Assert.AreEqual(4, aLastIndexOfComparer);
             Assert.AreEqual(3, aLastIndexOfPredicate);
         }
 
