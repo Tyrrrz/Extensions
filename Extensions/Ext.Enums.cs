@@ -49,16 +49,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the path of the given special folder
-        /// </summary>
-        [Pure]
-        public static string GetPath(this Environment.SpecialFolder specialFolder,
-            Environment.SpecialFolderOption option = Environment.SpecialFolderOption.None)
-        {
-            return Environment.GetFolderPath(specialFolder, option);
-        }
-
-        /// <summary>
         /// Returns a random bool
         /// </summary>
         [Pure]

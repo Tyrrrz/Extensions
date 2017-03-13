@@ -38,7 +38,7 @@ namespace Tyrrrz.Extensions
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
-            return str.All(char.IsDigit);
+            return str.ToCharArray().All(char.IsDigit);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Tyrrrz.Extensions
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
-            return str.All(char.IsLetter);
+            return str.ToCharArray().All(char.IsLetter);
         }
 
         /// <summary>
@@ -62,24 +62,24 @@ namespace Tyrrrz.Extensions
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
-            return str.All(char.IsLetterOrDigit);
+            return str.ToCharArray().All(char.IsLetterOrDigit);
         }
 
         /// <summary>
         /// Determines whether first string equals second.
-        /// Casing and culture are ignored, useless spaces are trimmed.
+        /// Useless whitespace and casing are ignored.
         /// </summary>
         [Pure]
         public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
         {
             a = a?.Trim();
             b = b?.Trim();
-            return string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// Determines whether first string contains second.
-        /// Casing and culture are ignored, useless spaces are trimmed.
+        /// Useless whitespace and casing are ignored.
         /// </summary>
         [Pure]
         public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
@@ -93,7 +93,7 @@ namespace Tyrrrz.Extensions
 
             str = str.Trim();
             sub = sub.Trim();
-            return str.IndexOf(sub, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            return str.IndexOf(sub, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace Tyrrrz.Extensions
 
         /// <summary>
         /// Determines whether the string enumerable contains second string.
-        /// Casing and culture are ignored, useless spaces are trimmed.
+        /// Useless whitespace and casing are ignored.
         /// </summary>
         [Pure]
         public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)

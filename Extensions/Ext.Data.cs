@@ -12,7 +12,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static string GetString(this byte[] data, Encoding encoding)
         {
-            return encoding.GetString(data);
+            return encoding.GetString(data, 0, data.Length);
         }
 
         /// <summary>

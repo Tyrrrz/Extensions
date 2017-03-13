@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-#if Net45
 using System.Threading.Tasks;
-#endif
 
 namespace Tyrrrz.Extensions
 {
     public static partial class Ext
     {
-#if Net45
         /// <summary>
         /// Continues execution without waiting for the task to complete
         /// </summary>
@@ -68,6 +65,5 @@ namespace Tyrrrz.Extensions
             var tasks = enumerable.Select(async i => await Task.Run(() => action(i)));
             await Task.WhenAll(tasks);
         }
-#endif
     }
 }
