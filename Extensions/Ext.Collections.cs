@@ -203,30 +203,30 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
         /// </summary>
-        /// <returns>True if it wasn't there, false if it was</returns>
-        public static bool AddIfDistinct<T>([NotNull] this IList<T> list, T obj)
+        /// <returns>True if it was added, false if it was already there</returns>
+        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
-            bool isDistinct = !list.Contains(obj);
-            if (isDistinct) list.Add(obj);
+            bool isDistinct = !collection.Contains(obj);
+            if (isDistinct) collection.Add(obj);
             return isDistinct;
         }
 
         /// <summary>
         /// Adds a new item to an <see cref="IList{T}"/> if it's not there yet
         /// </summary>
-        /// <returns>True if it wasn't there, false if it was</returns>
-        public static bool AddIfDistinct<T>([NotNull] this IList<T> list, T obj, [NotNull] IEqualityComparer<T> comparer)
+        /// <returns>True if it was added, false if it was already there</returns>
+        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj, [NotNull] IEqualityComparer<T> comparer)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
 
-            bool isDistinct = !list.Contains(obj, comparer);
-            if (isDistinct) list.Add(obj);
+            bool isDistinct = !collection.Contains(obj, comparer);
+            if (isDistinct) collection.Add(obj);
             return isDistinct;
         }
 
