@@ -153,6 +153,54 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Removes all leading occurrences of a substring in the given string
+        /// </summary>
+        [Pure, NotNull]
+        public static string TrimStart([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            while (str.StartsWith(sub, comparison))
+                str = str.Substring(sub.Length);
+
+            return str;
+        }
+
+        /// <summary>
+        /// Removes all trailing occurrences of a substring in the given string
+        /// </summary>
+        [Pure, NotNull]
+        public static string TrimEnd([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            while (str.EndsWith(sub, comparison))
+                str = str.Substring(0, str.Length - sub.Length);
+
+            return str;
+        }
+
+        /// <summary>
+        /// Removes all leading and trailing occurrences of a substring in the given string
+        /// </summary>
+        [Pure, NotNull]
+        public static string Trim([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (sub == null)
+                throw new ArgumentNullException(nameof(sub));
+
+            return str.TrimStart(sub).TrimEnd(sub);
+        }
+
+        /// <summary>
         /// Reverses order of characters in a string
         /// </summary>
         [Pure, NotNull]
@@ -335,21 +383,6 @@ namespace Tyrrrz.Extensions
             => Except(str, (IEnumerable<char>) characters);
 
         /// <summary>
-        /// Appends a string with the given string if it doesn't end with it already
-        /// </summary>
-        [Pure, NotNull]
-        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
-            StringComparison comparison = StringComparison.CurrentCulture)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (end == null)
-                throw new ArgumentNullException(nameof(end));
-
-            return str.EndsWith(end, comparison) ? str : str + end;
-        }
-
-        /// <summary>
         /// Prepends a string with the given string if it doesn't start with it already
         /// </summary>
         [Pure, NotNull]
@@ -362,6 +395,21 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(start));
 
             return str.StartsWith(start, comparison) ? str : start + str;
+        }
+
+        /// <summary>
+        /// Appends a string with the given string if it doesn't end with it already
+        /// </summary>
+        [Pure, NotNull]
+        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
+            StringComparison comparison = StringComparison.CurrentCulture)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (end == null)
+                throw new ArgumentNullException(nameof(end));
+
+            return str.EndsWith(end, comparison) ? str : str + end;
         }
 
         /// <summary>
@@ -451,6 +499,9 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
         {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
             return enumerable.Where(IsNotBlank);
         }
 
@@ -501,12 +552,8 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, char separator)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
+            => JoinToString(enumerable, separator.ToString());
 
-            return string.Join(separator.ToString(), enumerable);
-        }
         #region Parse methods
 
         /// <summary>

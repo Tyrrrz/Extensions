@@ -116,6 +116,54 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
+        public void TrimStartTest()
+        {
+            string a = "...Hello...";
+            string b = ".......!Hello!.......";
+            string c = "Hello.";
+
+            string aTrimStart = a.TrimStart("...");
+            string bTrimStart = b.TrimStart("...");
+            string cTrimStart = c.TrimStart("...");
+
+            Assert.AreEqual("Hello...", aTrimStart);
+            Assert.AreEqual(".!Hello!.......", bTrimStart);
+            Assert.AreEqual("Hello.", cTrimStart);
+        }
+
+        [TestMethod]
+        public void TrimEndTest()
+        {
+            string a = "...Hello...";
+            string b = ".......!Hello!.......";
+            string c = "Hello.";
+
+            string aTrimEnd = a.TrimEnd("...");
+            string bTrimEnd = b.TrimEnd("...");
+            string cTrimEnd = c.TrimEnd("...");
+
+            Assert.AreEqual("...Hello", aTrimEnd);
+            Assert.AreEqual(".......!Hello!.", bTrimEnd);
+            Assert.AreEqual("Hello.", cTrimEnd);
+        }
+
+        [TestMethod]
+        public void TrimTest()
+        {
+            string a = "...Hello...";
+            string b = ".......!Hello!.......";
+            string c = "Hello.";
+
+            string aTrim = a.Trim("...");
+            string bTrim = b.Trim("...");
+            string cTrim = c.Trim("...");
+
+            Assert.AreEqual("Hello", aTrim);
+            Assert.AreEqual(".!Hello!.", bTrim);
+            Assert.AreEqual("Hello.", cTrim);
+        }
+
+        [TestMethod]
         public void ReverseTest()
         {
             string s = "Hello World";
@@ -210,18 +258,6 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void EnsureEndsWithTest()
-        {
-            string s = "asd";
-
-            string sEnsureEndsWith = s.EnsureEndsWith("qqq");
-            string sEnsureEndsWithObsolete = s.EnsureEndsWith("sd");
-
-            Assert.AreEqual("asdqqq", sEnsureEndsWith);
-            Assert.AreEqual("asd", sEnsureEndsWithObsolete);
-        }
-
-        [TestMethod]
         public void EnsureStartsWithTest()
         {
             string s = "asd";
@@ -231,6 +267,18 @@ namespace Tyrrrz.Extensions.Tests
 
             Assert.AreEqual("qqqasd", sEnsureStartsWith);
             Assert.AreEqual("asd", sEnsureStartsWithObsolete);
+        }
+
+        [TestMethod]
+        public void EnsureEndsWithTest()
+        {
+            string s = "asd";
+
+            string sEnsureEndsWith = s.EnsureEndsWith("qqq");
+            string sEnsureEndsWithObsolete = s.EnsureEndsWith("sd");
+
+            Assert.AreEqual("asdqqq", sEnsureEndsWith);
+            Assert.AreEqual("asd", sEnsureEndsWithObsolete);
         }
 
         [TestMethod]

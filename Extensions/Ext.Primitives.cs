@@ -32,7 +32,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the object is equal to either of elements of a sequence
+        /// Determines whether the object is equal to either of elements in a sequence
         /// </summary>
         [Pure]
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
@@ -51,7 +51,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the object is equal to either of elements of a sequence
+        /// Determines whether the object is equal to either of elements in a sequence
         /// </summary>
         [Pure]
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable)
