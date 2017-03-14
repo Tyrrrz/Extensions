@@ -145,6 +145,7 @@ namespace Tyrrrz.Extensions.Tests
             int i = 0;
 
             a.ForEach(s => Assert.AreEqual(s, a[i++]));
+            Assert.AreEqual(3, i);
         }
 
         [TestMethod]

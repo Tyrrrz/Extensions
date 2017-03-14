@@ -168,11 +168,9 @@ namespace Tyrrrz.Extensions.Tests
         {
             string s = "Hello World";
 
-            string sReverse = s.Reverse();
+            string reverse = s.Reverse();
 
-            Assert.AreEqual(s.Length, sReverse.Length);
-            for (int i = 0; i < s.Length; i++)
-                Assert.AreEqual(s[i], sReverse[sReverse.Length - 1 - i]);
+            Assert.AreEqual("dlroW olleH", reverse);
         }
 
         [TestMethod]
