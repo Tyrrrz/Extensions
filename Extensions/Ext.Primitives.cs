@@ -101,33 +101,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the smallest integral value that is greater or equal to the given floating point value
-        /// </summary>
-        [Pure]
-        public static int CeilingToInt(this double value)
-        {
-            return (int) Math.Ceiling(value);
-        }
-
-        /// <summary>
-        /// Returns the largest integral value that is lesser or equal to the given floating point value
-        /// </summary>
-        [Pure]
-        public static int FloorToInt(this double value)
-        {
-            return (int) Math.Floor(value);
-        }
-
-        /// <summary>
-        /// Returns the fractional part of a floating point value
-        /// </summary>
-        [Pure]
-        public static double Fraction(this double value)
-        {
-            return value - FloorToInt(value);
-        }
-
-        /// <summary>
         /// Returns a random integer in range (inclusive)
         /// </summary>
         [Pure]
