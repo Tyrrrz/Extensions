@@ -39,7 +39,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Executes a task on all elements of enumerable in parallel asynchronously
+        /// Executes a task asynchronously on all elements of a sequence in parallel
         /// </summary>
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task> task)
         {
@@ -53,7 +53,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Executes an action on all elements of enumerable in parallel asynchronously
+        /// Executes an action asynchronously on all elements of a sequence in parallel
         /// </summary>
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)
         {

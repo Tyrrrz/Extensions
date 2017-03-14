@@ -7,7 +7,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Converts an object to one of another type
+        /// Converts an object to another type and returns the converted instance
         /// </summary>
         [Pure]
         public static T ConvertTo<T>(this object obj)
@@ -16,7 +16,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Tries to convert an object to a different type, returns the new value if successful or default value if not
+        /// Tries to convert an object to another type, returns the converted instance if successful or default value if not
         /// </summary>
         [Pure]
         public static T ConvertToOrDefault<T>(this object obj, T defaultValue = default(T))
@@ -32,38 +32,40 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns true if the object is equal to one of the items in an <see cref="IEnumerable{T}"/>
+        /// Determines whether the object is equal to either of elements of a sequence
         /// </summary>
         [Pure]
-        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable)
+        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             foreach (var other in enumerable)
             {
-                if (Equals(obj, other))
-                    return true;
-            }
-            return false;
-        }
-        
-        /// <summary>
-        /// Returns true if the object is equal to one of the parameters
-        /// </summary>
-        [Pure]
-        public static bool IsEither<T>(this T obj, params T[] objs)
-        {
-            foreach (var other in objs)
-            {
-                if (Equals(obj, other))
+                if (comparer.Equals(obj, other))
                     return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Checks if the value is in given range
+        /// Determines whether the object is equal to either of elements of a sequence
+        /// </summary>
+        [Pure]
+        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable)
+            => IsEither(obj, enumerable, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Determines whether the object is equal to either of the parameters
+        /// </summary>
+        [Pure]
+        public static bool IsEither<T>(this T obj, params T[] objs)
+            => IsEither(obj, (IEnumerable<T>) objs);
+
+        /// <summary>
+        /// Determines whether the value is inside given range (inclusive)
         /// </summary>
         [Pure]
         public static bool IsInRange(this IComparable value, IComparable min, IComparable max)
@@ -72,7 +74,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Makes sure the value is in given range
+        /// Returns closest value in the given range (inclusive)
         /// </summary>
         [Pure]
         public static T Clamp<T>(this T value, T min, T max) where T : IComparable
@@ -81,7 +83,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Makes sure the value is not lower than given minimum
+        /// Returns closest value above the boundary
         /// </summary>
         [Pure]
         public static T ClampMin<T>(this T value, T min) where T : IComparable
@@ -90,7 +92,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Makes sure the value is not higher than given maximum
+        /// Returns closest value below the boundary
         /// </summary>
         [Pure]
         public static T ClampMax<T>(this T value, T max) where T : IComparable
@@ -99,7 +101,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Ceils the double and returns an int
+        /// Returns the smallest integral value that is greater or equal to the given floating point value
         /// </summary>
         [Pure]
         public static int CeilingToInt(this double value)
@@ -108,7 +110,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Floors the double and return an int
+        /// Returns the largest integral value that is lesser or equal to the given floating point value
         /// </summary>
         [Pure]
         public static int FloorToInt(this double value)
@@ -117,30 +119,12 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the fractional point of a double
+        /// Returns the fractional part of a floating point value
         /// </summary>
         [Pure]
         public static double Fraction(this double value)
         {
             return value - FloorToInt(value);
-        }
-
-        /// <summary>
-        /// Returns a random integer
-        /// </summary>
-        [Pure]
-        public static int RandomInt()
-        {
-            return SharedInstances.Random.Next();
-        }
-
-        /// <summary>
-        /// Returns a random integer, smaller or equal to given
-        /// </summary>
-        [Pure]
-        public static int RandomInt(int maxValue)
-        {
-            return SharedInstances.Random.Next(maxValue + 1);
         }
 
         /// <summary>
@@ -150,6 +134,24 @@ namespace Tyrrrz.Extensions
         public static int RandomInt(int minValue, int maxValue)
         {
             return SharedInstances.Random.Next(minValue, maxValue + 1);
+        }
+
+        /// <summary>
+        /// Returns a random integer smaller or equal to given value
+        /// </summary>
+        [Pure]
+        public static int RandomInt(int maxValue)
+        {
+            return SharedInstances.Random.Next(maxValue + 1);
+        }
+
+        /// <summary>
+        /// Returns a random integer
+        /// </summary>
+        [Pure]
+        public static int RandomInt()
+        {
+            return SharedInstances.Random.Next();
         }
 
         /// <summary>
@@ -163,7 +165,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random double, smaller than given
+        /// Returns a random double smaller than given
         /// </summary>
         [Pure]
         public static double RandomDouble(double maxValue) => RandomDouble(double.MinValue, maxValue);
@@ -177,7 +179,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a random bool
         /// </summary>
-        /// <param name="probability">Probability of returning "true" (0 to 1)</param>
+        /// <param name="probability">Normalized probability of returning true (0 to 1)</param>
         [Pure]
         public static bool RandomBool(double probability)
         {

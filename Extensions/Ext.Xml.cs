@@ -8,7 +8,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Strips namespaces from this element, its attributes and repeats the same for all its children
+        /// Strips namespaces from elements and their attributes recursively, starting from the given element
         /// </summary>
         [Pure, NotNull]
         public static XElement StripNamespaces([NotNull] this XElement element)

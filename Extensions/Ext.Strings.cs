@@ -10,7 +10,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Returns true if the string is empty, null or whitespace
+        /// Determines whether the string is either null, empty or whitespace
         /// </summary>
         [Pure]
         [ContractAnnotation("str:null => true")]
@@ -20,7 +20,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns true if the string is neither empty, null nor whitespace
+        /// Determines whether the string is neither null, empty or whitespace
         /// </summary>
         [Pure]
         [ContractAnnotation("str:null => false")]
@@ -30,7 +30,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Checks whether the string only consists of digits
+        /// Determines whether the string only consists of digits
         /// </summary>
         [Pure]
         public static bool IsNumeric([NotNull] this string str)
@@ -42,7 +42,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Checks whether the string only consists of letters
+        /// Determines whether the string only consists of letters
         /// </summary>
         [Pure]
         public static bool IsAlphabetic([NotNull] this string str)
@@ -54,7 +54,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Checks whether the string only consists of letters and digits
+        /// Determines whether the string only consists of letters and/or digits
         /// </summary>
         [Pure]
         public static bool IsAlphanumeric([NotNull] this string str)
@@ -66,8 +66,8 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether first string equals second.
-        /// Useless whitespace and casing are ignored.
+        /// Determines whether the strings are equal.
+        /// Ignores casing and leading/trailing whitespace.
         /// </summary>
         [Pure]
         public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
@@ -78,8 +78,8 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether first string contains second.
-        /// Useless whitespace and casing are ignored.
+        /// Determines whether one string contains another.
+        /// Ignores casing and leading/trailing whitespace.
         /// </summary>
         [Pure]
         public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
@@ -89,15 +89,13 @@ namespace Tyrrrz.Extensions
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            if (IsBlank(str)) return IsBlank(sub);
-
             str = str.Trim();
             sub = sub.Trim();
             return str.IndexOf(sub, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>
-        /// Determines whether the first string contains the second string, surrounded by spaces or linebreaks
+        /// Determines whether one string contains another string, surrounded by word boundaries
         /// </summary>
         [Pure]
         public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
@@ -108,15 +106,12 @@ namespace Tyrrrz.Extensions
             if (word == null)
                 throw new ArgumentNullException(nameof(word));
 
-            str = str.Trim();
-            word = word.Trim();
-
             if (string.Equals(str, word, comparison)) return true;
             return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b");
         }
 
         /// <summary>
-        /// Returns null if the string is blank, otherwise returns original string
+        /// Returns null if the given string is either null, empty or whitespace, otherwise returns the same string
         /// </summary>
         [Pure, CanBeNull]
         [ContractAnnotation("str:null => null")]
@@ -126,7 +121,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an empty string if given is null
+        /// Returns an empty string if the given string is null, otherwise returns the same string
         /// </summary>
         [Pure, NotNull]
         [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
@@ -136,7 +131,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an empty string if given is blank
+        /// Returns an empty string if the given string is either null, empty or whitespace, otherwise returns the same string
         /// </summary>
         [Pure, NotNull]
         [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
@@ -158,7 +153,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Reverses the characters in a string
+        /// Reverses order of characters in a string
         /// </summary>
         [Pure, NotNull]
         public static string Reverse([NotNull] this string str)
@@ -173,7 +168,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Repeats the given string <paramref name="count"/> times
+        /// Returns a string formed by repeating the given string given number of times
         /// </summary>
         [Pure, NotNull]
         public static string Repeat([NotNull] this string str, int count)
@@ -202,7 +197,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Repeats the given character <paramref name="count"/> times
+        /// Returns a string formed by repeating the given character given number of times
         /// </summary>
         [Pure, NotNull]
         public static string Repeat(this char c, int count)
@@ -216,7 +211,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the string, taking only <paramref name="charCount"/> characters
+        /// Truncates a string leaving only the given number of characters from the start of the string
         /// </summary>
         [Pure, NotNull]
         public static string Take([NotNull] this string str, int charCount)
@@ -232,7 +227,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the string, skipping first <paramref name="charCount"/> characters
+        /// Truncates a string dropping the given number of characters from the start of the string
         /// </summary>
         [Pure, NotNull]
         public static string Skip([NotNull] this string str, int charCount)
@@ -248,7 +243,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the string, taking only last <paramref name="charCount"/> characters
+        /// Truncates a string leaving only the given number of characters from the end of the string
         /// </summary>
         [Pure, NotNull]
         public static string TakeLast([NotNull] this string str, int charCount)
@@ -264,7 +259,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the string, skipping last <paramref name="charCount"/> characters
+        /// Truncates a string dropping the given number of characters from the end of the string
         /// </summary>
         [Pure, NotNull]
         public static string SkipLast([NotNull] this string str, int charCount)
@@ -280,40 +275,67 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the given string, without any of the substrings occuring
+        /// Removes all occurrences of the given substrings from a string
         /// </summary>
         [Pure, NotNull]
-        public static string Except([NotNull] this string str, params string[] subStrings)
+        public static string Except([NotNull] this string str, [NotNull] IEnumerable<string> substrings,
+            StringComparison comparison = StringComparison.CurrentCulture)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
+            if (substrings == null)
+                throw new ArgumentNullException(nameof(substrings));
 
-            foreach (string sub in subStrings)
-                str = str.Replace(sub, string.Empty);
+            foreach (string sub in substrings)
+            {
+                int index = str.IndexOf(sub, comparison);
+                while (index >= 0)
+                {
+                    str = str.Remove(index, sub.Length);
+                    index = str.IndexOf(sub, comparison);
+                }
+            }
 
             return str;
         }
 
         /// <summary>
-        /// Returns the given string, without any of the characters occuring
+        /// Removes all occurrences of the given substrings from a string
         /// </summary>
         [Pure, NotNull]
-        public static string Except([NotNull] this string str, params char[] characters)
+        public static string Except([NotNull] this string str, params string[] substrings)
+            => Except(str, (IEnumerable<string>) substrings);
+
+        /// <summary>
+        /// Removes all occurrences of the given characters from a string
+        /// </summary>
+        [Pure, NotNull]
+        public static string Except([NotNull] this string str, [NotNull] IEnumerable<char> characters)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
+            if (characters == null)
+                throw new ArgumentNullException(nameof(characters));
 
-            int pos = str.IndexOfAny(characters);
+            var charArray = characters as char[] ?? characters.ToArray();
+            int pos = str.IndexOfAny(charArray);
             while (pos >= 0)
             {
                 str = str.Remove(pos, 1);
-                pos = str.IndexOfAny(characters);
+                pos = str.IndexOfAny(charArray);
             }
             return str;
         }
 
         /// <summary>
-        /// Makes sure the given string ends with the given other substring
+        /// Removes all occurrences of the given characters from a string
+        /// </summary>
+        [Pure, NotNull]
+        public static string Except([NotNull] this string str, params char[] characters)
+            => Except(str, (IEnumerable<char>) characters);
+
+        /// <summary>
+        /// Appends a string with the given string if it doesn't end with it already
         /// </summary>
         [Pure, NotNull]
         public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
@@ -328,7 +350,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Makes sure the given string starts with the given other substring
+        /// Prepends a string with the given string if it doesn't start with it already
         /// </summary>
         [Pure, NotNull]
         public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start,
@@ -343,8 +365,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns substring of a string until the occurence of the other string
-        /// If the other string is not found, returns full string
+        /// Retrieves a substring that ends at the position of first occurrence of the given other string
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntil([NotNull] this string str, [NotNull] string sub,
@@ -361,8 +382,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns substring of a string after the occurence of the other string
-        /// If the other string is not found, returns empty string
+        /// Retrieves a substring that starts at the position of first occurrence of the given other string
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfter([NotNull] this string str, [NotNull] string sub,
@@ -379,8 +399,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns substring of a string until the last occurence of the other string
-        /// If the other string is not found, returns full string
+        /// Retrieves a substring that ends at the position of last occurrence of the given other string
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub,
@@ -397,8 +416,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns substring of a string after the last occurence of the other string
-        /// If the other string is not found, returns empty string
+        /// Retrieves a substring that starts at the position of last occurrence of the given other string
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub,
@@ -415,8 +433,8 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the string enumerable contains second string.
-        /// Useless whitespace and casing are ignored.
+        /// Determines whether the string enumerable contains a string.
+        /// Ignores casing and leading/trailing whitespace.
         /// </summary>
         [Pure]
         public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)
@@ -428,15 +446,16 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Filters out blank strings from an enumerable
+        /// Discards blank strings from a sequence
         /// </summary>
+        [Pure, NotNull]
         public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
         {
             return enumerable.Where(IsNotBlank);
         }
 
         /// <summary>
-        /// Split string into substrings using separator strings, removing empty strings
+        /// Splits string using given separators, discarding empty entries
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params string[] separators)
@@ -450,7 +469,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Split string into substrings using separator characters, removing empty strings
+        /// Splits string using given separators, discarding empty entries
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params char[] separators)
@@ -464,10 +483,10 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Joins members of an <see cref="IEnumerable{T}"/> into a string, separated by given string
+        /// Returns a string formed by joining elements of a sequence using the given separator
         /// </summary>
         [Pure, NotNull]
-        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] string separator = ", ")
+        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] string separator)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -477,10 +496,21 @@ namespace Tyrrrz.Extensions
             return string.Join(separator, enumerable);
         }
 
+        /// <summary>
+        /// Returns a string formed by joining elements of a sequence using the given separator
+        /// </summary>
+        [Pure, NotNull]
+        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, char separator)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return string.Join(separator.ToString(), enumerable);
+        }
         #region Parse methods
 
         /// <summary>
-        /// Parses the string into an object of generic type using a <see cref="ParseDelegate{T}"/> handler
+        /// Parses the string into an object of given type using a <see cref="ParseDelegate{T}"/> handler
         /// </summary>
         [Pure]
         public static T Parse<T>([NotNull] this string str, [NotNull] ParseDelegate<T> handler)
@@ -494,7 +524,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Parses the string into an object of generic type using a <see cref="TryParseDelegate{T}"/> handler
+        /// Parses the string into an object of given type using a <see cref="TryParseDelegate{T}"/> handler or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler,
@@ -517,7 +547,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, float.Parse);
 
         /// <summary>
-        /// Parses the string into float or returns the default value if it fails
+        /// Parses the string into float or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static float ParseFloatOrDefault(this string str, float defaultValue = default(float))
@@ -531,7 +561,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, double.Parse);
 
         /// <summary>
-        /// Parses the string into double or returns the default value if it fails
+        /// Parses the string into double or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static double ParseDoubleOrDefault(this string str, double defaultValue = default(double))
@@ -545,7 +575,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, decimal.Parse);
 
         /// <summary>
-        /// Parses the string into decimal or returns the default value if it fails
+        /// Parses the string into decimal or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static decimal ParseDecimalOrDefault(this string str, decimal defaultValue = default(decimal))
@@ -559,7 +589,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, short.Parse);
 
         /// <summary>
-        /// Parses the string into short or returns the default value if it fails
+        /// Parses the string into short or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static short ParseShortOrDefault(this string str, short defaultValue = default(short))
@@ -573,7 +603,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, int.Parse);
 
         /// <summary>
-        /// Parses the string into int or returns the default value if it fails
+        /// Parses the string into int or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static int ParseIntOrDefault(this string str, int defaultValue = default(int))
@@ -587,7 +617,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, long.Parse);
 
         /// <summary>
-        /// Parses the string into long or returns the default value if it fails
+        /// Parses the string into long or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static long ParseLongOrDefault(this string str, long defaultValue = default(long))
@@ -601,7 +631,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, byte.Parse);
 
         /// <summary>
-        /// Parses the string into byte or returns the default value if it fails
+        /// Parses the string into byte or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static byte ParseByteOrDefault(this string str, byte defaultValue = default(byte))
@@ -615,7 +645,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, uint.Parse);
 
         /// <summary>
-        /// Parses the string into uint or returns the default value if it fails
+        /// Parses the string into uint or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static uint ParseUintOrDefault(this string str, uint defaultValue = default(uint))
@@ -629,7 +659,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, ulong.Parse);
 
         /// <summary>
-        /// Parses the string into ulong or returns the default value if it fails
+        /// Parses the string into ulong or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static ulong ParseUlongOrDefault(this string str, ulong defaultValue = default(ulong))
@@ -643,7 +673,7 @@ namespace Tyrrrz.Extensions
             => Parse(str, DateTime.Parse);
 
         /// <summary>
-        /// Parses the string into DateTime or returns the default value if it fails
+        /// Parses the string into DateTime or returns default value if unsuccessful
         /// </summary>
         [Pure]
         public static DateTime ParseDateTimeOrDefault(this string str, DateTime defaultValue = default(DateTime))

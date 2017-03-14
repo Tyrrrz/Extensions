@@ -312,7 +312,7 @@ namespace Tyrrrz.Extensions.Tests
         {
             var a = new[] {1, 2, 3, 4, 5};
 
-            string aJoinToString = a.JoinToString();
+            string aJoinToString = a.JoinToString(", ");
 
             Assert.AreEqual("1, 2, 3, 4, 5", aJoinToString);
         }
