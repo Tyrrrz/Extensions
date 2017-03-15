@@ -211,10 +211,12 @@ namespace Tyrrrz.Extensions.Tests
             int aLastIndex = a.LastIndex();
             int bLastIndex = b.LastIndex();
             int bLastIndexDimension = b.LastIndex(1);
+            int bLastIndexDimensionNonExisting = b.LastIndex(1337);
 
             Assert.AreEqual(4, aLastIndex);
             Assert.AreEqual(1, bLastIndex);
             Assert.AreEqual(2, bLastIndexDimension);
+            Assert.AreEqual(-1, bLastIndexDimensionNonExisting);
         }
 
         [TestMethod]
