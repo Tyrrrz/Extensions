@@ -376,20 +376,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an item that corresponds to the given index or default if index is out of bounds
-        /// </summary>
-        [Pure]
-        public static T GetOrDefault<T>([NotNull] this IList<T> list, int index, T defaultValue = default(T))
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-            if (index < 0)
-                throw new ArgumentOutOfRangeException(nameof(index), "Cannot be negative");
-
-            return index < list.Count ? list[index] : defaultValue;
-        }
-
-        /// <summary>
         /// Returns an item that corresponds to the given key or default if key doesn't exist
         /// </summary>
         [Pure]

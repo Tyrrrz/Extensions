@@ -220,22 +220,17 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void GetOrDefaultTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
-            var d = new Dictionary<string, string>
+            var a = new Dictionary<string, string>
             {
                 {"asd", "qwe"},
                 {"zxc", "bnm"}
             };
 
-            string aGetOrDefault = a.GetOrDefault(1);
-            string aGetOrDefaultOutOfBounds = a.GetOrDefault(15);
-            string dGetOrDefault = d.GetOrDefault("zxc");
-            string dGetOrDefaultNonExisting = d.GetOrDefault("qoeo");
+            string aGetOrDefault = a.GetOrDefault("zxc");
+            string aGetOrDefaultNonExisting = a.GetOrDefault("qoeo");
 
-            Assert.AreEqual("qwe", aGetOrDefault);
-            Assert.AreEqual(null, aGetOrDefaultOutOfBounds);
-            Assert.AreEqual("bnm", dGetOrDefault);
-            Assert.AreEqual(null, dGetOrDefaultNonExisting);
+            Assert.AreEqual("bnm", aGetOrDefault);
+            Assert.AreEqual(null, aGetOrDefaultNonExisting);
         }
 
         [TestMethod]
