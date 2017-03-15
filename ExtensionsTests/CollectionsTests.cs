@@ -206,10 +206,15 @@ namespace Tyrrrz.Extensions.Tests
         public void LastIndexTest()
         {
             var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
+            var b = new[,] {{"asd", "qwe", "qqq"}, {"dfg", "zzz", "www"}};
 
             int aLastIndex = a.LastIndex();
+            int bLastIndex = b.LastIndex();
+            int bLastIndexDimension = b.LastIndex(1);
 
             Assert.AreEqual(4, aLastIndex);
+            Assert.AreEqual(1, bLastIndex);
+            Assert.AreEqual(2, bLastIndexDimension);
         }
 
         [TestMethod]

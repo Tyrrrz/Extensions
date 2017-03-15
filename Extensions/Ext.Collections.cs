@@ -363,7 +363,7 @@ namespace Tyrrrz.Extensions
         /// <returns>Index if there are any items and the dimension exists, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndex<T>([NotNull] this T[] array, int dimension = 0)
+        public static int LastIndex([NotNull] this Array array, int dimension = 0)
         {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));
