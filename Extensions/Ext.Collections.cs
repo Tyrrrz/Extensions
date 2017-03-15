@@ -169,6 +169,34 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Returns elements from the end of the sequence as long as a specified condition is true
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            return enumerable.Reverse().TakeWhile(predicate).Reverse();
+        }
+
+        /// <summary>
+        /// Bypasses elements from the end of the sequence as long as a specified condition is true
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            return enumerable.Reverse().SkipWhile(predicate).Reverse();
+        }
+
+        /// <summary>
         /// Invokes a delegate on every member of a sequence
         /// </summary>
         public static void ForEach<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)

@@ -139,6 +139,34 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
+        public void TakeLastWhileTest()
+        {
+            var a = new[] { "asd", "qwe", "dfg", "zzz" };
+
+            var aTakeLastWhile = a.TakeLastWhile(s => s != "qwe").ToArray();
+            var aTakeLastWhileTooMany = a.TakeLastWhile(s => s != "xxx").ToArray();
+            var aTakeLastWhileNone = a.TakeLastWhile(s => s != "zzz").ToArray();
+
+            CollectionAssert.AreEqual(new[] { "dfg", "zzz" }, aTakeLastWhile);
+            CollectionAssert.AreEqual(new[] { "asd", "qwe", "dfg", "zzz" }, aTakeLastWhileTooMany);
+            CollectionAssert.AreEqual(new string[0], aTakeLastWhileNone);
+        }
+
+        [TestMethod]
+        public void SkipLastWhileTest()
+        {
+            var a = new[] { "asd", "qwe", "dfg", "zzz" };
+
+            var aSkipLastWhile = a.SkipLastWhile(s => s != "qwe").ToArray();
+            var aSkipLastWhileTooMany = a.SkipLastWhile(s => s != "xxx").ToArray();
+            var aSkipLastWhileNone = a.SkipLastWhile(s => s != "zzz").ToArray();
+
+            CollectionAssert.AreEqual(new[] { "asd", "qwe" }, aSkipLastWhile);
+            CollectionAssert.AreEqual(new string[0], aSkipLastWhileTooMany);
+            CollectionAssert.AreEqual(new[] { "asd", "qwe", "dfg", "zzz" }, aSkipLastWhileNone);
+        }
+
+        [TestMethod]
         public void ForEachTest()
         {
             var a = new[] { "asd", "qwe", "dfg" };
