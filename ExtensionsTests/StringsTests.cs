@@ -166,11 +166,17 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void ReverseTest()
         {
-            string s = "Hello World";
+            string a = "Hello World";
+            string b = "H";
+            string c = "";
 
-            string reverse = s.Reverse();
+            string aReverse = a.Reverse();
+            string bReverse = b.Reverse();
+            string cReverse = c.Reverse();
 
-            Assert.AreEqual("dlroW olleH", reverse);
+            Assert.AreEqual("dlroW olleH", aReverse);
+            Assert.AreEqual("H", bReverse);
+            Assert.AreEqual("", cReverse);
         }
 
         [TestMethod]

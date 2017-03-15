@@ -208,6 +208,8 @@ namespace Tyrrrz.Extensions
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
+            if (str.Length < 2)
+                return str;
 
             var sb = new StringBuilder(str.Length);
             for (int i = str.Length - 1; i >= 0; i--)
