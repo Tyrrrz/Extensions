@@ -27,6 +27,7 @@ namespace Tyrrrz.Extensions.Tests
             var xCustomer = stripped.Element("customer");
             var xHello = xCustomer?.Attribute("hello");
 
+            Assert.AreNotSame(xml, stripped);
             Assert.IsNotNull(xCustomer);
             Assert.IsNotNull(xHello);
             Assert.AreEqual("world", xHello.Value);
