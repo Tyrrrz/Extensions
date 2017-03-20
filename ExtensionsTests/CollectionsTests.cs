@@ -205,13 +205,13 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void IndexOfTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
+            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD" };
 
-            int aIndexOf = a.IndexOf("QWE");
+            int aIndexOf = a.IndexOf("qwe");
             int aIndexOfNonExisting = a.IndexOf("qqq");
             int aIndexOfPredicate = a.IndexOf(s => s == "ASD");
 
-            Assert.AreEqual(4, aIndexOf);
+            Assert.AreEqual(1, aIndexOf);
             Assert.AreEqual(-1, aIndexOfNonExisting);
             Assert.AreEqual(3, aIndexOfPredicate);
         }
@@ -219,15 +219,15 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void LastIndexOfTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
+            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD" };
 
             int aLastIndexOf = a.LastIndexOf("qwe");
             int aLastIndexOfNonExisting = a.LastIndexOf("qqq");
             int aLastIndexOfPredicate = a.LastIndexOf(s => s == "ASD");
 
-            Assert.AreEqual(1, aLastIndexOf);
+            Assert.AreEqual(5, aLastIndexOf);
             Assert.AreEqual(-1, aLastIndexOfNonExisting);
-            Assert.AreEqual(3, aLastIndexOfPredicate);
+            Assert.AreEqual(6, aLastIndexOfPredicate);
         }
 
         [TestMethod]

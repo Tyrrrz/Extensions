@@ -286,17 +286,19 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int IndexOf<T>([NotNull] this IList<T> list, T element, [NotNull] IEqualityComparer<T> comparer)
+        public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element, [NotNull] IEqualityComparer<T> comparer)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
 
-            for (int i = 0; i < list.Count; i++)
+            int i = 0;
+            foreach (var item in enumerable)
             {
-                if (comparer.Equals(list[i], element))
+                if (comparer.Equals(item, element))
                     return i;
+                i++;
             }
             return -1;
         }
@@ -306,25 +308,27 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int IndexOf<T>([NotNull] this IList<T> list, T element)
-            => IndexOf(list, element, EqualityComparer<T>.Default);
+        public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element)
+            => IndexOf(enumerable, element, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Searches for an item and returns its index
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int IndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
+        public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            for (int i = 0; i < list.Count; i++)
+            int i = 0;
+            foreach (var item in enumerable)
             {
-                if (predicate(list[i]))
+                if (predicate(item))
                     return i;
+                i++;
             }
             return -1;
         }
@@ -334,17 +338,22 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element, [NotNull] IEqualityComparer<T> comparer)
+        public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element, [NotNull] IEqualityComparer<T> comparer)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
-            for (int i = list.Count - 1; i >= 0; i--)
+            int i = 0;
+            int last = -1;
+            foreach (var item in enumerable)
             {
-                if (comparer.Equals(list[i], element))
-                    return i;
+                if (comparer.Equals(item, element))
+                    last = i;
+                i++;
             }
-            return -1;
+            return last;
         }
 
         /// <summary>
@@ -352,25 +361,30 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element)
-            => LastIndexOf(list, element, EqualityComparer<T>.Default);
+        public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element)
+            => LastIndexOf(enumerable, element, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Searches for the last occurrence of an item and returns its index
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
+        public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
-            for (int i = list.Count - 1; i >= 0; i--)
+            int i = 0;
+            int last = -1;
+            foreach (var item in enumerable)
             {
-                if (predicate(list[i]))
-                    return i;
+                if (predicate(item))
+                    last = i;
+                i++;
             }
-            return -1;
+            return last;
         }
 
         /// <summary>
