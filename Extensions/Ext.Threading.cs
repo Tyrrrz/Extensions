@@ -17,28 +17,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Runs the task synchronously and returns the result
-        /// </summary>
-        public static T GetResult<T>([NotNull] this Task<T> task)
-        {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
-
-            return task.GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Runs the task synchronously
-        /// </summary>
-        public static void GetResult([NotNull] this Task task)
-        {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
-
-            task.GetAwaiter().GetResult();
-        }
-
-        /// <summary>
         /// Executes a task asynchronously on all elements of a sequence in parallel
         /// </summary>
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task> task)
@@ -48,7 +26,7 @@ namespace Tyrrrz.Extensions
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            var tasks = enumerable.Select(async i => await task(i));
+            var tasks = enumerable.Select(async i => await task(i).ConfigureAwait(false));
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
@@ -62,7 +40,7 @@ namespace Tyrrrz.Extensions
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
-            var tasks = enumerable.Select(async i => await Task.Run(() => action(i)));
+            var tasks = enumerable.Select(async i => await Task.Run(() => action(i)).ConfigureAwait(false));
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
     }
