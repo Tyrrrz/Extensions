@@ -1,7 +1,7 @@
 # Tyrrrz Extensions Library
 
-My extensions library for rapid development
+My extensions for rapid development
 
-**Download and install:**
+**Download:**
 
-This library is distributed as a [nuget package](https://www.nuget.org/packages/Tyrrrz.Extensions): `Install-Package Tyrrrz.Extensions`
+- Using nuget: `Install-Package Tyrrrz.Extensions` or [go to package page](https://www.nuget.org/packages/Tyrrrz.Extensions)
