@@ -149,7 +149,10 @@ namespace Tyrrrz.Extensions
             if (count == 0)
                 return Enumerable.Empty<T>();
 
-            return enumerable.Reverse().Take(count).Reverse();
+            var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
+            int skip = asCol.Count - count;
+            if (skip < 0) skip = 0;
+            return asCol.Skip(skip);
         }
 
         /// <summary>
@@ -165,7 +168,10 @@ namespace Tyrrrz.Extensions
             if (count == 0)
                 return enumerable;
 
-            return enumerable.Reverse().Skip(count).Reverse();
+            var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
+            int take = asCol.Count - count;
+            if (take < 0) take = 0;
+            return asCol.Take(take);
         }
 
         /// <summary>
@@ -345,15 +351,13 @@ namespace Tyrrrz.Extensions
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
 
-            int i = 0;
-            int last = -1;
-            foreach (var item in enumerable)
+            var asList = enumerable as IList<T> ?? enumerable.ToArray();
+            for (int i = asList.Count - 1; i >= 0; i--)
             {
-                if (comparer.Equals(item, element))
-                    last = i;
-                i++;
+                if (comparer.Equals(asList[i], element))
+                    return i;
             }
-            return last;
+            return -1;
         }
 
         /// <summary>
@@ -376,15 +380,13 @@ namespace Tyrrrz.Extensions
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            int i = 0;
-            int last = -1;
-            foreach (var item in enumerable)
+            var asList = enumerable as IList<T> ?? enumerable.ToArray();
+            for (int i = asList.Count - 1; i >= 0; i--)
             {
-                if (predicate(item))
-                    last = i;
-                i++;
+                if (predicate(asList[i]))
+                    return i;
             }
-            return last;
+            return -1;
         }
 
         /// <summary>
