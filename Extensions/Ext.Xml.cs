@@ -31,5 +31,19 @@ namespace Tyrrrz.Extensions
 
             return result;
         }
+
+        /// <summary>
+        /// Gets the first descendant with the specified name or null if none found
+        /// </summary>
+        [Pure, CanBeNull]
+        public static XElement Descendant([NotNull] this XElement element, [NotNull] XName name)
+        {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            return element.Descendants(name).FirstOrDefault();
+        }
     }
 }

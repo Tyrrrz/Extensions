@@ -32,5 +32,17 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsNotNull(xHello);
             Assert.AreEqual("world", xHello.Value);
         }
+
+        [TestMethod]
+        public void DescendantTest()
+        {
+            var xml = new XElement("root",
+                new XElement("qwe"), new XElement("test",
+                    new XElement("asd")));
+            var desc = xml.Descendant("asd");
+
+            Assert.IsNotNull(desc);
+            Assert.AreEqual("asd", desc.Name.LocalName);
+        }
     }
 }
