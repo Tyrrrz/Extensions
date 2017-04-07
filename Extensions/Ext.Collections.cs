@@ -109,6 +109,31 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
+        /// Calculates hash code of a sequence based on the hash codes of each individual elements
+        /// </summary>
+        [Pure]
+        public static int SequenceHashCode<T>([NotNull] this IEnumerable<T> enumerable, bool ignoreOrder = false)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            var hashes = enumerable.Select(i => i.GetHashCode());
+            if (ignoreOrder)
+                hashes = hashes.OrderBy(i => i);
+
+            int result = 19;
+            foreach (int hash in hashes)
+            {
+                unchecked
+                {
+                    result = result*31 + hash;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Discards elements from a sequence that are equal to given
         /// </summary>
         [Pure, NotNull]

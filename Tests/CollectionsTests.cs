@@ -86,6 +86,31 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
+        public void SequenceHashCodeTest()
+        {
+            var a = new[] {"asd", "qwe", "xxx"};
+            var b = new[] {"xxx", "qwe", "asd"};
+            var c = new[] {"ddd"};
+
+            int aHash = a.SequenceHashCode();
+            int aHashIgnoreOrder = a.SequenceHashCode(true);
+            int bHash = b.SequenceHashCode();
+            int bHashIgnoreOrder = b.SequenceHashCode(true);
+            int cHash = c.SequenceHashCode();
+            int cHashIgnoreOrder = c.SequenceHashCode(true);
+
+            Assert.AreNotEqual(aHash, bHash);
+            Assert.AreNotEqual(aHash, cHash);
+            Assert.AreNotEqual(bHash, cHash);
+            Assert.AreEqual(aHashIgnoreOrder, bHashIgnoreOrder);
+            Assert.AreNotEqual(aHashIgnoreOrder, cHashIgnoreOrder);
+            Assert.AreNotEqual(bHashIgnoreOrder, cHashIgnoreOrder);
+            Assert.AreNotEqual(aHash, cHashIgnoreOrder);
+            Assert.AreNotEqual(bHash, cHashIgnoreOrder);
+            Assert.AreEqual(cHash, cHashIgnoreOrder);
+        }
+
+        [TestMethod]
         public void ExceptTest()
         {
             var a = new[] { "asd", "qwe", "dfg" };
