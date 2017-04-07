@@ -117,7 +117,7 @@ namespace Tyrrrz.Extensions
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
-            var hashes = enumerable.Select(i => i.GetHashCode());
+            var hashes = enumerable.Select(i => i?.GetHashCode() ?? 0);
             if (ignoreOrder)
                 hashes = hashes.OrderBy(i => i);
 
