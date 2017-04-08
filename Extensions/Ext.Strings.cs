@@ -99,7 +99,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure]
         public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -156,7 +156,8 @@ namespace Tyrrrz.Extensions
         /// Removes all leading occurrences of a substring in the given string
         /// </summary>
         [Pure, NotNull]
-        public static string TrimStart([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        public static string TrimStart([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -173,7 +174,8 @@ namespace Tyrrrz.Extensions
         /// Removes all trailing occurrences of a substring in the given string
         /// </summary>
         [Pure, NotNull]
-        public static string TrimEnd([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        public static string TrimEnd([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -190,7 +192,8 @@ namespace Tyrrrz.Extensions
         /// Removes all leading and trailing occurrences of a substring in the given string
         /// </summary>
         [Pure, NotNull]
-        public static string Trim([NotNull] this string str, [NotNull] string sub, StringComparison comparison = StringComparison.CurrentCulture)
+        public static string Trim([NotNull] this string str, [NotNull] string sub,
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -329,7 +332,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string Except([NotNull] this string str, [NotNull] IEnumerable<string> substrings,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -389,7 +392,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -404,7 +407,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -419,7 +422,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntil([NotNull] this string str, [NotNull] string sub,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -436,7 +439,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfter([NotNull] this string str, [NotNull] string sub,
-            StringComparison comparison = StringComparison.CurrentCulture)
+            StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -453,7 +456,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub,
-            StringComparison comparsion = StringComparison.CurrentCulture)
+            StringComparison comparsion = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -470,7 +473,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub,
-            StringComparison comparsion = StringComparison.CurrentCulture)
+            StringComparison comparsion = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));

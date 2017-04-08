@@ -288,9 +288,9 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void SubstringUntilTest()
         {
-            string s = "qwe=asd=zxc=cvb";
+            string s = "qwe==asd==zxc==cvb";
 
-            string sSubstringUntil = s.SubstringUntil("=");
+            string sSubstringUntil = s.SubstringUntil("==");
 
             Assert.AreEqual("qwe", sSubstringUntil);
         }
@@ -298,29 +298,29 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void SubstringAfterTest()
         {
-            string s = "qwe=asd=zxc=cvb";
+            string s = "qwe==asd==zxc==cvb";
 
-            string sSubstringAfter = s.SubstringAfter("=");
+            string sSubstringAfter = s.SubstringAfter("==");
 
-            Assert.AreEqual("asd=zxc=cvb", sSubstringAfter);
+            Assert.AreEqual("asd==zxc==cvb", sSubstringAfter);
         }
 
         [TestMethod]
         public void SubstringUntilLastTest()
         {
-            string s = "qwe=asd=zxc=cvb";
+            string s = "qwe==asd==zxc==cvb";
 
-            string sSubstringUntilLast = s.SubstringUntilLast("=");
+            string sSubstringUntilLast = s.SubstringUntilLast("==");
 
-            Assert.AreEqual("qwe=asd=zxc", sSubstringUntilLast);
+            Assert.AreEqual("qwe==asd==zxc", sSubstringUntilLast);
         }
 
         [TestMethod]
         public void SubstringAfterLastTest()
         {
-            string s = "qwe=asd=zxc=cvb";
+            string s = "qwe==asd==zxc==cvb";
 
-            string sSubstringAfterLast = s.SubstringAfterLast("=");
+            string sSubstringAfterLast = s.SubstringAfterLast("==");
 
             Assert.AreEqual("cvb", sSubstringAfterLast);
         }
