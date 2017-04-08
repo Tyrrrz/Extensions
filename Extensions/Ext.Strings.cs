@@ -559,8 +559,6 @@ namespace Tyrrrz.Extensions
         public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, char separator)
             => JoinToString(enumerable, separator.ToString());
 
-        #region Parse methods
-
         /// <summary>
         /// Parses the string into an object of given type using a <see cref="ParseDelegate{T}"/> handler
         /// </summary>
@@ -582,155 +580,11 @@ namespace Tyrrrz.Extensions
         public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler,
             T defaultValue = default(T))
         {
-            if (str == null)
-                return defaultValue;
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
             T result;
             return handler(str, out result) ? result : defaultValue;
         }
-
-        /// <summary>
-        /// Parses the string into float
-        /// </summary>
-        [Pure]
-        public static float ParseFloat([NotNull] this string str)
-            => Parse(str, float.Parse);
-
-        /// <summary>
-        /// Parses the string into float or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static float ParseFloatOrDefault(this string str, float defaultValue = default(float))
-            => ParseOrDefault(str, float.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into double
-        /// </summary>
-        [Pure]
-        public static double ParseDouble([NotNull] this string str)
-            => Parse(str, double.Parse);
-
-        /// <summary>
-        /// Parses the string into double or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static double ParseDoubleOrDefault(this string str, double defaultValue = default(double))
-            => ParseOrDefault(str, double.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into decimal
-        /// </summary>
-        [Pure]
-        public static decimal ParseDecimal([NotNull] this string str)
-            => Parse(str, decimal.Parse);
-
-        /// <summary>
-        /// Parses the string into decimal or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static decimal ParseDecimalOrDefault(this string str, decimal defaultValue = default(decimal))
-            => ParseOrDefault(str, decimal.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into short
-        /// </summary>
-        [Pure]
-        public static short ParseShort([NotNull] this string str)
-            => Parse(str, short.Parse);
-
-        /// <summary>
-        /// Parses the string into short or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static short ParseShortOrDefault(this string str, short defaultValue = default(short))
-            => ParseOrDefault(str, short.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into int
-        /// </summary>
-        [Pure]
-        public static int ParseInt([NotNull] this string str)
-            => Parse(str, int.Parse);
-
-        /// <summary>
-        /// Parses the string into int or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static int ParseIntOrDefault(this string str, int defaultValue = default(int))
-            => ParseOrDefault(str, int.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into long
-        /// </summary>
-        [Pure]
-        public static long ParseLong([NotNull] this string str)
-            => Parse(str, long.Parse);
-
-        /// <summary>
-        /// Parses the string into long or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static long ParseLongOrDefault(this string str, long defaultValue = default(long))
-            => ParseOrDefault(str, long.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into byte
-        /// </summary>
-        [Pure]
-        public static byte ParseByte([NotNull] this string str)
-            => Parse(str, byte.Parse);
-
-        /// <summary>
-        /// Parses the string into byte or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static byte ParseByteOrDefault(this string str, byte defaultValue = default(byte))
-            => ParseOrDefault(str, byte.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into uint
-        /// </summary>
-        [Pure]
-        public static uint ParseUint([NotNull] this string str)
-            => Parse(str, uint.Parse);
-
-        /// <summary>
-        /// Parses the string into uint or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static uint ParseUintOrDefault(this string str, uint defaultValue = default(uint))
-            => ParseOrDefault(str, uint.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into ulong
-        /// </summary>
-        [Pure]
-        public static ulong ParseUlong([NotNull] this string str)
-            => Parse(str, ulong.Parse);
-
-        /// <summary>
-        /// Parses the string into ulong or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static ulong ParseUlongOrDefault(this string str, ulong defaultValue = default(ulong))
-            => ParseOrDefault(str, ulong.TryParse, defaultValue);
-
-        /// <summary>
-        /// Parses the string into DateTime
-        /// </summary>
-        [Pure]
-        public static DateTime ParseDateTime([NotNull] this string str)
-            => Parse(str, DateTime.Parse);
-
-        /// <summary>
-        /// Parses the string into DateTime or returns default value if unsuccessful
-        /// </summary>
-        [Pure]
-        public static DateTime ParseDateTimeOrDefault(this string str, DateTime defaultValue = default(DateTime))
-            => ParseOrDefault(str, DateTime.TryParse, defaultValue);
-
-        #endregion
     }
 }
