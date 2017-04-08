@@ -97,18 +97,6 @@ namespace Tyrrrz.Extensions
             => Distinct(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
-        /// Flattens the given sequences into one sequence
-        /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> SelectMany<T>([NotNull] this IEnumerable<IEnumerable<T>> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            return enumerable.SelectMany(i => i);
-        }
-
-        /// <summary>
         /// Calculates hash code of a sequence based on the hash codes of each individual elements
         /// </summary>
         [Pure]

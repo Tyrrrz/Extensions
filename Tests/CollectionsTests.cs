@@ -76,16 +76,6 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void SelectManyTest()
-        {
-            var a = new[] {new[] {"qqq", "www"}, new[] {"asd", "zzz"}};
-
-            var aSelectMany = a.SelectMany().ToArray();
-
-            CollectionAssert.AreEqual(new[] {"qqq", "www", "asd", "zzz"}, aSelectMany);
-        }
-
-        [TestMethod]
         public void SequenceHashCodeTest()
         {
             var a = new[] {"asd", "qwe", "xxx"};
