@@ -11,7 +11,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void NotNullAndAnyTest()
         {
-            var a = new[] { 1, 2, 3, 4, 5 };
+            var a = new[] {1, 2, 3, 4, 5};
             var b = new int[0];
             int[] c = null;
 
@@ -28,7 +28,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void GetRandomTest()
         {
-            var a = new[] { 1, 2, 3, 4, 5 };
+            var a = new[] {1, 2, 3, 4, 5};
 
             var random = a.GetRandom();
 
@@ -38,7 +38,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void GetRandomOrDefaultTest()
         {
-            var a = new[] { 1, 2, 3, 4, 5 };
+            var a = new[] {1, 2, 3, 4, 5};
             var b = new int[0];
 
             var aRandom = a.GetRandomOrDefault();
@@ -68,7 +68,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void DistinctTest()
         {
-            var a = new[] { "qqq", "ww", "zz", "qqq", "11111" };
+            var a = new[] {"qqq", "ww", "zz", "qqq", "11111"};
 
             var aDistinct = a.Distinct(i => i.Length).ToArray();
 
@@ -103,7 +103,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void ExceptTest()
         {
-            var a = new[] { "asd", "qwe", "dfg" };
+            var a = new[] {"asd", "qwe", "dfg"};
 
             var aExcept = a.Except("qwe").ToArray();
             var aExceptNonExisting = a.Except("zzz").ToArray();
@@ -115,7 +115,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void ExceptDefaultTest()
         {
-            var a = new[] { 0, 1, 2, 3, 4, 5 };
+            var a = new[] {0, 1, 2, 3, 4, 5};
             var b = new[] {"asd", "qwe", null};
 
             var aExceptDefault = a.ExceptDefault().ToArray();
@@ -128,7 +128,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void TakeLastTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "zzz" };
+            var a = new[] {"asd", "qwe", "dfg", "zzz"};
 
             var aTakeLast = a.TakeLast(2).ToArray();
             var aTakeLastTooMany = a.TakeLast(100).ToArray();
@@ -156,35 +156,35 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void TakeLastWhileTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "zzz" };
+            var a = new[] {"asd", "qwe", "dfg", "zzz"};
 
             var aTakeLastWhile = a.TakeLastWhile(s => s != "qwe").ToArray();
             var aTakeLastWhileTooMany = a.TakeLastWhile(s => s != "xxx").ToArray();
             var aTakeLastWhileNone = a.TakeLastWhile(s => s != "zzz").ToArray();
 
-            CollectionAssert.AreEqual(new[] { "dfg", "zzz" }, aTakeLastWhile);
-            CollectionAssert.AreEqual(new[] { "asd", "qwe", "dfg", "zzz" }, aTakeLastWhileTooMany);
+            CollectionAssert.AreEqual(new[] {"dfg", "zzz"}, aTakeLastWhile);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "zzz"}, aTakeLastWhileTooMany);
             CollectionAssert.AreEqual(new string[0], aTakeLastWhileNone);
         }
 
         [TestMethod]
         public void SkipLastWhileTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "zzz" };
+            var a = new[] {"asd", "qwe", "dfg", "zzz"};
 
             var aSkipLastWhile = a.SkipLastWhile(s => s != "qwe").ToArray();
             var aSkipLastWhileTooMany = a.SkipLastWhile(s => s != "xxx").ToArray();
             var aSkipLastWhileNone = a.SkipLastWhile(s => s != "zzz").ToArray();
 
-            CollectionAssert.AreEqual(new[] { "asd", "qwe" }, aSkipLastWhile);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe"}, aSkipLastWhile);
             CollectionAssert.AreEqual(new string[0], aSkipLastWhileTooMany);
-            CollectionAssert.AreEqual(new[] { "asd", "qwe", "dfg", "zzz" }, aSkipLastWhileNone);
+            CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "zzz"}, aSkipLastWhileNone);
         }
 
         [TestMethod]
         public void ForEachTest()
         {
-            var a = new[] { "asd", "qwe", "dfg" };
+            var a = new[] {"asd", "qwe", "dfg"};
             int i = 0;
 
             a.ForEach(s => Assert.AreEqual(s, a[i++]));
@@ -194,7 +194,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void ToHashSetTest()
         {
-            var a = new[] { "asd", "q", "we", "ASD", "WE", "we" };
+            var a = new[] {"asd", "q", "we", "ASD", "WE", "we"};
 
             var aHashSet = a.ToHashSet().ToArray();
             var aHashSetSelector = a.ToHashSet(i => i.Length).ToArray();
@@ -220,7 +220,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void IndexOfTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD" };
+            var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD"};
 
             int aIndexOf = a.IndexOf("qwe");
             int aIndexOfNonExisting = a.IndexOf("qqq");
@@ -234,7 +234,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void LastIndexOfTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD" };
+            var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD"};
 
             int aLastIndexOf = a.LastIndexOf("qwe");
             int aLastIndexOfNonExisting = a.LastIndexOf("qqq");
@@ -248,7 +248,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public void LastIndexTest()
         {
-            var a = new[] { "asd", "qwe", "dfg", "ASD", "QWE" };
+            var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE"};
             var b = new[,] {{"asd", "qwe", "qqq"}, {"dfg", "zzz", "www"}};
 
             int aLastIndex = a.LastIndex();
@@ -328,7 +328,8 @@ namespace Tyrrrz.Extensions.Tests
 
             bool dSetOrAddNonExisting = d.SetOrAdd("123", "456");
             Assert.IsFalse(dSetOrAddNonExisting);
-            CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}}, d);
+            CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}},
+                d);
         }
     }
 }

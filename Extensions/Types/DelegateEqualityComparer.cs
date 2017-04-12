@@ -17,21 +17,8 @@ namespace Tyrrrz.Extensions.Types
         /// </summary>
         public DelegateEqualityComparer([NotNull] Func<T, T, bool> comparer, [NotNull] Func<T, int> hashGenerator)
         {
-            if (comparer == null)
-                throw new ArgumentNullException(nameof(comparer));
-            if (hashGenerator == null)
-                throw new ArgumentNullException(nameof(hashGenerator));
-
-            _comparer = comparer;
-            _hashGenerator = hashGenerator;
-        }
-
-        /// <summary>
-        /// Initializes with the given comparer and default hash generator
-        /// </summary>
-        public DelegateEqualityComparer([NotNull] Func<T, T, bool> comparer)
-            : this(comparer, o => o.GetHashCode())
-        {
+            _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+            _hashGenerator = hashGenerator ?? throw new ArgumentNullException(nameof(hashGenerator));
         }
 
         /// <summary>
