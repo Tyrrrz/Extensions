@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
@@ -15,8 +14,7 @@ namespace Tyrrrz.Extensions
         {
             // Original code credit: http://stackoverflow.com/a/1147012
 
-            if (element == null)
-                throw new ArgumentNullException(nameof(element));
+            GuardNull(element, nameof(element));
 
             var result = new XElement(element);
             foreach (var e in result.DescendantsAndSelf())
@@ -38,10 +36,8 @@ namespace Tyrrrz.Extensions
         [Pure, CanBeNull]
         public static XElement Descendant([NotNull] this XElement element, [NotNull] XName name)
         {
-            if (element == null)
-                throw new ArgumentNullException(nameof(element));
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
+            GuardNull(element, nameof(element));
+            GuardNull(name, nameof(name));
 
             return element.Descendants(name).FirstOrDefault();
         }

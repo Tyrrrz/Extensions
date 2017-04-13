@@ -35,8 +35,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsNumeric([NotNull] this string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
+            GuardNull(str, nameof(str));
 
             return str.ToCharArray().All(char.IsDigit);
         }
@@ -47,8 +46,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsAlphabetic([NotNull] this string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
+            GuardNull(str, nameof(str));
 
             return str.ToCharArray().All(char.IsLetter);
         }
@@ -59,8 +57,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsAlphanumeric([NotNull] this string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
+            GuardNull(str, nameof(str));
 
             return str.ToCharArray().All(char.IsLetterOrDigit);
         }
@@ -84,10 +81,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             str = str.Trim();
             sub = sub.Trim();
@@ -101,13 +96,19 @@ namespace Tyrrrz.Extensions
         public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (word == null)
-                throw new ArgumentNullException(nameof(word));
+            GuardNull(str, nameof(str));
+            GuardNull(word, nameof(word));
 
             if (string.Equals(str, word, comparison)) return true;
-            return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b");
+
+            var regexOptions = RegexOptions.None;
+            if (comparison == StringComparison.CurrentCultureIgnoreCase ||
+                comparison == StringComparison.OrdinalIgnoreCase)
+                regexOptions |= RegexOptions.IgnoreCase;
+            if (comparison == StringComparison.Ordinal)
+                regexOptions |= RegexOptions.CultureInvariant;
+
+            return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b", regexOptions);
         }
 
         /// <summary>
@@ -146,8 +147,7 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull, StringFormatMethod("str")]
         public static string Format([NotNull] this string str, params object[] args)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
+            GuardNull(str, nameof(str));
 
             return string.Format(str, args);
         }
@@ -159,10 +159,8 @@ namespace Tyrrrz.Extensions
         public static string TrimStart([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             while (str.StartsWith(sub, comparison))
                 str = str.Substring(sub.Length);
@@ -177,10 +175,8 @@ namespace Tyrrrz.Extensions
         public static string TrimEnd([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             while (str.EndsWith(sub, comparison))
                 str = str.Substring(0, str.Length - sub.Length);
@@ -195,10 +191,8 @@ namespace Tyrrrz.Extensions
         public static string Trim([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             return str.TrimStart(sub).TrimEnd(sub);
         }
@@ -209,8 +203,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string Reverse([NotNull] this string str)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
+            GuardNull(str, nameof(str));
+
             if (str.Length < 2)
                 return str;
 
@@ -226,10 +220,9 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string Repeat([NotNull] this string str, int count)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            GuardNull(str, nameof(str));
+            GuardMin(count, 0, nameof(count));
+
             if (count == 0)
                 return string.Empty;
 
@@ -255,8 +248,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string Repeat(this char c, int count)
         {
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
+            GuardMin(count, 0, nameof(count));
+
             if (count == 0)
                 return string.Empty;
 
@@ -267,64 +260,56 @@ namespace Tyrrrz.Extensions
         /// Truncates a string leaving only the given number of characters from the start of the string
         /// </summary>
         [Pure, NotNull]
-        public static string Take([NotNull] this string str, int charCount)
+        public static string Take([NotNull] this string str, int count)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (charCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
+            GuardNull(str, nameof(str));
+            GuardMin(count, 0, nameof(count));
 
-            if (charCount == 0) return string.Empty;
-            if (charCount >= str.Length) return str;
-            return str.Substring(0, charCount);
+            if (count == 0) return string.Empty;
+            if (count >= str.Length) return str;
+            return str.Substring(0, count);
         }
 
         /// <summary>
         /// Truncates a string dropping the given number of characters from the start of the string
         /// </summary>
         [Pure, NotNull]
-        public static string Skip([NotNull] this string str, int charCount)
+        public static string Skip([NotNull] this string str, int count)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (charCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
+            GuardNull(str, nameof(str));
+            GuardMin(count, 0, nameof(count));
 
-            if (charCount == 0) return str;
-            if (charCount >= str.Length) return string.Empty;
-            return str.Substring(charCount);
+            if (count == 0) return str;
+            if (count >= str.Length) return string.Empty;
+            return str.Substring(count);
         }
 
         /// <summary>
         /// Truncates a string leaving only the given number of characters from the end of the string
         /// </summary>
         [Pure, NotNull]
-        public static string TakeLast([NotNull] this string str, int charCount)
+        public static string TakeLast([NotNull] this string str, int count)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (charCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
+            GuardNull(str, nameof(str));
+            GuardMin(count, 0, nameof(count));
 
-            if (charCount == 0) return string.Empty;
-            if (charCount >= str.Length) return str;
-            return Skip(str, str.Length - charCount);
+            if (count == 0) return string.Empty;
+            if (count >= str.Length) return str;
+            return Skip(str, str.Length - count);
         }
 
         /// <summary>
         /// Truncates a string dropping the given number of characters from the end of the string
         /// </summary>
         [Pure, NotNull]
-        public static string SkipLast([NotNull] this string str, int charCount)
+        public static string SkipLast([NotNull] this string str, int count)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (charCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(charCount), "Cannot be negative");
+            GuardNull(str, nameof(str));
+            GuardMin(count, 0, nameof(count));
 
-            if (charCount == 0) return str;
-            if (charCount >= str.Length) return string.Empty;
-            return Take(str, str.Length - charCount);
+            if (count == 0) return str;
+            if (count >= str.Length) return string.Empty;
+            return Take(str, str.Length - count);
         }
 
         /// <summary>
@@ -334,10 +319,8 @@ namespace Tyrrrz.Extensions
         public static string Except([NotNull] this string str, [NotNull] IEnumerable<string> substrings,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (substrings == null)
-                throw new ArgumentNullException(nameof(substrings));
+            GuardNull(str, nameof(str));
+            GuardNull(substrings, nameof(substrings));
 
             foreach (string sub in substrings)
             {
@@ -365,10 +348,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string Except([NotNull] this string str, [NotNull] IEnumerable<char> characters)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (characters == null)
-                throw new ArgumentNullException(nameof(characters));
+            GuardNull(str, nameof(str));
+            GuardNull(characters, nameof(characters));
 
             var charArray = characters as char[] ?? characters.ToArray();
             int pos = str.IndexOfAny(charArray);
@@ -391,30 +372,26 @@ namespace Tyrrrz.Extensions
         /// Prepends a string with the given string if it doesn't start with it already
         /// </summary>
         [Pure, NotNull]
-        public static string EnsureStartsWith([NotNull] this string str, [NotNull] string start,
+        public static string EnsureStartsWith([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (start == null)
-                throw new ArgumentNullException(nameof(start));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
-            return str.StartsWith(start, comparison) ? str : start + str;
+            return str.StartsWith(sub, comparison) ? str : sub + str;
         }
 
         /// <summary>
         /// Appends a string with the given string if it doesn't end with it already
         /// </summary>
         [Pure, NotNull]
-        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string end,
+        public static string EnsureEndsWith([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (end == null)
-                throw new ArgumentNullException(nameof(end));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
-            return str.EndsWith(end, comparison) ? str : str + end;
+            return str.EndsWith(sub, comparison) ? str : str + sub;
         }
 
         /// <summary>
@@ -424,10 +401,8 @@ namespace Tyrrrz.Extensions
         public static string SubstringUntil([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             int index = str.IndexOf(sub, comparison);
             if (index < 0) return str;
@@ -441,10 +416,8 @@ namespace Tyrrrz.Extensions
         public static string SubstringAfter([NotNull] this string str, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             int index = str.IndexOf(sub, comparison);
             if (index < 0) return string.Empty;
@@ -458,10 +431,8 @@ namespace Tyrrrz.Extensions
         public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub,
             StringComparison comparsion = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             int index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return str;
@@ -475,10 +446,8 @@ namespace Tyrrrz.Extensions
         public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub,
             StringComparison comparsion = StringComparison.Ordinal)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (sub == null)
-                throw new ArgumentNullException(nameof(sub));
+            GuardNull(str, nameof(str));
+            GuardNull(sub, nameof(sub));
 
             int index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return string.Empty;
@@ -492,8 +461,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
+            GuardNull(enumerable, nameof(enumerable));
 
             return enumerable.Any(sub.EqualsInvariant);
         }
@@ -504,8 +472,7 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
+            GuardNull(enumerable, nameof(enumerable));
 
             return enumerable.Where(IsNotBlank);
         }
@@ -516,10 +483,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params string[] separators)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (separators == null)
-                throw new ArgumentNullException(nameof(separators));
+            GuardNull(str, nameof(str));
+            GuardNull(separators, nameof(separators));
 
             return str.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
@@ -530,10 +495,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params char[] separators)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (separators == null)
-                throw new ArgumentNullException(nameof(separators));
+            GuardNull(str, nameof(str));
+            GuardNull(separators, nameof(separators));
 
             return str.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
@@ -544,10 +507,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] string separator)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (separator == null)
-                throw new ArgumentNullException(nameof(separator));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(separator, nameof(separator));
 
             return string.Join(separator, enumerable);
         }
@@ -565,10 +526,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T Parse<T>([NotNull] this string str, [NotNull] ParseDelegate<T> handler)
         {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
+            GuardNull(str, nameof(str));
+            GuardNull(handler, nameof(handler));
 
             return handler(str);
         }
@@ -580,11 +539,9 @@ namespace Tyrrrz.Extensions
         public static T ParseOrDefault<T>([CanBeNull] this string str, [NotNull] TryParseDelegate<T> handler,
             T defaultValue = default(T))
         {
-            if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
+            GuardNull(handler, nameof(handler));
 
-            T result;
-            return handler(str, out result) ? result : defaultValue;
+            return handler(str, out T result) ? result : defaultValue;
         }
     }
 }

@@ -22,10 +22,8 @@ namespace Tyrrrz.Extensions
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable,
             [NotNull] Func<T, Task> task)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(task, nameof(task));
 
             var tasks = enumerable.Select(async i => await task(i).ConfigureAwait(false));
             await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -37,10 +35,8 @@ namespace Tyrrrz.Extensions
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable,
             [NotNull] Action<T> action)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(action, nameof(action));
 
             await ParallelForEachAsync(enumerable, i => Task.Run(() => action(i))).ConfigureAwait(false);
         }
@@ -51,10 +47,8 @@ namespace Tyrrrz.Extensions
         public static async Task<IEnumerable<TResult>> ParallelSelectAsync<T, TResult>(
             [NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task<TResult>> task)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(task, nameof(task));
 
             var tasks = enumerable.Select(async i => await task(i).ConfigureAwait(false));
             return await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -66,10 +60,8 @@ namespace Tyrrrz.Extensions
         public static async Task<IEnumerable<TResult>> ParallelSelectAsync<T, TResult>(
             [NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, TResult> func)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (func == null)
-                throw new ArgumentNullException(nameof(func));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(func, nameof(func));
 
             return await ParallelSelectAsync(enumerable, i => Task.Run(() => func(i))).ConfigureAwait(false);
         }

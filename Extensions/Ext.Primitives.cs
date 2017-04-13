@@ -35,12 +35,11 @@ namespace Tyrrrz.Extensions
         /// Determines whether the object is equal to either of elements in a sequence
         /// </summary>
         [Pure]
-        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
+        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable,
+            [NotNull] IEqualityComparer<T> comparer)
         {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-            if (comparer == null)
-                throw new ArgumentNullException(nameof(comparer));
+            GuardNull(enumerable, nameof(enumerable));
+            GuardNull(comparer, nameof(comparer));
 
             foreach (var other in enumerable)
             {
@@ -68,35 +67,49 @@ namespace Tyrrrz.Extensions
         /// Determines whether the value is inside given range (inclusive)
         /// </summary>
         [Pure]
-        public static bool IsInRange(this IComparable value, IComparable min, IComparable max)
+        public static bool IsInRange<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
         {
+            GuardNull(value, nameof(value));
+            GuardNull(min, nameof(min));
+            GuardNull(max, nameof(max));
+
             return value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0;
         }
 
         /// <summary>
         /// Returns closest value in the given range (inclusive)
         /// </summary>
-        [Pure]
-        public static T Clamp<T>(this T value, T min, T max) where T : IComparable
+        [Pure, NotNull]
+        public static T Clamp<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
         {
+            GuardNull(value, nameof(value));
+            GuardNull(min, nameof(min));
+            GuardNull(max, nameof(max));
+
             return value.CompareTo(min) <= 0 ? min : value.CompareTo(max) >= 0 ? max : value;
         }
 
         /// <summary>
         /// Returns closest value above the boundary
         /// </summary>
-        [Pure]
-        public static T ClampMin<T>(this T value, T min) where T : IComparable
+        [Pure, NotNull]
+        public static T ClampMin<T>([NotNull] this T value, [NotNull] T min) where T : IComparable
         {
+            GuardNull(value, nameof(value));
+            GuardNull(min, nameof(min));
+
             return value.CompareTo(min) <= 0 ? min : value;
         }
 
         /// <summary>
         /// Returns closest value below the boundary
         /// </summary>
-        [Pure]
-        public static T ClampMax<T>(this T value, T max) where T : IComparable
+        [Pure, NotNull]
+        public static T ClampMax<T>([NotNull] this T value, [NotNull] T max) where T : IComparable
         {
+            GuardNull(value, nameof(value));
+            GuardNull(max, nameof(max));
+
             return value.CompareTo(max) >= 0 ? max : value;
         }
 
