@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tyrrrz.Extensions.Tests
@@ -6,43 +7,83 @@ namespace Tyrrrz.Extensions.Tests
     [TestClass]
     public class XmlTests
     {
+        private XElement GetDummyXml()
+        {
+            var ns = XNamespace.Get("http://test.name.space");
+            var xml =
+                new XElement("root",
+                    new XElement("elem1", "hello world", new XAttribute("attr1", "hello universe")),
+                    new XElement(ns + "elem2", "bye world", new XAttribute(ns + "attr2", "bye universe")),
+                    new XElement("elem3", new XElement("elem3c"), new XElement("elem3c"))
+                );
+
+            return xml;
+        }
+
         [TestMethod]
         public void StripNamespacesTest()
         {
-            var ns = XNamespace.Get("http://schemas.domain.com/orders");
-            var xml =
-                new XElement(ns + "order",
-                    new XElement(ns + "customer", "Foo", new XAttribute(ns + "hello", "world")),
-                    new XElement("purchases",
-                        new XElement(ns + "purchase", "Unicycle", new XAttribute("price", "100.00")),
-                        new XElement("purchase", "Bicycle"),
-                        new XElement(ns + "purchase", "Tricycle",
-                            new XAttribute("price", "300.00"),
-                            new XAttribute(XNamespace.Xml.GetName("space"), "preserve")
-                        )
-                    )
-                );
+            var xml = GetDummyXml();
 
             var stripped = xml.StripNamespaces();
-            var xCustomer = stripped.Element("customer");
-            var xHello = xCustomer?.Attribute("hello");
+            var element = stripped.Element("elem2");
+            var attribute = element?.Attribute("attr2");
 
             Assert.AreNotSame(xml, stripped);
-            Assert.IsNotNull(xCustomer);
-            Assert.IsNotNull(xHello);
-            Assert.AreEqual("world", xHello.Value);
+            Assert.IsNotNull(element);
+            Assert.IsNotNull(attribute);
         }
 
         [TestMethod]
         public void DescendantTest()
         {
-            var xml = new XElement("root",
-                new XElement("qwe"), new XElement("test",
-                    new XElement("asd")));
-            var desc = xml.Descendant("asd");
+            var xml = GetDummyXml();
 
-            Assert.IsNotNull(desc);
-            Assert.AreEqual("asd", desc.Name.LocalName);
+            var descendant = xml.Descendant("elem3c");
+            var descendantNotExisting = xml.Descendant("qwerty");
+
+            Assert.IsNotNull(descendant);
+            Assert.AreEqual("elem3c", descendant.Name.LocalName);
+            Assert.IsNull(descendantNotExisting);
+        }
+
+        [TestMethod]
+        public void DescendantStrictTest()
+        {
+            var xml = GetDummyXml();
+
+            var descendant = xml.DescendantStrict("elem3c");
+
+            Assert.IsNotNull(descendant);
+            Assert.AreEqual("elem3c", descendant.Name.LocalName);
+
+            Assert.ThrowsException<KeyNotFoundException>(() => xml.DescendantStrict("qwerty"));
+        }
+
+        [TestMethod]
+        public void ElementStrictTest()
+        {
+            var xml = GetDummyXml();
+
+            var element = xml.ElementStrict("elem1");
+
+            Assert.IsNotNull(element);
+            Assert.AreEqual("elem1", element.Name.LocalName);
+
+            Assert.ThrowsException<KeyNotFoundException>(() => xml.ElementStrict("qwerty"));
+        }
+
+        [TestMethod]
+        public void AttributeStrictTest()
+        {
+            var xml = GetDummyXml();
+
+            var element = xml.Element("elem1");
+            var attribute = element?.AttributeStrict("attr1");
+
+            Assert.IsNotNull(attribute);
+
+            Assert.ThrowsException<KeyNotFoundException>(() => element.AttributeStrict("qwerty"));
         }
     }
 }

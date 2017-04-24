@@ -408,8 +408,7 @@ namespace Tyrrrz.Extensions
         {
             GuardNull(dic, nameof(dic));
 
-            TValue result;
-            return dic.TryGetValue(key, out result) ? result : defaultValue;
+            return dic.TryGetValue(key, out TValue result) ? result : defaultValue;
         }
 
         /// <summary>
