@@ -16,12 +16,12 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts byte array to string using UTF8 encoding
+        /// Converts byte array to string using unicode encoding
         /// </summary>
         [Pure]
         public static string GetString(this byte[] data)
         {
-            return GetString(data, Encoding.UTF8);
+            return GetString(data, Encoding.Unicode);
         }
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts string to byte array using UTF8 encoding
+        /// Converts string to byte array using unicode encoding
         /// </summary>
         [Pure]
         public static byte[] GetBytes(this string str)
         {
-            return GetBytes(str, Encoding.UTF8);
+            return GetBytes(str, Encoding.Unicode);
         }
 
         /// <summary>

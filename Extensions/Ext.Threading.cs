@@ -44,6 +44,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Executes a task asynchronously on all elements of a sequence in parallel and returns a sequence of results
         /// </summary>
+        [Pure]
         public static async Task<IEnumerable<TResult>> ParallelSelectAsync<T, TResult>(
             [NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, Task<TResult>> task)
         {
@@ -57,6 +58,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Executes a function asynchronously on all elements of a sequence in parallel and returns a sequence of results
         /// </summary>
+        [Pure]
         public static async Task<IEnumerable<TResult>> ParallelSelectAsync<T, TResult>(
             [NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, TResult> func)
         {

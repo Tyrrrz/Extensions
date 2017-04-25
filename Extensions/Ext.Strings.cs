@@ -125,7 +125,6 @@ namespace Tyrrrz.Extensions
         /// Returns an empty string if the given string is null, otherwise returns the same string
         /// </summary>
         [Pure, NotNull]
-        [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
         public static string EmptyIfNull([CanBeNull] this string str)
         {
             return str ?? string.Empty;
@@ -135,7 +134,6 @@ namespace Tyrrrz.Extensions
         /// Returns an empty string if the given string is either null, empty or whitespace, otherwise returns the same string
         /// </summary>
         [Pure, NotNull]
-        [ContractAnnotation("str:null => notnull; str:notnull => notnull")]
         public static string EmptyIfBlank([CanBeNull] this string str)
         {
             return IsBlank(str) ? string.Empty : str;
@@ -205,7 +203,7 @@ namespace Tyrrrz.Extensions
         {
             GuardNull(str, nameof(str));
 
-            if (str.Length < 2)
+            if (str.Length <= 1)
                 return str;
 
             var sb = new StringBuilder(str.Length);
@@ -469,7 +467,7 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Discards blank strings from a sequence
         /// </summary>
-        [Pure, NotNull]
+        [Pure, NotNull, ItemNotNull]
         public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
         {
             GuardNull(enumerable, nameof(enumerable));
@@ -512,13 +510,6 @@ namespace Tyrrrz.Extensions
 
             return string.Join(separator, enumerable);
         }
-
-        /// <summary>
-        /// Returns a string formed by joining elements of a sequence using the given separator
-        /// </summary>
-        [Pure, NotNull]
-        public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, char separator)
-            => JoinToString(enumerable, separator.ToString());
 
         /// <summary>
         /// Parses the string into an object of given type using a <see cref="ParseDelegate{T}"/> handler
