@@ -82,6 +82,7 @@ namespace Tyrrrz.Extensions.Tests
             var attribute = element?.AttributeStrict("attr1");
 
             Assert.IsNotNull(attribute);
+            Assert.AreEqual("attr1", attribute.Name.LocalName);
 
             Assert.ThrowsException<KeyNotFoundException>(() => element.AttributeStrict("qwerty"));
         }

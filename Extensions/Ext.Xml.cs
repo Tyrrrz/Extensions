@@ -8,7 +8,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Strips namespaces from elements and their attributes recursively, starting from the given element
+        /// Strips namespaces from elements and their attributes recursively
         /// </summary>
         [Pure, NotNull]
         public static XElement StripNamespaces([NotNull] this XElement element)
@@ -32,7 +32,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Gets the first descendant with the specified name or null if none found
+        /// Gets the first descendant with the specified name or null if not found
         /// </summary>
         [Pure, CanBeNull]
         public static XElement Descendant([NotNull] this XElement element, [NotNull] XName name)
