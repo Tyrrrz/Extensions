@@ -68,23 +68,23 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns distinct elements from a sequence by using a selector delegate to compare values
+        /// Returns distinct elements from a sequence based on a key
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> enumerable,
-            [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
+            [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> keyComparer)
         {
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(keySelector, nameof(keySelector));
-            GuardNull(comparer, nameof(comparer));
+            GuardNull(keyComparer, nameof(keyComparer));
 
-            bool Compare(T x, T y) => comparer.Equals(keySelector(x), keySelector(y));
+            bool Compare(T x, T y) => keyComparer.Equals(keySelector(x), keySelector(y));
             int GetHash(T obj) => keySelector(obj).GetHashCode();
             return enumerable.Distinct(new DelegateEqualityComparer<T>(Compare, GetHash));
         }
 
         /// <summary>
-        /// Returns distinct elements from a sequence by using a selector delegate to compare values
+        /// Returns distinct elements from a sequence based on a key
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
@@ -202,7 +202,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Invokes a delegate on every member of a sequence
+        /// Invokes a delegate on each member of a sequence
         /// </summary>
         public static void ForEach<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)
         {
@@ -231,30 +231,6 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
             => ToHashSet(enumerable, EqualityComparer<T>.Default);
-
-        /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence, with the given selector determining distinct elements
-        /// </summary>
-        [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T, TKey>([NotNull] this IEnumerable<T> enumerable,
-            [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> comparer)
-        {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(keySelector, nameof(keySelector));
-            GuardNull(comparer, nameof(comparer));
-
-            bool Compare(T x, T y) => comparer.Equals(keySelector(x), keySelector(y));
-            int GetHash(T obj) => keySelector(obj).GetHashCode();
-            return new HashSet<T>(enumerable, new DelegateEqualityComparer<T>(Compare, GetHash));
-        }
-
-        /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence, with the given selector to determine distinct elements
-        /// </summary>
-        [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T, TKey>([NotNull] this IEnumerable<T> enumerable,
-                [NotNull] Func<T, TKey> keySelector)
-            => ToHashSet(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
         /// Adds a new item to a collection if it wasn't there already
@@ -335,13 +311,15 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(comparer, nameof(comparer));
 
-            var asList = enumerable as IList<T> ?? enumerable.ToArray();
-            for (int i = asList.Count - 1; i >= 0; i--)
+            int index = -1;
+            int i = 0;
+            foreach (var item in enumerable)
             {
-                if (comparer.Equals(asList[i], element))
-                    return i;
+                if (comparer.Equals(item, element))
+                    index = i;
+                i++;
             }
-            return -1;
+            return index;
         }
 
         /// <summary>
@@ -362,10 +340,56 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(predicate, nameof(predicate));
 
-            var asList = enumerable as IList<T> ?? enumerable.ToArray();
-            for (int i = asList.Count - 1; i >= 0; i--)
+            int index = -1;
+            int i = 0;
+            foreach (var item in enumerable)
             {
-                if (predicate(asList[i]))
+                if (predicate(item))
+                    index = i;
+                i++;
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// Searches for the last occurrence of an item and returns its index
+        /// <returns>Item index if found, otherwise -1</returns>
+        /// </summary>
+        [Pure]
+        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element, [NotNull] IEqualityComparer<T> comparer)
+        {
+            GuardNull(list, nameof(list));
+            GuardNull(comparer, nameof(comparer));
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (comparer.Equals(list[i], element))
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Searches for the last occurrence of an item and returns its index
+        /// <returns>Item index if found, otherwise -1</returns>
+        /// </summary>
+        [Pure]
+        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element)
+            => LastIndexOf(list, element, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Searches for the last occurrence of an item and returns its index
+        /// <returns>Item index if found, otherwise -1</returns>
+        /// </summary>
+        [Pure]
+        public static int LastIndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
+        {
+            GuardNull(list, nameof(list));
+            GuardNull(predicate, nameof(predicate));
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (predicate(list[i]))
                     return i;
             }
             return -1;

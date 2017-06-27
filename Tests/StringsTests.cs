@@ -54,35 +54,6 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void EqualsInvariantTest()
-        {
-            Assert.IsTrue("asd".EqualsInvariant("asd"));
-            Assert.IsTrue("asd".EqualsInvariant(" asd"));
-            Assert.IsTrue("asd".EqualsInvariant("ASD"));
-            Assert.IsTrue("asd".EqualsInvariant("ASD  "));
-            Assert.IsTrue("".EqualsInvariant(""));
-            Assert.IsFalse("asd".EqualsInvariant("qwe"));
-        }
-
-        [TestMethod]
-        public void ContainsInvariantTest()
-        {
-            Assert.IsTrue("qwe asd zxc".ContainsInvariant("asd"));
-            Assert.IsTrue("qwe ASD zxc".ContainsInvariant("asd"));
-            Assert.IsTrue("asd".ContainsInvariant("ASD"));
-            Assert.IsTrue("asd".ContainsInvariant("ASD  "));
-            Assert.IsFalse("asd 123 ggg".ContainsInvariant("qwe"));
-        }
-
-        [TestMethod]
-        public void ContainsWordTest()
-        {
-            Assert.IsTrue("qwe asd zxc".ContainsWord("asd"));
-            Assert.IsTrue("qwe asd zxc".ContainsWord("asd zxc"));
-            Assert.IsFalse("qwe asd zxc".ContainsWord("qw"));
-        }
-
-        [TestMethod]
         public void NullIfBlankTest()
         {
             Assert.IsNull("".NullIfBlank());
@@ -323,16 +294,6 @@ namespace Tyrrrz.Extensions.Tests
             string sSubstringAfterLast = s.SubstringAfterLast("==");
 
             Assert.AreEqual("cvb", sSubstringAfterLast);
-        }
-
-        [TestMethod]
-        public void EnumerableContainsInvariantTest()
-        {
-            var a = new[] {"asd", "ASD", "xxx", "qwe"};
-
-            Assert.IsTrue(a.ContainsInvariant("asd"));
-            Assert.IsTrue(a.ContainsInvariant("XxX"));
-            Assert.IsFalse(a.ContainsInvariant("123"));
         }
 
         [TestMethod]

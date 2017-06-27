@@ -63,55 +63,6 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the strings are equal.
-        /// Ignores casing and leading/trailing whitespace.
-        /// </summary>
-        [Pure]
-        public static bool EqualsInvariant([CanBeNull] this string a, [CanBeNull] string b)
-        {
-            a = a?.Trim();
-            b = b?.Trim();
-            return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Determines whether one string contains another.
-        /// Ignores casing and leading/trailing whitespace.
-        /// </summary>
-        [Pure]
-        public static bool ContainsInvariant([NotNull] this string str, [NotNull] string sub)
-        {
-            GuardNull(str, nameof(str));
-            GuardNull(sub, nameof(sub));
-
-            str = str.Trim();
-            sub = sub.Trim();
-            return str.IndexOf(sub, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        /// <summary>
-        /// Determines whether one string contains another string, surrounded by word boundaries
-        /// </summary>
-        [Pure]
-        public static bool ContainsWord([NotNull] this string str, [NotNull] string word,
-            StringComparison comparison = StringComparison.Ordinal)
-        {
-            GuardNull(str, nameof(str));
-            GuardNull(word, nameof(word));
-
-            if (string.Equals(str, word, comparison)) return true;
-
-            var regexOptions = RegexOptions.None;
-            if (comparison == StringComparison.CurrentCultureIgnoreCase ||
-                comparison == StringComparison.OrdinalIgnoreCase)
-                regexOptions |= RegexOptions.IgnoreCase;
-            if (comparison == StringComparison.Ordinal)
-                regexOptions |= RegexOptions.CultureInvariant;
-
-            return Regex.IsMatch(str, $@"\b({Regex.Escape(word)})\b", regexOptions);
-        }
-
-        /// <summary>
         /// Returns null if the given string is either null, empty or whitespace, otherwise returns the same string
         /// </summary>
         [Pure, CanBeNull]
@@ -367,7 +318,7 @@ namespace Tyrrrz.Extensions
             => Except(str, (IEnumerable<char>) characters);
 
         /// <summary>
-        /// Prepends a string with the given string if it doesn't start with it already
+        /// Prepends a string if the given string doesn't start with it already
         /// </summary>
         [Pure, NotNull]
         public static string EnsureStartsWith([NotNull] this string str, [NotNull] string sub,
@@ -380,7 +331,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Appends a string with the given string if it doesn't end with it already
+        /// Appends a string if the given string doesn't end with it already
         /// </summary>
         [Pure, NotNull]
         public static string EnsureEndsWith([NotNull] this string str, [NotNull] string sub,
@@ -450,18 +401,6 @@ namespace Tyrrrz.Extensions
             int index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
-        }
-
-        /// <summary>
-        /// Determines whether the string enumerable contains a string.
-        /// Ignores casing and leading/trailing whitespace.
-        /// </summary>
-        [Pure]
-        public static bool ContainsInvariant([NotNull] this IEnumerable<string> enumerable, [CanBeNull] string sub)
-        {
-            GuardNull(enumerable, nameof(enumerable));
-
-            return enumerable.Any(sub.EqualsInvariant);
         }
 
         /// <summary>

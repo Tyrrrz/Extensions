@@ -7,17 +7,6 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Returns true if the enum value has all of the given flags set
-        /// </summary>
-        [Pure]
-        public static bool HasFlags([NotNull] this Enum enumValue, [ItemNotNull] params Enum[] flags)
-        {
-            GuardNull(enumValue, nameof(enumValue));
-
-            return flags.All(enumValue.HasFlag);
-        }
-
-        /// <summary>
         /// Parses string to the given enum
         /// </summary>
         [Pure]

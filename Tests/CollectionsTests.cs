@@ -197,10 +197,8 @@ namespace Tyrrrz.Extensions.Tests
             var a = new[] {"asd", "q", "we", "ASD", "WE", "we"};
 
             var aHashSet = a.ToHashSet().ToArray();
-            var aHashSetSelector = a.ToHashSet(i => i.Length).ToArray();
 
             CollectionAssert.AreEqual(new[] {"asd", "q", "we", "ASD", "WE"}, aHashSet);
-            CollectionAssert.AreEqual(new[] {"asd", "q", "we"}, aHashSetSelector);
         }
 
         [TestMethod]

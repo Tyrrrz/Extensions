@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
+using Tyrrrz.Extensions.Exceptions;
 
 namespace Tyrrrz.Extensions
 {
@@ -52,7 +53,7 @@ namespace Tyrrrz.Extensions
             GuardNull(element, nameof(element));
             GuardNull(name, nameof(name));
 
-            return Descendant(element, name) ?? throw new KeyNotFoundException($"Descendant [{name}] not found");
+            return Descendant(element, name) ?? throw new XmlElementNotFoundException(name);
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Tyrrrz.Extensions
             GuardNull(element, nameof(element));
             GuardNull(name, nameof(name));
 
-            return element.Element(name) ?? throw new KeyNotFoundException($"Element [{name}] not found");
+            return element.Element(name) ?? throw new XmlElementNotFoundException(name);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Tyrrrz.Extensions
             GuardNull(element, nameof(element));
             GuardNull(name, nameof(name));
 
-            return element.Attribute(name) ?? throw new KeyNotFoundException($"Attribute [{name}] not found");
+            return element.Attribute(name) ?? throw new XmlElementNotFoundException(name);
         }
     }
 }

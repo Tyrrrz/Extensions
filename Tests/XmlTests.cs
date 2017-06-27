@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tyrrrz.Extensions.Exceptions;
 
 namespace Tyrrrz.Extensions.Tests
 {
@@ -57,7 +57,7 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsNotNull(descendant);
             Assert.AreEqual("elem3c", descendant.Name.LocalName);
 
-            Assert.ThrowsException<KeyNotFoundException>(() => xml.DescendantStrict("qwerty"));
+            Assert.ThrowsException<XmlElementNotFoundException>(() => xml.DescendantStrict("qwerty"));
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsNotNull(element);
             Assert.AreEqual("elem1", element.Name.LocalName);
 
-            Assert.ThrowsException<KeyNotFoundException>(() => xml.ElementStrict("qwerty"));
+            Assert.ThrowsException<XmlElementNotFoundException>(() => xml.ElementStrict("qwerty"));
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace Tyrrrz.Extensions.Tests
             Assert.IsNotNull(attribute);
             Assert.AreEqual("attr1", attribute.Name.LocalName);
 
-            Assert.ThrowsException<KeyNotFoundException>(() => element.AttributeStrict("qwerty"));
+            Assert.ThrowsException<XmlElementNotFoundException>(() => element.AttributeStrict("qwerty"));
         }
     }
 }
