@@ -2,6 +2,6 @@
 
 My extensions for rapid development
 
-**Download:**
+## Download
 
 - Using nuget: `Install-Package Tyrrrz.Extensions`
