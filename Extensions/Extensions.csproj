@@ -2,17 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
-    <AssemblyName>Tyrrrz.Extensions</AssemblyName>
-    <RootNamespace>Tyrrrz.Extensions</RootNamespace>
-    <PackageId>Tyrrrz.Extensions</PackageId>
-    <Product>Tyrrrz Extensions Library</Product>
-    <Description>Extensions for rapid development</Description>
-    <AssemblyVersion>1.4</AssemblyVersion>
-    <PackageVersion>$(AssemblyVersion)</PackageVersion>
-    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>1.4</Version>
     <Company>Tyrrrz</Company>
     <Authors>$(Company)</Authors>
-    <Copyright>Copyright (C) Alexey 'Tyrrrz' Golub 2015-2017</Copyright>
+    <Description>Extensions for rapid development</Description>
+    <Copyright>Copyright (C) 2015-2017 Alexey Golub</Copyright>
     <PackageProjectUrl>https://github.com/Tyrrrz/Extensions</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Tyrrrz/Extensions/master/License.txt</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
