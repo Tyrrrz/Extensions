@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tyrrrz.Extensions;
 
-namespace Tyrrrz.Extensions.Tests
+namespace Tests
 {
     [TestClass]
     public class UriTests

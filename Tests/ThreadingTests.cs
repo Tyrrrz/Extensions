@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tyrrrz.Extensions;
 
-namespace Tyrrrz.Extensions.Tests
+namespace Tests
 {
     [TestClass]
     public class ThreadingTests
@@ -25,7 +26,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestMethod]
         public async Task ParallelSelectAsyncTest()
         {
-            var a = new[] { 1, 5, 9, -5, 11 };
+            var a = new[] {1, 5, 9, -5, 11};
 
             var aStr = (await a.ParallelSelectAsync(i => i.ToString())).ToArray();
 

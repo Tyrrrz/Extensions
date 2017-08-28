@@ -1,8 +1,9 @@
 ﻿using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tyrrrz.Extensions;
 using Tyrrrz.Extensions.Exceptions;
 
-namespace Tyrrrz.Extensions.Tests
+namespace Tests
 {
     [TestClass]
     public class XmlTests
