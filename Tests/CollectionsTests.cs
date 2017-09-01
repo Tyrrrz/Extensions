@@ -83,12 +83,12 @@ namespace Tests
             var b = new[] {"xxx", "qwe", "asd"};
             var c = new[] {"ddd"};
 
-            int aHash = a.SequenceHashCode();
-            int aHashIgnoreOrder = a.SequenceHashCode(true);
-            int bHash = b.SequenceHashCode();
-            int bHashIgnoreOrder = b.SequenceHashCode(true);
-            int cHash = c.SequenceHashCode();
-            int cHashIgnoreOrder = c.SequenceHashCode(true);
+            var aHash = a.SequenceHashCode();
+            var aHashIgnoreOrder = a.SequenceHashCode(true);
+            var bHash = b.SequenceHashCode();
+            var bHashIgnoreOrder = b.SequenceHashCode(true);
+            var cHash = c.SequenceHashCode();
+            var cHashIgnoreOrder = c.SequenceHashCode(true);
 
             Assert.AreNotEqual(aHash, bHash);
             Assert.AreNotEqual(aHash, cHash);
@@ -186,7 +186,7 @@ namespace Tests
         public void ForEachTest()
         {
             var a = new[] {"asd", "qwe", "dfg"};
-            int i = 0;
+            var i = 0;
 
             a.ForEach(s => Assert.AreEqual(s, a[i++]));
             Assert.AreEqual(3, i);
@@ -207,8 +207,8 @@ namespace Tests
         {
             var a = new List<string> {"asd", "qwe", "dfg", "DFG"};
 
-            bool aAddIfDistinct = a.AddIfDistinct("xxx");
-            bool aAddIfDistinctExists = a.AddIfDistinct("asd");
+            var aAddIfDistinct = a.AddIfDistinct("xxx");
+            var aAddIfDistinctExists = a.AddIfDistinct("asd");
 
             Assert.IsTrue(aAddIfDistinct);
             CollectionAssert.AreEqual(new[] {"asd", "qwe", "dfg", "DFG", "xxx"}, a);
@@ -221,9 +221,9 @@ namespace Tests
         {
             var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD"};
 
-            int aIndexOf = a.IndexOf("qwe");
-            int aIndexOfNonExisting = a.IndexOf("qqq");
-            int aIndexOfPredicate = a.IndexOf(s => s == "ASD");
+            var aIndexOf = a.IndexOf("qwe");
+            var aIndexOfNonExisting = a.IndexOf("qqq");
+            var aIndexOfPredicate = a.IndexOf(s => s == "ASD");
 
             Assert.AreEqual(1, aIndexOf);
             Assert.AreEqual(-1, aIndexOfNonExisting);
@@ -235,9 +235,9 @@ namespace Tests
         {
             var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE", "qwe", "ASD"};
 
-            int aLastIndexOf = a.LastIndexOf("qwe");
-            int aLastIndexOfNonExisting = a.LastIndexOf("qqq");
-            int aLastIndexOfPredicate = a.LastIndexOf(s => s == "ASD");
+            var aLastIndexOf = a.LastIndexOf("qwe");
+            var aLastIndexOfNonExisting = a.LastIndexOf("qqq");
+            var aLastIndexOfPredicate = a.LastIndexOf(s => s == "ASD");
 
             Assert.AreEqual(5, aLastIndexOf);
             Assert.AreEqual(-1, aLastIndexOfNonExisting);
@@ -250,10 +250,10 @@ namespace Tests
             var a = new[] {"asd", "qwe", "dfg", "ASD", "QWE"};
             var b = new[,] {{"asd", "qwe", "qqq"}, {"dfg", "zzz", "www"}};
 
-            int aLastIndex = a.LastIndex();
-            int bLastIndex = b.LastIndex();
-            int bLastIndexDimension = b.LastIndex(1);
-            int bLastIndexDimensionNonExisting = b.LastIndex(1337);
+            var aLastIndex = a.LastIndex();
+            var bLastIndex = b.LastIndex();
+            var bLastIndexDimension = b.LastIndex(1);
+            var bLastIndexDimensionNonExisting = b.LastIndex(1337);
 
             Assert.AreEqual(4, aLastIndex);
             Assert.AreEqual(1, bLastIndex);
@@ -270,8 +270,8 @@ namespace Tests
                 {"zxc", "bnm"}
             };
 
-            string aGetOrDefault = a.GetOrDefault("zxc");
-            string aGetOrDefaultNonExisting = a.GetOrDefault("qoeo");
+            var aGetOrDefault = a.GetOrDefault("zxc");
+            var aGetOrDefaultNonExisting = a.GetOrDefault("qoeo");
 
             Assert.AreEqual("bnm", aGetOrDefault);
             Assert.AreEqual(null, aGetOrDefaultNonExisting);
@@ -321,11 +321,11 @@ namespace Tests
                 {"zxc", "bnm"}
             };
 
-            bool dSetOrAddExisting = d.SetOrAdd("zxc", "ooo");
+            var dSetOrAddExisting = d.SetOrAdd("zxc", "ooo");
             Assert.IsTrue(dSetOrAddExisting);
             CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}}, d);
 
-            bool dSetOrAddNonExisting = d.SetOrAdd("123", "456");
+            var dSetOrAddNonExisting = d.SetOrAdd("123", "456");
             Assert.IsFalse(dSetOrAddNonExisting);
             CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}},
                 d);

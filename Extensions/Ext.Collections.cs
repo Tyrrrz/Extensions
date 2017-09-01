@@ -103,8 +103,8 @@ namespace Tyrrrz.Extensions
             if (ignoreOrder)
                 hashes = hashes.OrderBy(i => i);
 
-            int result = 19;
-            foreach (int hash in hashes)
+            var result = 19;
+            foreach (var hash in hashes)
             {
                 unchecked
                 {
@@ -154,7 +154,7 @@ namespace Tyrrrz.Extensions
                 return Enumerable.Empty<T>();
 
             var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
-            int skip = asCol.Count - count;
+            var skip = asCol.Count - count;
             if (skip < 0) skip = 0;
             return asCol.Skip(skip);
         }
@@ -172,7 +172,7 @@ namespace Tyrrrz.Extensions
                 return enumerable;
 
             var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
-            int take = asCol.Count - count;
+            var take = asCol.Count - count;
             if (take < 0) take = 0;
             return asCol.Take(take);
         }
@@ -241,7 +241,7 @@ namespace Tyrrrz.Extensions
             GuardNull(collection, nameof(collection));
             GuardNull(comparer, nameof(comparer));
 
-            bool isDistinct = !collection.Contains(obj, comparer);
+            var isDistinct = !collection.Contains(obj, comparer);
             if (isDistinct) collection.Add(obj);
             return isDistinct;
         }
@@ -263,7 +263,7 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(comparer, nameof(comparer));
 
-            int i = 0;
+            var i = 0;
             foreach (var item in enumerable)
             {
                 if (comparer.Equals(item, element))
@@ -291,7 +291,7 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(predicate, nameof(predicate));
 
-            int i = 0;
+            var i = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item))
@@ -311,8 +311,8 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(comparer, nameof(comparer));
 
-            int index = -1;
-            int i = 0;
+            var index = -1;
+            var i = 0;
             foreach (var item in enumerable)
             {
                 if (comparer.Equals(item, element))
@@ -340,8 +340,8 @@ namespace Tyrrrz.Extensions
             GuardNull(enumerable, nameof(enumerable));
             GuardNull(predicate, nameof(predicate));
 
-            int index = -1;
-            int i = 0;
+            var index = -1;
+            var i = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item))
@@ -361,7 +361,7 @@ namespace Tyrrrz.Extensions
             GuardNull(list, nameof(list));
             GuardNull(comparer, nameof(comparer));
 
-            for (int i = list.Count - 1; i >= 0; i--)
+            for (var i = list.Count - 1; i >= 0; i--)
             {
                 if (comparer.Equals(list[i], element))
                     return i;
@@ -387,7 +387,7 @@ namespace Tyrrrz.Extensions
             GuardNull(list, nameof(list));
             GuardNull(predicate, nameof(predicate));
 
-            for (int i = list.Count - 1; i >= 0; i--)
+            for (var i = list.Count - 1; i >= 0; i--)
             {
                 if (predicate(list[i]))
                     return i;
@@ -447,7 +447,7 @@ namespace Tyrrrz.Extensions
             if (count == 0)
                 return;
 
-            for (int i = startIndex; i < startIndex + count; i++)
+            for (var i = startIndex; i < startIndex + count; i++)
                 list[i] = value;
         }
 

@@ -96,10 +96,10 @@ namespace Tyrrrz.Extensions
             else
             {
                 // See if there are other parameters
-                bool hasOtherParams = uri.IndexOf('?') >= 0;
+                var hasOtherParams = uri.IndexOf('?') >= 0;
 
                 // Prepend either & or ? depending on that
-                char separator = hasOtherParams ? '&' : '?';
+                var separator = hasOtherParams ? '&' : '?';
 
                 // Assemble new query string
                 return uri + separator + key + '=' + value;

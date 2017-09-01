@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
@@ -158,7 +157,7 @@ namespace Tyrrrz.Extensions
                 return str;
 
             var sb = new StringBuilder(str.Length);
-            for (int i = str.Length - 1; i >= 0; i--)
+            for (var i = str.Length - 1; i >= 0; i--)
                 sb.Append(str[i]);
             return sb.ToString();
         }
@@ -185,7 +184,7 @@ namespace Tyrrrz.Extensions
 
             // StringBuilder for count >= 4
             var sb = new StringBuilder(str, str.Length*count);
-            for (int i = 2; i <= count; i++)
+            for (var i = 2; i <= count; i++)
                 sb.Append(str);
 
             return sb.ToString();
@@ -271,9 +270,9 @@ namespace Tyrrrz.Extensions
             GuardNull(str, nameof(str));
             GuardNull(substrings, nameof(substrings));
 
-            foreach (string sub in substrings)
+            foreach (var sub in substrings)
             {
-                int index = str.IndexOf(sub, comparison);
+                var index = str.IndexOf(sub, comparison);
                 while (index >= 0)
                 {
                     str = str.Remove(index, sub.Length);
@@ -301,7 +300,7 @@ namespace Tyrrrz.Extensions
             GuardNull(characters, nameof(characters));
 
             var charArray = characters as char[] ?? characters.ToArray();
-            int pos = str.IndexOfAny(charArray);
+            var pos = str.IndexOfAny(charArray);
             while (pos >= 0)
             {
                 str = str.Remove(pos, 1);
@@ -353,7 +352,7 @@ namespace Tyrrrz.Extensions
             GuardNull(str, nameof(str));
             GuardNull(sub, nameof(sub));
 
-            int index = str.IndexOf(sub, comparison);
+            var index = str.IndexOf(sub, comparison);
             if (index < 0) return str;
             return str.Substring(0, index);
         }
@@ -368,7 +367,7 @@ namespace Tyrrrz.Extensions
             GuardNull(str, nameof(str));
             GuardNull(sub, nameof(sub));
 
-            int index = str.IndexOf(sub, comparison);
+            var index = str.IndexOf(sub, comparison);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
@@ -383,7 +382,7 @@ namespace Tyrrrz.Extensions
             GuardNull(str, nameof(str));
             GuardNull(sub, nameof(sub));
 
-            int index = str.LastIndexOf(sub, comparsion);
+            var index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return str;
             return str.Substring(0, index);
         }
@@ -398,7 +397,7 @@ namespace Tyrrrz.Extensions
             GuardNull(str, nameof(str));
             GuardNull(sub, nameof(sub));
 
-            int index = str.LastIndexOf(sub, comparsion);
+            var index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return string.Empty;
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }

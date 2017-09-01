@@ -13,7 +13,7 @@ namespace Tests
         {
             var a = new[] {1, 5, 9, -5, 11};
 
-            int aSum = 0;
+            var aSum = 0;
 
             await a.ParallelForEachAsync(i =>
             {

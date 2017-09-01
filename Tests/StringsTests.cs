@@ -90,13 +90,13 @@ namespace Tests
         [TestMethod]
         public void TrimStartTest()
         {
-            string a = "...Hello...";
-            string b = ".......!Hello!.......";
-            string c = "Hello.";
+            var a = "...Hello...";
+            var b = ".......!Hello!.......";
+            var c = "Hello.";
 
-            string aTrimStart = a.TrimStart("...");
-            string bTrimStart = b.TrimStart("...");
-            string cTrimStart = c.TrimStart("...");
+            var aTrimStart = a.TrimStart("...");
+            var bTrimStart = b.TrimStart("...");
+            var cTrimStart = c.TrimStart("...");
 
             Assert.AreEqual("Hello...", aTrimStart);
             Assert.AreEqual(".!Hello!.......", bTrimStart);
@@ -106,13 +106,13 @@ namespace Tests
         [TestMethod]
         public void TrimEndTest()
         {
-            string a = "...Hello...";
-            string b = ".......!Hello!.......";
-            string c = "Hello.";
+            var a = "...Hello...";
+            var b = ".......!Hello!.......";
+            var c = "Hello.";
 
-            string aTrimEnd = a.TrimEnd("...");
-            string bTrimEnd = b.TrimEnd("...");
-            string cTrimEnd = c.TrimEnd("...");
+            var aTrimEnd = a.TrimEnd("...");
+            var bTrimEnd = b.TrimEnd("...");
+            var cTrimEnd = c.TrimEnd("...");
 
             Assert.AreEqual("...Hello", aTrimEnd);
             Assert.AreEqual(".......!Hello!.", bTrimEnd);
@@ -122,13 +122,13 @@ namespace Tests
         [TestMethod]
         public void TrimTest()
         {
-            string a = "...Hello...";
-            string b = ".......!Hello!.......";
-            string c = "Hello.";
+            var a = "...Hello...";
+            var b = ".......!Hello!.......";
+            var c = "Hello.";
 
-            string aTrim = a.Trim("...");
-            string bTrim = b.Trim("...");
-            string cTrim = c.Trim("...");
+            var aTrim = a.Trim("...");
+            var bTrim = b.Trim("...");
+            var cTrim = c.Trim("...");
 
             Assert.AreEqual("Hello", aTrim);
             Assert.AreEqual(".!Hello!.", bTrim);
@@ -138,13 +138,13 @@ namespace Tests
         [TestMethod]
         public void ReverseTest()
         {
-            string a = "Hello World";
-            string b = "H";
-            string c = "";
+            var a = "Hello World";
+            var b = "H";
+            var c = "";
 
-            string aReverse = a.Reverse();
-            string bReverse = b.Reverse();
-            string cReverse = c.Reverse();
+            var aReverse = a.Reverse();
+            var bReverse = b.Reverse();
+            var cReverse = c.Reverse();
 
             Assert.AreEqual("dlroW olleH", aReverse);
             Assert.AreEqual("H", bReverse);
@@ -154,10 +154,10 @@ namespace Tests
         [TestMethod]
         public void RepeatTest()
         {
-            string repeat = "qwe".Repeat(2);
-            string repeatChar = 'a'.Repeat(3);
-            string repeatOnce = "asd".Repeat(1);
-            string repeatZero = "asd".Repeat(0);
+            var repeat = "qwe".Repeat(2);
+            var repeatChar = 'a'.Repeat(3);
+            var repeatOnce = "asd".Repeat(1);
+            var repeatZero = "asd".Repeat(0);
 
             Assert.AreEqual("qweqwe", repeat);
             Assert.AreEqual("aaa", repeatChar);
@@ -168,11 +168,11 @@ namespace Tests
         [TestMethod]
         public void TakeTest()
         {
-            string s = "Hello World";
+            var s = "Hello World";
 
-            string sTake = s.Take(5);
-            string sTakeZero = s.Take(0);
-            string sTakeTooMany = s.Take(123);
+            var sTake = s.Take(5);
+            var sTakeZero = s.Take(0);
+            var sTakeTooMany = s.Take(123);
 
             Assert.AreEqual("Hello", sTake);
             Assert.AreEqual("", sTakeZero);
@@ -182,11 +182,11 @@ namespace Tests
         [TestMethod]
         public void SkipTest()
         {
-            string s = "Hello World";
+            var s = "Hello World";
 
-            string sSkip = s.Skip(5);
-            string sSkipZero = s.Skip(0);
-            string sSkipTooMany = s.Skip(123);
+            var sSkip = s.Skip(5);
+            var sSkipZero = s.Skip(0);
+            var sSkipTooMany = s.Skip(123);
 
             Assert.AreEqual(" World", sSkip);
             Assert.AreEqual("Hello World", sSkipZero);
@@ -196,11 +196,11 @@ namespace Tests
         [TestMethod]
         public void TakeLastTest()
         {
-            string s = "Hello World";
+            var s = "Hello World";
 
-            string sTakeLast = s.TakeLast(5);
-            string sTakeLastZero = s.TakeLast(0);
-            string sTakeLastTooMany = s.TakeLast(123);
+            var sTakeLast = s.TakeLast(5);
+            var sTakeLastZero = s.TakeLast(0);
+            var sTakeLastTooMany = s.TakeLast(123);
 
             Assert.AreEqual("World", sTakeLast);
             Assert.AreEqual("", sTakeLastZero);
@@ -210,11 +210,11 @@ namespace Tests
         [TestMethod]
         public void SkipLastTest()
         {
-            string s = "Hello World";
+            var s = "Hello World";
 
-            string sSkipLast = s.SkipLast(5);
-            string sSkipLastZero = s.SkipLast(0);
-            string sSkipLastTooMany = s.SkipLast(123);
+            var sSkipLast = s.SkipLast(5);
+            var sSkipLastZero = s.SkipLast(0);
+            var sSkipLastTooMany = s.SkipLast(123);
 
             Assert.AreEqual("Hello ", sSkipLast);
             Assert.AreEqual("Hello World", sSkipLastZero);
@@ -224,10 +224,10 @@ namespace Tests
         [TestMethod]
         public void ExceptTest()
         {
-            string s = "Hello World";
+            var s = "Hello World";
 
-            string sExcept = s.Except("He", " ", "d");
-            string sExceptChar = s.Except('H', 'o');
+            var sExcept = s.Except("He", " ", "d");
+            var sExceptChar = s.Except('H', 'o');
 
             Assert.AreEqual("lloWorl", sExcept);
             Assert.AreEqual("ell Wrld", sExceptChar);
@@ -236,10 +236,10 @@ namespace Tests
         [TestMethod]
         public void EnsureStartsWithTest()
         {
-            string s = "asd";
+            var s = "asd";
 
-            string sEnsureStartsWith = s.EnsureStartsWith("qqq");
-            string sEnsureStartsWithObsolete = s.EnsureStartsWith("as");
+            var sEnsureStartsWith = s.EnsureStartsWith("qqq");
+            var sEnsureStartsWithObsolete = s.EnsureStartsWith("as");
 
             Assert.AreEqual("qqqasd", sEnsureStartsWith);
             Assert.AreEqual("asd", sEnsureStartsWithObsolete);
@@ -248,10 +248,10 @@ namespace Tests
         [TestMethod]
         public void EnsureEndsWithTest()
         {
-            string s = "asd";
+            var s = "asd";
 
-            string sEnsureEndsWith = s.EnsureEndsWith("qqq");
-            string sEnsureEndsWithObsolete = s.EnsureEndsWith("sd");
+            var sEnsureEndsWith = s.EnsureEndsWith("qqq");
+            var sEnsureEndsWithObsolete = s.EnsureEndsWith("sd");
 
             Assert.AreEqual("asdqqq", sEnsureEndsWith);
             Assert.AreEqual("asd", sEnsureEndsWithObsolete);
@@ -260,9 +260,9 @@ namespace Tests
         [TestMethod]
         public void SubstringUntilTest()
         {
-            string s = "qwe==asd==zxc==cvb";
+            var s = "qwe==asd==zxc==cvb";
 
-            string sSubstringUntil = s.SubstringUntil("==");
+            var sSubstringUntil = s.SubstringUntil("==");
 
             Assert.AreEqual("qwe", sSubstringUntil);
         }
@@ -270,9 +270,9 @@ namespace Tests
         [TestMethod]
         public void SubstringAfterTest()
         {
-            string s = "qwe==asd==zxc==cvb";
+            var s = "qwe==asd==zxc==cvb";
 
-            string sSubstringAfter = s.SubstringAfter("==");
+            var sSubstringAfter = s.SubstringAfter("==");
 
             Assert.AreEqual("asd==zxc==cvb", sSubstringAfter);
         }
@@ -280,9 +280,9 @@ namespace Tests
         [TestMethod]
         public void SubstringUntilLastTest()
         {
-            string s = "qwe==asd==zxc==cvb";
+            var s = "qwe==asd==zxc==cvb";
 
-            string sSubstringUntilLast = s.SubstringUntilLast("==");
+            var sSubstringUntilLast = s.SubstringUntilLast("==");
 
             Assert.AreEqual("qwe==asd==zxc", sSubstringUntilLast);
         }
@@ -290,9 +290,9 @@ namespace Tests
         [TestMethod]
         public void SubstringAfterLastTest()
         {
-            string s = "qwe==asd==zxc==cvb";
+            var s = "qwe==asd==zxc==cvb";
 
-            string sSubstringAfterLast = s.SubstringAfterLast("==");
+            var sSubstringAfterLast = s.SubstringAfterLast("==");
 
             Assert.AreEqual("cvb", sSubstringAfterLast);
         }
@@ -311,8 +311,8 @@ namespace Tests
         [TestMethod]
         public void SplitTest()
         {
-            string a = "asd<>qwe<>ert[]zzz";
-            string b = "asd;qwe|ert:zzz";
+            var a = "asd<>qwe<>ert[]zzz";
+            var b = "asd;qwe|ert:zzz";
 
             var aSplit = a.Split("<>", "[]");
             var bSplit = b.Split(';', '|', ':');
@@ -326,7 +326,7 @@ namespace Tests
         {
             var a = new[] {1, 2, 3, 4, 5};
 
-            string aJoinToString = a.JoinToString(", ");
+            var aJoinToString = a.JoinToString(", ");
 
             Assert.AreEqual("1, 2, 3, 4, 5", aJoinToString);
         }

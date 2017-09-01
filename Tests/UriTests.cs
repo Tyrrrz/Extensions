@@ -9,14 +9,14 @@ namespace Tests
         [TestMethod]
         public void SetQueryParameterTest()
         {
-            string a = "http://www.asd.com/?a=123&b=&c=ve&d";
-            string b = "http://www.asd.com/";
+            var a = "http://www.asd.com/?a=123&b=&c=ve&d";
+            var b = "http://www.asd.com/";
 
-            string aExisting = a.SetQueryParameter("a", "345");
-            string aNew = a.SetQueryParameter("e", "xxx");
-            string aExistingEmpty = a.SetQueryParameter("b", "ppp");
-            string aExistingStub = a.SetQueryParameter("d", "ggg");
-            string bNew = b.SetQueryParameter("qwe", "aaa");
+            var aExisting = a.SetQueryParameter("a", "345");
+            var aNew = a.SetQueryParameter("e", "xxx");
+            var aExistingEmpty = a.SetQueryParameter("b", "ppp");
+            var aExistingStub = a.SetQueryParameter("d", "ggg");
+            var bNew = b.SetQueryParameter("qwe", "aaa");
 
             Assert.AreEqual("http://www.asd.com/?a=345&b=&c=ve&d", aExisting);
             Assert.AreEqual("http://www.asd.com/?a=123&b=&c=ve&d&e=xxx", aNew);
