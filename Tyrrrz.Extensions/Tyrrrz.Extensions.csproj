@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
-    <AssemblyName>Tyrrrz.Extensions</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
     <Version>1.4</Version>
     <Company>Tyrrrz</Company>
     <Authors>$(Company)</Authors>

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tyrrrz.Extensions;
 using Tyrrrz.Extensions.Types;
 
-namespace Tests
+namespace Tyrrrz.Extensions.Tests
 {
     [TestClass]
     public class CollectionsTests
