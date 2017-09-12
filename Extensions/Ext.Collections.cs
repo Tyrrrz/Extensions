@@ -15,7 +15,8 @@ namespace Tyrrrz.Extensions
         [ContractAnnotation("enumerable:null => false")]
         public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(predicate, nameof(predicate));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             return enumerable != null && enumerable.Any(predicate);
         }
@@ -36,7 +37,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T GetRandom<T>([NotNull] this IEnumerable<T> enumerable)
         {
-            GuardNull(enumerable, nameof(enumerable));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
 
             var list = enumerable as IList<T> ?? enumerable.ToArray();
 
@@ -51,7 +53,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static T GetRandomOrDefault<T>([NotNull] this IEnumerable<T> enumerable, T defaultValue = default(T))
         {
-            GuardNull(enumerable, nameof(enumerable));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
 
             var list = enumerable as IList<T> ?? enumerable.ToArray();
             if (!list.Any()) return defaultValue;
@@ -74,9 +77,12 @@ namespace Tyrrrz.Extensions
         public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> enumerable,
             [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> keyComparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(keySelector, nameof(keySelector));
-            GuardNull(keyComparer, nameof(keyComparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+            if (keyComparer == null)
+                throw new ArgumentNullException(nameof(keyComparer));
 
             bool Compare(T x, T y) => keyComparer.Equals(keySelector(x), keySelector(y));
             int GetHash(T obj) => keySelector(obj).GetHashCode();
@@ -97,7 +103,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int SequenceHashCode<T>([NotNull] this IEnumerable<T> enumerable, bool ignoreOrder = false)
         {
-            GuardNull(enumerable, nameof(enumerable));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
 
             var hashes = enumerable.Select(i => i?.GetHashCode() ?? 0);
             if (ignoreOrder)
@@ -119,10 +126,13 @@ namespace Tyrrrz.Extensions
         /// Discards elements from a sequence that are equal to given
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value, [NotNull] IEqualityComparer<T> comparer)
+        public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value,
+            [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(comparer, nameof(comparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             return enumerable.Where(i => !comparer.Equals(i, value));
         }
@@ -147,16 +157,15 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> enumerable, int count)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardMin(count, 0, nameof(count));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             if (count == 0)
                 return Enumerable.Empty<T>();
 
-            var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
-            var skip = asCol.Count - count;
-            if (skip < 0) skip = 0;
-            return asCol.Skip(skip);
+            return enumerable.Reverse().Take(count).Reverse();
         }
 
         /// <summary>
@@ -165,16 +174,15 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<T> SkipLast<T>([NotNull] this IEnumerable<T> enumerable, int count)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardMin(count, 0, nameof(count));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             if (count == 0)
                 return enumerable;
 
-            var asCol = enumerable as ICollection<T> ?? enumerable.ToArray();
-            var take = asCol.Count - count;
-            if (take < 0) take = 0;
-            return asCol.Take(take);
+            return enumerable.Reverse().Skip(count).Reverse();
         }
 
         /// <summary>
@@ -183,8 +191,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(predicate, nameof(predicate));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             return enumerable.Reverse().TakeWhile(predicate).Reverse();
         }
@@ -195,8 +205,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(predicate, nameof(predicate));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             return enumerable.Reverse().SkipWhile(predicate).Reverse();
         }
@@ -206,8 +218,10 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static void ForEach<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(action, nameof(action));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
 
             foreach (var obj in enumerable)
                 action(obj);
@@ -219,8 +233,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(comparer, nameof(comparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             return new HashSet<T>(enumerable, comparer);
         }
@@ -238,8 +254,10 @@ namespace Tyrrrz.Extensions
         /// <returns>True if it was added, false if it was already there</returns>
         public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj, [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(collection, nameof(collection));
-            GuardNull(comparer, nameof(comparer));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             var isDistinct = !collection.Contains(obj, comparer);
             if (isDistinct) collection.Add(obj);
@@ -260,8 +278,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element, [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(comparer, nameof(comparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             var i = 0;
             foreach (var item in enumerable)
@@ -288,8 +308,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(predicate, nameof(predicate));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             var i = 0;
             foreach (var item in enumerable)
@@ -306,10 +328,13 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element, [NotNull] IEqualityComparer<T> comparer)
+        public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element,
+            [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(comparer, nameof(comparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             var index = -1;
             var i = 0;
@@ -337,8 +362,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(predicate, nameof(predicate));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             var index = -1;
             var i = 0;
@@ -358,8 +385,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IList<T> list, T element, [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(list, nameof(list));
-            GuardNull(comparer, nameof(comparer));
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
             for (var i = list.Count - 1; i >= 0; i--)
             {
@@ -384,8 +413,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
         {
-            GuardNull(list, nameof(list));
-            GuardNull(predicate, nameof(predicate));
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             for (var i = list.Count - 1; i >= 0; i--)
             {
@@ -402,7 +433,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndex<T>([NotNull] this IEnumerable<T> enumerable)
         {
-            GuardNull(enumerable, nameof(enumerable));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
 
             return enumerable.Count() - 1;
         }
@@ -414,8 +446,10 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndex([NotNull] this Array array, int dimension = 0)
         {
-            GuardNull(array, nameof(array));
-            GuardMin(dimension, 0, nameof(dimension));
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (dimension < 0)
+                throw new ArgumentOutOfRangeException(nameof(dimension));
 
             if (dimension > array.Rank - 1)
                 return -1;
@@ -430,7 +464,8 @@ namespace Tyrrrz.Extensions
         public static TValue GetOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key,
             TValue defaultValue = default(TValue))
         {
-            GuardNull(dic, nameof(dic));
+            if (dic == null)
+                throw new ArgumentNullException(nameof(dic));
 
             return dic.TryGetValue(key, out TValue result) ? result : defaultValue;
         }
@@ -440,9 +475,12 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int count)
         {
-            GuardNull(list, nameof(list));
-            GuardRange(startIndex, 0, list.Count - 1, nameof(startIndex));
-            GuardRange(count, 0, list.Count - startIndex, nameof(count));
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (startIndex < 0 || startIndex >= list.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0 || count > list.Count - startIndex)
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             if (count == 0)
                 return;
@@ -466,10 +504,13 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Makes sure that a list has no more items than specified by removing other items
         /// </summary>
-        public static void EnsureMaxCount<T>([NotNull] this IList<T> list, int count, EnsureMaxCountMode mode = EnsureMaxCountMode.DeleteFirst)
+        public static void EnsureMaxCount<T>([NotNull] this IList<T> list, int count,
+            EnsureMaxCountMode mode = EnsureMaxCountMode.DeleteFirst)
         {
-            GuardNull(list, nameof(list));
-            GuardMin(count, 0, nameof(count));
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             // Set up cleaner
             Action cleaner;
@@ -502,7 +543,8 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static bool SetOrAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key, TValue value)
         {
-            GuardNull(dic, nameof(dic));
+            if (dic == null)
+                throw new ArgumentNullException(nameof(dic));
 
             if (dic.ContainsKey(key))
             {

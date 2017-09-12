@@ -12,7 +12,8 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static TEnum ParseEnum<TEnum>([NotNull] this string str, bool ignoreCase = true) where TEnum : struct
         {
-            GuardNull(str, nameof(str));
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
 
             return (TEnum) Enum.Parse(typeof(TEnum), str, ignoreCase);
         }

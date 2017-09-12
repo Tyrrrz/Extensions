@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
@@ -16,7 +16,8 @@ namespace Tyrrrz.Extensions
         {
             // Original code credit: http://stackoverflow.com/a/1147012
 
-            GuardNull(element, nameof(element));
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
 
             var result = new XElement(element);
             foreach (var e in result.DescendantsAndSelf())
@@ -38,8 +39,10 @@ namespace Tyrrrz.Extensions
         [Pure, CanBeNull]
         public static XElement Descendant([NotNull] this XElement element, [NotNull] XName name)
         {
-            GuardNull(element, nameof(element));
-            GuardNull(name, nameof(name));
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
 
             return element.Descendants(name).FirstOrDefault();
         }
@@ -50,8 +53,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static XElement DescendantStrict([NotNull] this XElement element, [NotNull] XName name)
         {
-            GuardNull(element, nameof(element));
-            GuardNull(name, nameof(name));
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
 
             return Descendant(element, name) ?? throw new XmlElementNotFoundException(name);
         }
@@ -62,8 +67,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static XElement ElementStrict([NotNull] this XElement element, [NotNull] XName name)
         {
-            GuardNull(element, nameof(element));
-            GuardNull(name, nameof(name));
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
 
             return element.Element(name) ?? throw new XmlElementNotFoundException(name);
         }
@@ -74,8 +81,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static XAttribute AttributeStrict([NotNull] this XElement element, [NotNull] XName name)
         {
-            GuardNull(element, nameof(element));
-            GuardNull(name, nameof(name));
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
 
             return element.Attribute(name) ?? throw new XmlElementNotFoundException(name);
         }

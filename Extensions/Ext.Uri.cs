@@ -13,7 +13,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri)
         {
-            GuardNull(uri, nameof(uri));
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
 
             return new UriBuilder(uri).Uri;
         }
@@ -24,8 +25,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] string baseUri)
         {
-            GuardNull(uri, nameof(uri));
-            GuardNull(baseUri, nameof(baseUri));
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+            if (baseUri == null)
+                throw new ArgumentNullException(nameof(baseUri));
 
             return new Uri(ToUri(baseUri), new Uri(uri, UriKind.Relative));
         }
@@ -36,8 +39,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] Uri baseUri)
         {
-            GuardNull(uri, nameof(uri));
-            GuardNull(baseUri, nameof(baseUri));
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+            if (baseUri == null)
+                throw new ArgumentNullException(nameof(baseUri));
 
             return new Uri(baseUri, new Uri(uri, UriKind.Relative));
         }
@@ -48,7 +53,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string UrlEncode([NotNull] this string data)
         {
-            GuardNull(data, nameof(data));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
 
             return WebUtility.UrlEncode(data);
         }
@@ -59,7 +65,8 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string UrlDecode([NotNull] this string data)
         {
-            GuardNull(data, nameof(data));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
 
             return WebUtility.UrlDecode(data);
         }
@@ -70,8 +77,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string SetQueryParameter([NotNull] this string uri, [NotNull] string key, [CanBeNull] string value)
         {
-            GuardNull(uri, nameof(uri));
-            GuardNull(key, nameof(key));
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
 
             if (value == null)
                 value = string.Empty;

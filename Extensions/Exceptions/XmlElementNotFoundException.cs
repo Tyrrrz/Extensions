@@ -14,20 +14,10 @@ namespace Tyrrrz.Extensions.Exceptions
         public XName Name { get; }
 
         /// <inheritdoc />
-        public override string Message { get; }
-
-        /// <inheritdoc />
         public XmlElementNotFoundException(XName name)
+            : base($"XML element [{name}] was not found")
         {
             Name = name;
-            Message = $"XML element [{name}] was not found";
-        }
-
-        /// <inheritdoc />
-        public XmlElementNotFoundException(XName name, string message)
-        {
-            Name = name;
-            Message = message;
         }
     }
 }

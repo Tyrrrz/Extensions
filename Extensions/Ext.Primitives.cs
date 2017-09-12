@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Tyrrrz.Extensions
@@ -38,15 +39,12 @@ namespace Tyrrrz.Extensions
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable,
             [NotNull] IEqualityComparer<T> comparer)
         {
-            GuardNull(enumerable, nameof(enumerable));
-            GuardNull(comparer, nameof(comparer));
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
 
-            foreach (var other in enumerable)
-            {
-                if (comparer.Equals(obj, other))
-                    return true;
-            }
-            return false;
+            return enumerable.Any(other => comparer.Equals(obj, other));
         }
 
         /// <summary>
@@ -69,9 +67,12 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static bool IsInRange<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
         {
-            GuardNull(value, nameof(value));
-            GuardNull(min, nameof(min));
-            GuardNull(max, nameof(max));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (min == null)
+                throw new ArgumentNullException(nameof(min));
+            if (max == null)
+                throw new ArgumentNullException(nameof(max));
 
             return value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0;
         }
@@ -82,9 +83,12 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static T Clamp<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
         {
-            GuardNull(value, nameof(value));
-            GuardNull(min, nameof(min));
-            GuardNull(max, nameof(max));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (min == null)
+                throw new ArgumentNullException(nameof(min));
+            if (max == null)
+                throw new ArgumentNullException(nameof(max));
 
             return value.CompareTo(min) <= 0 ? min : value.CompareTo(max) >= 0 ? max : value;
         }
@@ -95,8 +99,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static T ClampMin<T>([NotNull] this T value, [NotNull] T min) where T : IComparable
         {
-            GuardNull(value, nameof(value));
-            GuardNull(min, nameof(min));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (min == null)
+                throw new ArgumentNullException(nameof(min));
 
             return value.CompareTo(min) <= 0 ? min : value;
         }
@@ -107,8 +113,10 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static T ClampMax<T>([NotNull] this T value, [NotNull] T max) where T : IComparable
         {
-            GuardNull(value, nameof(value));
-            GuardNull(max, nameof(max));
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            if (max == null)
+                throw new ArgumentNullException(nameof(max));
 
             return value.CompareTo(max) >= 0 ? max : value;
         }
