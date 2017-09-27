@@ -165,71 +165,15 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [TestMethod]
-        public void TakeTest()
+        public void ReplaceTest()
         {
             var s = "Hello World";
 
-            var sTake = s.Take(5);
-            var sTakeZero = s.Take(0);
-            var sTakeTooMany = s.Take(123);
+            var sReplace = s.Replace(new[] {"H", "llo"}, "x");
+            var sReplaceChars = s.Replace(new[] {'e', 'd'}, 'x');
 
-            Assert.AreEqual("Hello", sTake);
-            Assert.AreEqual("", sTakeZero);
-            Assert.AreEqual("Hello World", sTakeTooMany);
-        }
-
-        [TestMethod]
-        public void SkipTest()
-        {
-            var s = "Hello World";
-
-            var sSkip = s.Skip(5);
-            var sSkipZero = s.Skip(0);
-            var sSkipTooMany = s.Skip(123);
-
-            Assert.AreEqual(" World", sSkip);
-            Assert.AreEqual("Hello World", sSkipZero);
-            Assert.AreEqual("", sSkipTooMany);
-        }
-
-        [TestMethod]
-        public void TakeLastTest()
-        {
-            var s = "Hello World";
-
-            var sTakeLast = s.TakeLast(5);
-            var sTakeLastZero = s.TakeLast(0);
-            var sTakeLastTooMany = s.TakeLast(123);
-
-            Assert.AreEqual("World", sTakeLast);
-            Assert.AreEqual("", sTakeLastZero);
-            Assert.AreEqual("Hello World", sTakeLastTooMany);
-        }
-
-        [TestMethod]
-        public void SkipLastTest()
-        {
-            var s = "Hello World";
-
-            var sSkipLast = s.SkipLast(5);
-            var sSkipLastZero = s.SkipLast(0);
-            var sSkipLastTooMany = s.SkipLast(123);
-
-            Assert.AreEqual("Hello ", sSkipLast);
-            Assert.AreEqual("Hello World", sSkipLastZero);
-            Assert.AreEqual("", sSkipLastTooMany);
-        }
-
-        [TestMethod]
-        public void ExceptTest()
-        {
-            var s = "Hello World";
-
-            var sExcept = s.Except("He", " ", "d");
-            var sExceptChar = s.Except('H', 'o');
-
-            Assert.AreEqual("lloWorl", sExcept);
-            Assert.AreEqual("ell Wrld", sExceptChar);
+            Assert.AreEqual("xex World", sReplace);
+            Assert.AreEqual("Hxllo Worlx", sReplaceChars);
         }
 
         [TestMethod]

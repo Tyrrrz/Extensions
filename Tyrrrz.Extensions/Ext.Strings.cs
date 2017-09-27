@@ -220,128 +220,69 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Truncates a string leaving only the given number of characters from the start of the string
+        /// Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string
         /// </summary>
         [Pure, NotNull]
-        public static string Take([NotNull] this string str, int count)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (count == 0) return string.Empty;
-            if (count >= str.Length) return str;
-            return str.Substring(0, count);
-        }
-
-        /// <summary>
-        /// Truncates a string dropping the given number of characters from the start of the string
-        /// </summary>
-        [Pure, NotNull]
-        public static string Skip([NotNull] this string str, int count)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (count == 0) return str;
-            if (count >= str.Length) return string.Empty;
-            return str.Substring(count);
-        }
-
-        /// <summary>
-        /// Truncates a string leaving only the given number of characters from the end of the string
-        /// </summary>
-        [Pure, NotNull]
-        public static string TakeLast([NotNull] this string str, int count)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (count == 0) return string.Empty;
-            if (count >= str.Length) return str;
-            return Skip(str, str.Length - count);
-        }
-
-        /// <summary>
-        /// Truncates a string dropping the given number of characters from the end of the string
-        /// </summary>
-        [Pure, NotNull]
-        public static string SkipLast([NotNull] this string str, int count)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (count == 0) return str;
-            if (count >= str.Length) return string.Empty;
-            return Take(str, str.Length - count);
-        }
-
-        /// <summary>
-        /// Removes all occurrences of the given substrings from a string
-        /// </summary>
-        [Pure, NotNull]
-        public static string Except([NotNull] this string str, [NotNull] IEnumerable<string> substrings,
+        public static string Replace([NotNull] this string str, [NotNull] string oldValue, [NotNull] string newValue,
             StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
-            if (substrings == null)
-                throw new ArgumentNullException(nameof(substrings));
+            if (oldValue == null)
+                throw new ArgumentNullException(nameof(oldValue));
+            if (newValue == null)
+                throw new ArgumentNullException(nameof(newValue));
 
-            foreach (var sub in substrings)
+            var index = str.IndexOf(oldValue, comparison);
+            while (index >= 0)
             {
-                var index = str.IndexOf(sub, comparison);
-                while (index >= 0)
-                {
-                    str = str.Remove(index, sub.Length);
-                    index = str.IndexOf(sub, comparison);
-                }
+                str = str.Remove(index, oldValue.Length);
+                str = str.Insert(index, newValue);
+                index = str.IndexOf(oldValue, comparison);
             }
 
             return str;
         }
 
         /// <summary>
-        /// Removes all occurrences of the given substrings from a string
+        /// Returns a new string in which all occurrences of specified strings in the current instance are replaced with another specified string
         /// </summary>
         [Pure, NotNull]
-        public static string Except([NotNull] this string str, params string[] substrings)
-            => Except(str, (IEnumerable<string>) substrings);
-
-        /// <summary>
-        /// Removes all occurrences of the given characters from a string
-        /// </summary>
-        [Pure, NotNull]
-        public static string Except([NotNull] this string str, [NotNull] IEnumerable<char> characters)
+        public static string Replace([NotNull] this string str, [NotNull] IEnumerable<string> oldValues, [NotNull] string newValue, StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
-            if (characters == null)
-                throw new ArgumentNullException(nameof(characters));
+            if (oldValues == null)
+                throw new ArgumentNullException(nameof(oldValues));
 
-            var charArray = characters as char[] ?? characters.ToArray();
+            foreach (var oldValue in oldValues)
+                str = str.Replace(oldValue, newValue, comparison);
+
+            return str;
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of specified characters in the current instance are replaced with another specified character
+        /// </summary>
+        [Pure, NotNull]
+        public static string Replace([NotNull] this string str, [NotNull] IEnumerable<char> oldChars, char newChar)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            if (oldChars == null)
+                throw new ArgumentNullException(nameof(oldChars));
+
+            var charArray = oldChars as char[] ?? oldChars.ToArray();
             var pos = str.IndexOfAny(charArray);
             while (pos >= 0)
             {
                 str = str.Remove(pos, 1);
+                str = str.Insert(pos, newChar.ToString());
                 pos = str.IndexOfAny(charArray);
             }
+
             return str;
         }
-
-        /// <summary>
-        /// Removes all occurrences of the given characters from a string
-        /// </summary>
-        [Pure, NotNull]
-        public static string Except([NotNull] this string str, params char[] characters)
-            => Except(str, (IEnumerable<char>) characters);
 
         /// <summary>
         /// Prepends a string if the given string doesn't start with it already
@@ -387,6 +328,7 @@ namespace Tyrrrz.Extensions
 
             var index = str.IndexOf(sub, comparison);
             if (index < 0) return str;
+
             return str.Substring(0, index);
         }
 
@@ -404,6 +346,7 @@ namespace Tyrrrz.Extensions
 
             var index = str.IndexOf(sub, comparison);
             if (index < 0) return string.Empty;
+
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
 
@@ -421,6 +364,7 @@ namespace Tyrrrz.Extensions
 
             var index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return str;
+
             return str.Substring(0, index);
         }
 
@@ -438,6 +382,7 @@ namespace Tyrrrz.Extensions
 
             var index = str.LastIndexOf(sub, comparsion);
             if (index < 0) return string.Empty;
+
             return str.Substring(index + sub.Length, str.Length - index - sub.Length);
         }
 

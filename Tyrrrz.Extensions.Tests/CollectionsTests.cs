@@ -326,7 +326,8 @@ namespace Tyrrrz.Extensions.Tests
 
             var dSetOrAddNonExisting = d.SetOrAdd("123", "456");
             Assert.IsFalse(dSetOrAddNonExisting);
-            CollectionAssert.AreEqual(new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}},
+            CollectionAssert.AreEqual(
+                new Dictionary<string, string> {{"asd", "qwe"}, {"zxc", "ooo"}, {"123", "456"}},
                 d);
         }
     }
