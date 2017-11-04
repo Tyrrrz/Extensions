@@ -197,7 +197,7 @@ namespace Tyrrrz.Extensions
                 return str + str + str;
 
             // StringBuilder for count >= 4
-            var sb = new StringBuilder(str, str.Length*count);
+            var sb = new StringBuilder(str, str.Length * count);
             for (var i = 2; i <= count; i++)
                 sb.Append(str);
 
@@ -248,7 +248,8 @@ namespace Tyrrrz.Extensions
         /// Returns a new string in which all occurrences of specified strings in the current instance are replaced with another specified string
         /// </summary>
         [Pure, NotNull]
-        public static string Replace([NotNull] this string str, [NotNull] IEnumerable<string> oldValues, [NotNull] string newValue, StringComparison comparison = StringComparison.Ordinal)
+        public static string Replace([NotNull] this string str, [NotNull] IEnumerable<string> oldValues,
+            [NotNull] string newValue, StringComparison comparison = StringComparison.Ordinal)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));

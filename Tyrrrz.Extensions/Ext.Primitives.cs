@@ -65,7 +65,7 @@ namespace Tyrrrz.Extensions
         /// Determines whether the value is inside given range (inclusive)
         /// </summary>
         [Pure]
-        public static bool IsInRange<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
+        public static bool IsInRange<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable<T>
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -81,7 +81,7 @@ namespace Tyrrrz.Extensions
         /// Returns closest value in the given range (inclusive)
         /// </summary>
         [Pure, NotNull]
-        public static T Clamp<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable
+        public static T Clamp<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable<T>
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -97,7 +97,7 @@ namespace Tyrrrz.Extensions
         /// Returns closest value above the boundary
         /// </summary>
         [Pure, NotNull]
-        public static T ClampMin<T>([NotNull] this T value, [NotNull] T min) where T : IComparable
+        public static T ClampMin<T>([NotNull] this T value, [NotNull] T min) where T : IComparable<T>
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -111,7 +111,7 @@ namespace Tyrrrz.Extensions
         /// Returns closest value below the boundary
         /// </summary>
         [Pure, NotNull]
-        public static T ClampMax<T>([NotNull] this T value, [NotNull] T max) where T : IComparable
+        public static T ClampMax<T>([NotNull] this T value, [NotNull] T max) where T : IComparable<T>
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));

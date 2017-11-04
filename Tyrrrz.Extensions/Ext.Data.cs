@@ -21,7 +21,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static string GetString(this byte[] data)
         {
-            return GetString(data, Encoding.Unicode);
+            return data.GetString(Encoding.Unicode);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static byte[] GetBytes(this string str)
         {
-            return GetBytes(str, Encoding.Unicode);
+            return str.GetBytes(Encoding.Unicode);
         }
 
         /// <summary>

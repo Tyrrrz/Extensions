@@ -13,7 +13,8 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure]
         [ContractAnnotation("enumerable:null => false")]
-        public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+        public static bool NotNullAndAny<T>([CanBeNull] this IEnumerable<T> enumerable,
+            [NotNull] Func<T, bool> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
@@ -94,7 +95,7 @@ namespace Tyrrrz.Extensions
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
-                [NotNull] Func<TSource, TKey> keySelector)
+            [NotNull] Func<TSource, TKey> keySelector)
             => Distinct(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace Tyrrrz.Extensions
             {
                 unchecked
                 {
-                    result = result*31 + hash;
+                    result = result * 31 + hash;
                 }
             }
 
@@ -189,7 +190,8 @@ namespace Tyrrrz.Extensions
         /// Returns elements from the end of the sequence as long as a specified condition is true
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+        public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> enumerable,
+            [NotNull] Func<T, bool> predicate)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -203,7 +205,8 @@ namespace Tyrrrz.Extensions
         /// Bypasses elements from the end of the sequence as long as a specified condition is true
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+        public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> enumerable,
+            [NotNull] Func<T, bool> predicate)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -231,7 +234,8 @@ namespace Tyrrrz.Extensions
         /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence
         /// </summary>
         [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] IEqualityComparer<T> comparer)
+        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable,
+            [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -252,7 +256,8 @@ namespace Tyrrrz.Extensions
         /// Adds a new item to a collection if it wasn't there already
         /// </summary>
         /// <returns>True if it was added, false if it was already there</returns>
-        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj, [NotNull] IEqualityComparer<T> comparer)
+        public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj,
+            [NotNull] IEqualityComparer<T> comparer)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -276,7 +281,8 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element, [NotNull] IEqualityComparer<T> comparer)
+        public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element,
+            [NotNull] IEqualityComparer<T> comparer)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
@@ -383,7 +389,8 @@ namespace Tyrrrz.Extensions
         /// <returns>Item index if found, otherwise -1</returns>
         /// </summary>
         [Pure]
-        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element, [NotNull] IEqualityComparer<T> comparer)
+        public static int LastIndexOf<T>([NotNull] this IList<T> list, T element,
+            [NotNull] IEqualityComparer<T> comparer)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));

@@ -75,7 +75,8 @@ namespace Tyrrrz.Extensions
         /// Sets the given query parameter to the given value in a uri string
         /// </summary>
         [Pure, NotNull]
-        public static string SetQueryParameter([NotNull] this string uri, [NotNull] string key, [CanBeNull] string value)
+        public static string SetQueryParameter([NotNull] this string uri, [NotNull] string key,
+            [CanBeNull] string value)
         {
             if (uri == null)
                 throw new ArgumentNullException(nameof(uri));

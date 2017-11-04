@@ -27,7 +27,7 @@ namespace Tyrrrz.Extensions
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            var tasks = enumerable.Select(async i => await task(i).ConfigureAwait(false));
+            var tasks = enumerable.Select(task);
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
@@ -57,7 +57,7 @@ namespace Tyrrrz.Extensions
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            var tasks = enumerable.Select(async i => await task(i).ConfigureAwait(false));
+            var tasks = enumerable.Select(task);
             return await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
