@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Determines whether a sequence is not null and contains elements that satisfy a condition
+        /// Determines whether a sequence is not null and contains elements that satisfy a condition.
         /// </summary>
         [Pure]
         [ContractAnnotation("enumerable:null => false")]
@@ -23,7 +23,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether a sequence is not null and contains elements
+        /// Determines whether a sequence is not null and contains elements.
         /// </summary>
         [Pure]
         [ContractAnnotation("enumerable:null => false")]
@@ -33,7 +33,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random member of a sequence
+        /// Returns a random element of a sequence.
         /// </summary>
         [Pure]
         public static T GetRandom<T>([NotNull] this IEnumerable<T> enumerable)
@@ -44,12 +44,13 @@ namespace Tyrrrz.Extensions
             var list = enumerable as IList<T> ?? enumerable.ToArray();
 
             if (!list.Any()) throw new Exception("No items in enumerable");
-            if (list.Count <= 1) return list.First();
-            return list[SharedInstances.Random.Next(0, list.Count)];
+            return list.Count <= 1
+                ? list.First()
+                : list[SharedInstances.Random.Next(0, list.Count)];
         }
 
         /// <summary>
-        /// Returns a random member of a sequence or default value if the sequence is empty
+        /// Returns a random element of a sequence or default value if the sequence is empty.
         /// </summary>
         [Pure]
         public static T GetRandomOrDefault<T>([NotNull] this IEnumerable<T> enumerable, T defaultValue = default(T))
@@ -58,12 +59,13 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(enumerable));
 
             var list = enumerable as IList<T> ?? enumerable.ToArray();
-            if (!list.Any()) return defaultValue;
-            return GetRandom(list);
+            return list.Any()
+                ? GetRandom(list)
+                : defaultValue;
         }
 
         /// <summary>
-        /// Returns an empty sequence if the given sequence is null, otherwise returns given sequence
+        /// Returns an empty sequence if the given sequence is null, otherwise returns given sequence.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> enumerable)
@@ -72,7 +74,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns distinct elements from a sequence based on a key
+        /// Returns distinct elements from a sequence based on a selector.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> enumerable,
@@ -91,7 +93,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns distinct elements from a sequence based on a key
+        /// Returns distinct elements from a sequence based on a selector.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<TSource> Distinct<TSource, TKey>([NotNull] this IEnumerable<TSource> enumerable,
@@ -99,7 +101,7 @@ namespace Tyrrrz.Extensions
             => Distinct(enumerable, keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
-        /// Calculates hash code of a sequence based on the hash codes of each individual elements
+        /// Calculates hash code of a sequence based on the hash codes of each individual elements.
         /// </summary>
         [Pure]
         public static int SequenceHashCode<T>([NotNull] this IEnumerable<T> enumerable, bool ignoreOrder = false)
@@ -124,7 +126,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Discards elements from a sequence that are equal to given
+        /// Discards elements from a sequence that are equal to given.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value,
@@ -139,21 +141,21 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Discards elements from a sequence that are equal to given
+        /// Discards elements from a sequence that are equal to given.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> enumerable, T value)
             => Except(enumerable, value, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Discards default values from a sequence
+        /// Discards default values from a sequence.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> enumerable)
             => Except(enumerable, default(T));
 
         /// <summary>
-        /// Returns a specified number of contiguous elements from the end of a sequence
+        /// Returns a specified number of contiguous elements from the end of a sequence.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> enumerable, int count)
@@ -163,14 +165,13 @@ namespace Tyrrrz.Extensions
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
-            if (count == 0)
-                return Enumerable.Empty<T>();
-
-            return enumerable.Reverse().Take(count).Reverse();
+            return count == 0
+                ? Enumerable.Empty<T>()
+                : enumerable.Reverse().Take(count).Reverse();
         }
 
         /// <summary>
-        /// Bypasses a specified number of elements at the end of a sequence and returns the remaining elements
+        /// Bypasses a specified number of elements at the end of a sequence and returns the remaining elements.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> SkipLast<T>([NotNull] this IEnumerable<T> enumerable, int count)
@@ -180,14 +181,13 @@ namespace Tyrrrz.Extensions
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
-            if (count == 0)
-                return enumerable;
-
-            return enumerable.Reverse().Skip(count).Reverse();
+            return count == 0
+                ? enumerable
+                : enumerable.Reverse().Skip(count).Reverse();
         }
 
         /// <summary>
-        /// Returns elements from the end of the sequence as long as a specified condition is true
+        /// Returns elements from the end of the sequence as long as a specified condition is true.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> enumerable,
@@ -202,7 +202,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Bypasses elements from the end of the sequence as long as a specified condition is true
+        /// Bypasses elements from the end of the sequence as long as a specified condition is true.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> enumerable,
@@ -217,7 +217,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Invokes a delegate on each member of a sequence
+        /// Invokes a delegate on each member of a sequence.
         /// </summary>
         public static void ForEach<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Action<T> action)
         {
@@ -231,7 +231,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence
+        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence.
         /// </summary>
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable,
@@ -246,16 +246,16 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence
+        /// Creates a <see cref="HashSet{T}"/> by copying elements from a sequence.
         /// </summary>
         [Pure, NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> enumerable)
             => ToHashSet(enumerable, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Adds a new item to a collection if it wasn't there already
+        /// Adds a new element to a collection if it wasn't there already.
         /// </summary>
-        /// <returns>True if it was added, false if it was already there</returns>
+        /// <returns>True if it was added, false if it was already there.</returns>
         public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj,
             [NotNull] IEqualityComparer<T> comparer)
         {
@@ -270,16 +270,16 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Adds a new item to a collection if it wasn't there already
+        /// Adds a new element to a collection if it wasn't there already.
         /// </summary>
-        /// <returns>True if it was added, false if it was already there</returns>
+        /// <returns>True if it was added, false if it was already there.</returns>
         public static bool AddIfDistinct<T>([NotNull] this ICollection<T> collection, T obj)
             => AddIfDistinct(collection, obj, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Searches for an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element,
             [NotNull] IEqualityComparer<T> comparer)
@@ -290,9 +290,9 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(comparer));
 
             var i = 0;
-            foreach (var item in enumerable)
+            foreach (var o in enumerable)
             {
-                if (comparer.Equals(item, element))
+                if (comparer.Equals(o, element))
                     return i;
                 i++;
             }
@@ -300,17 +300,17 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element)
             => IndexOf(enumerable, element, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Searches for an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
@@ -320,9 +320,9 @@ namespace Tyrrrz.Extensions
                 throw new ArgumentNullException(nameof(predicate));
 
             var i = 0;
-            foreach (var item in enumerable)
+            foreach (var o in enumerable)
             {
-                if (predicate(item))
+                if (predicate(o))
                     return i;
                 i++;
             }
@@ -330,9 +330,9 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element,
             [NotNull] IEqualityComparer<T> comparer)
@@ -344,9 +344,9 @@ namespace Tyrrrz.Extensions
 
             var index = -1;
             var i = 0;
-            foreach (var item in enumerable)
+            foreach (var o in enumerable)
             {
-                if (comparer.Equals(item, element))
+                if (comparer.Equals(o, element))
                     index = i;
                 i++;
             }
@@ -354,17 +354,17 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, T element)
             => LastIndexOf(enumerable, element, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
         {
@@ -375,9 +375,9 @@ namespace Tyrrrz.Extensions
 
             var index = -1;
             var i = 0;
-            foreach (var item in enumerable)
+            foreach (var o in enumerable)
             {
-                if (predicate(item))
+                if (predicate(o))
                     index = i;
                 i++;
             }
@@ -385,9 +385,9 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IList<T> list, T element,
             [NotNull] IEqualityComparer<T> comparer)
@@ -406,17 +406,17 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IList<T> list, T element)
             => LastIndexOf(list, element, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Searches for the last occurrence of an item and returns its index
-        /// <returns>Item index if found, otherwise -1</returns>
+        /// Searches for the last occurrence of an element and returns its index.
         /// </summary>
+        /// <returns>Element index if found, otherwise -1.</returns>
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
         {
@@ -434,9 +434,9 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the index of the last element in a sequence
-        /// <returns>Index if there are any items, otherwise -1</returns>
+        /// Returns the index of the last element in a sequence.
         /// </summary>
+        /// <returns>Index if there are any elements, otherwise -1.</returns>
         [Pure]
         public static int LastIndex<T>([NotNull] this IEnumerable<T> enumerable)
         {
@@ -447,9 +447,9 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns the index of the last element in an array for the given dimension
-        /// <returns>Index if there are any items and the dimension exists, otherwise -1</returns>
+        /// Returns the index of the last element in an array for the given dimension.
         /// </summary>
+        /// <returns>Index if there are any elements and the dimension exists, otherwise -1.</returns>
         [Pure]
         public static int LastIndex([NotNull] this Array array, int dimension = 0)
         {
@@ -465,7 +465,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an item that corresponds to the given key or default if key doesn't exist
+        /// Returns an element that corresponds to the given key or default if key doesn't exist.
         /// </summary>
         [Pure]
         public static TValue GetOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key,
@@ -474,11 +474,11 @@ namespace Tyrrrz.Extensions
             if (dic == null)
                 throw new ArgumentNullException(nameof(dic));
 
-            return dic.TryGetValue(key, out TValue result) ? result : defaultValue;
+            return dic.TryGetValue(key, out var result) ? result : defaultValue;
         }
 
         /// <summary>
-        /// Sets allocated items in a list to the given value
+        /// Sets allocated elements in a list to the given value.
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex, int count)
         {
@@ -497,19 +497,19 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Sets allocated items in a list to the given value
+        /// Sets allocated elements in a list to the given value.
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value, int startIndex)
             => Fill(list, value, startIndex, list.Count - startIndex);
 
         /// <summary>
-        /// Sets allocated items in a list to the given value
+        /// Sets allocated elements in a list to the given value.
         /// </summary>
         public static void Fill<T>([NotNull] this IList<T> list, T value)
             => Fill(list, value, 0, list.Count);
 
         /// <summary>
-        /// Makes sure that a list has no more items than specified by removing other items
+        /// Makes sure that a list has no more elements than specified by removing other elements.
         /// </summary>
         public static void EnsureMaxCount<T>([NotNull] this IList<T> list, int count,
             EnsureMaxCountMode mode = EnsureMaxCountMode.DeleteFirst)
@@ -545,9 +545,9 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Sets or adds value in a dictionary that corresponds to the given key
-        /// <returns>True if the value was set to an existing key, false if a new key/value pair was added</returns>
+        /// Sets or adds value in a dictionary that corresponds to the given key.
         /// </summary>
+        /// <returns>True if the value was set to an existing key, false if a new key/value pair was added.</returns>
         public static bool SetOrAdd<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dic, TKey key, TValue value)
         {
             if (dic == null)

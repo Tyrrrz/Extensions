@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Continues execution without waiting for the task to complete
+        /// Continues execution without waiting for the task to complete.
         /// </summary>
         public static void Forget(this Task task)
         {
@@ -17,7 +17,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Executes a task asynchronously on all elements of a sequence in parallel
+        /// Executes a task asynchronously on all elements of a sequence in parallel.
         /// </summary>
         public static async Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable,
             [NotNull] Func<T, Task> task)
@@ -32,7 +32,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Executes an action asynchronously on all elements of a sequence in parallel
+        /// Executes an action asynchronously on all elements of a sequence in parallel.
         /// </summary>
         public static Task ParallelForEachAsync<T>([NotNull] this IEnumerable<T> enumerable,
             [NotNull] Action<T> action)

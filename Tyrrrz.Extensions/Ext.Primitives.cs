@@ -8,7 +8,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Converts an object to another type and returns the converted instance
+        /// Converts an object to another type and returns the converted instance.
         /// </summary>
         [Pure]
         public static T ConvertTo<T>(this object obj)
@@ -17,14 +17,14 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Tries to convert an object to another type, returns the converted instance if successful or default value if not
+        /// Tries to convert an object to another type, returns the converted instance if successful or default value if not.
         /// </summary>
         [Pure]
         public static T ConvertToOrDefault<T>(this object obj, T defaultValue = default(T))
         {
             try
             {
-                return (T) Convert.ChangeType(obj, typeof(T));
+                return ConvertTo<T>(obj);
             }
             catch
             {
@@ -33,7 +33,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the object is equal to either of elements in a sequence
+        /// Determines whether the object is equal to either of elements in a sequence.
         /// </summary>
         [Pure]
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable,
@@ -48,21 +48,21 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the object is equal to either of elements in a sequence
+        /// Determines whether the object is equal to either of elements in a sequence.
         /// </summary>
         [Pure]
         public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> enumerable)
             => IsEither(obj, enumerable, EqualityComparer<T>.Default);
 
         /// <summary>
-        /// Determines whether the object is equal to either of the parameters
+        /// Determines whether the object is equal to either of the parameters.
         /// </summary>
         [Pure]
         public static bool IsEither<T>(this T obj, params T[] objs)
             => IsEither(obj, (IEnumerable<T>) objs);
 
         /// <summary>
-        /// Determines whether the value is inside given range (inclusive)
+        /// Determines whether the value is inside given range (inclusive).
         /// </summary>
         [Pure]
         public static bool IsInRange<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable<T>
@@ -78,7 +78,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns closest value in the given range (inclusive)
+        /// Returns closest value in the given range (inclusive).
         /// </summary>
         [Pure, NotNull]
         public static T Clamp<T>([NotNull] this T value, [NotNull] T min, [NotNull] T max) where T : IComparable<T>
@@ -94,7 +94,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns closest value above the boundary
+        /// Returns closest value above the boundary.
         /// </summary>
         [Pure, NotNull]
         public static T ClampMin<T>([NotNull] this T value, [NotNull] T min) where T : IComparable<T>
@@ -108,7 +108,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns closest value below the boundary
+        /// Returns closest value below the boundary.
         /// </summary>
         [Pure, NotNull]
         public static T ClampMax<T>([NotNull] this T value, [NotNull] T max) where T : IComparable<T>
@@ -122,7 +122,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random integer in range (inclusive)
+        /// Returns a random integer in range (inclusive).
         /// </summary>
         [Pure]
         public static int RandomInt(int minValue, int maxValue)
@@ -131,7 +131,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random integer smaller or equal to given value
+        /// Returns a random integer smaller or equal to given value.
         /// </summary>
         [Pure]
         public static int RandomInt(int maxValue)
@@ -140,7 +140,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random integer
+        /// Returns a random integer.
         /// </summary>
         [Pure]
         public static int RandomInt()
@@ -149,9 +149,8 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random double in range
+        /// Returns a random double in range.
         /// </summary>
-        /// <returns></returns>
         [Pure]
         public static double RandomDouble(double minValue, double maxValue)
         {
@@ -159,21 +158,21 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random double smaller than given
+        /// Returns a random double smaller than given.
         /// </summary>
         [Pure]
         public static double RandomDouble(double maxValue) => RandomDouble(double.MinValue, maxValue);
 
         /// <summary>
-        /// Returns a random double
+        /// Returns a random double.
         /// </summary>
         [Pure]
         public static double RandomDouble() => RandomDouble(double.MinValue, double.MaxValue);
 
         /// <summary>
-        /// Returns a random bool
+        /// Returns a random bool.
         /// </summary>
-        /// <param name="probability">Normalized probability of returning true (0 to 1)</param>
+        /// <param name="probability">Normalized probability of returning true (0 to 1).</param>
         [Pure]
         public static bool RandomBool(double probability)
         {
@@ -183,7 +182,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random bool
+        /// Returns a random bool.
         /// </summary>
         [Pure]
         public static bool RandomBool() => RandomInt(0, 1) == 1;

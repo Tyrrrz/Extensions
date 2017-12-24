@@ -1,7 +1,7 @@
 ﻿namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions
+    /// Extensions.
     /// </summary>
     public static partial class Ext
     {

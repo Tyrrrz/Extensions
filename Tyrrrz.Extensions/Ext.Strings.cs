@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Determines whether the string is either null, empty or whitespace
+        /// Determines whether the string is either null, empty or whitespace.
         /// </summary>
         [Pure]
         [ContractAnnotation("str:null => true")]
@@ -19,7 +19,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the string is neither null, empty or whitespace
+        /// Determines whether the string is neither null, empty or whitespace.
         /// </summary>
         [Pure]
         [ContractAnnotation("str:null => false")]
@@ -29,7 +29,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the string only consists of digits
+        /// Determines whether the string only consists of digits.
         /// </summary>
         [Pure]
         public static bool IsNumeric([NotNull] this string str)
@@ -41,7 +41,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the string only consists of letters
+        /// Determines whether the string only consists of letters.
         /// </summary>
         [Pure]
         public static bool IsAlphabetic([NotNull] this string str)
@@ -53,7 +53,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Determines whether the string only consists of letters and/or digits
+        /// Determines whether the string only consists of letters and/or digits.
         /// </summary>
         [Pure]
         public static bool IsAlphanumeric([NotNull] this string str)
@@ -65,7 +65,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns null if the given string is either null, empty or whitespace, otherwise returns the same string
+        /// Returns null if the given string is either null, empty or whitespace, otherwise returns the same string.
         /// </summary>
         [Pure, CanBeNull]
         [ContractAnnotation("str:null => null")]
@@ -75,7 +75,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an empty string if the given string is null, otherwise returns the same string
+        /// Returns an empty string if the given string is null, otherwise returns the same string.
         /// </summary>
         [Pure, NotNull]
         public static string EmptyIfNull([CanBeNull] this string str)
@@ -84,7 +84,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an empty string if the given string is either null, empty or whitespace, otherwise returns the same string
+        /// Returns an empty string if the given string is either null, empty or whitespace, otherwise returns the same string.
         /// </summary>
         [Pure, NotNull]
         public static string EmptyIfBlank([CanBeNull] this string str)
@@ -93,7 +93,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Formats the given string identically to <see cref="string.Format(string,object[])"/>
+        /// Formats the given string identically to <see cref="string.Format(string,object[])"/>.
         /// </summary>
         [Pure, NotNull, StringFormatMethod("str")]
         public static string Format([NotNull] this string str, params object[] args)
@@ -105,7 +105,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Removes all leading occurrences of a substring in the given string
+        /// Removes all leading occurrences of a substring in the given string.
         /// </summary>
         [Pure, NotNull]
         public static string TrimStart([NotNull] this string str, [NotNull] string sub,
@@ -123,7 +123,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Removes all trailing occurrences of a substring in the given string
+        /// Removes all trailing occurrences of a substring in the given string.
         /// </summary>
         [Pure, NotNull]
         public static string TrimEnd([NotNull] this string str, [NotNull] string sub,
@@ -141,7 +141,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Removes all leading and trailing occurrences of a substring in the given string
+        /// Removes all leading and trailing occurrences of a substring in the given string.
         /// </summary>
         [Pure, NotNull]
         public static string Trim([NotNull] this string str, [NotNull] string sub,
@@ -156,7 +156,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Reverses order of characters in a string
+        /// Reverses order of characters in a string.
         /// </summary>
         [Pure, NotNull]
         public static string Reverse([NotNull] this string str)
@@ -175,7 +175,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a string formed by repeating the given string given number of times
+        /// Returns a string formed by repeating the given string given number of times.
         /// </summary>
         [Pure, NotNull]
         public static string Repeat([NotNull] this string str, int count)
@@ -205,7 +205,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a string formed by repeating the given character given number of times
+        /// Returns a string formed by repeating the given character given number of times.
         /// </summary>
         [Pure, NotNull]
         public static string Repeat(this char c, int count)
@@ -220,7 +220,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string
+        /// Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string.
         /// </summary>
         [Pure, NotNull]
         public static string Replace([NotNull] this string str, [NotNull] string oldValue, [NotNull] string newValue,
@@ -245,7 +245,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a new string in which all occurrences of specified strings in the current instance are replaced with another specified string
+        /// Returns a new string in which all occurrences of specified strings in the current instance are replaced with another specified string.
         /// </summary>
         [Pure, NotNull]
         public static string Replace([NotNull] this string str, [NotNull] IEnumerable<string> oldValues,
@@ -263,7 +263,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a new string in which all occurrences of specified characters in the current instance are replaced with another specified character
+        /// Returns a new string in which all occurrences of specified characters in the current instance are replaced with another specified character.
         /// </summary>
         [Pure, NotNull]
         public static string Replace([NotNull] this string str, [NotNull] IEnumerable<char> oldChars, char newChar)
@@ -286,7 +286,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Prepends a string if the given string doesn't start with it already
+        /// Prepends a string if the given string doesn't start with it already.
         /// </summary>
         [Pure, NotNull]
         public static string EnsureStartsWith([NotNull] this string str, [NotNull] string sub,
@@ -301,7 +301,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Appends a string if the given string doesn't end with it already
+        /// Appends a string if the given string doesn't end with it already.
         /// </summary>
         [Pure, NotNull]
         public static string EnsureEndsWith([NotNull] this string str, [NotNull] string sub,
@@ -316,7 +316,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Retrieves a substring that ends at the position of first occurrence of the given other string
+        /// Retrieves a substring that ends at the position of first occurrence of the given other string.
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntil([NotNull] this string str, [NotNull] string sub,
@@ -334,7 +334,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Retrieves a substring that starts at the position of first occurrence of the given other string
+        /// Retrieves a substring that starts at the position of first occurrence of the given other string.
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfter([NotNull] this string str, [NotNull] string sub,
@@ -352,7 +352,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Retrieves a substring that ends at the position of last occurrence of the given other string
+        /// Retrieves a substring that ends at the position of last occurrence of the given other string.
         /// </summary>
         [Pure, NotNull]
         public static string SubstringUntilLast([NotNull] this string str, [NotNull] string sub,
@@ -370,7 +370,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Retrieves a substring that starts at the position of last occurrence of the given other string
+        /// Retrieves a substring that starts at the position of last occurrence of the given other string.
         /// </summary>
         [Pure, NotNull]
         public static string SubstringAfterLast([NotNull] this string str, [NotNull] string sub,
@@ -388,7 +388,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Discards blank strings from a sequence
+        /// Discards blank strings from a sequence.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static IEnumerable<string> ExceptBlank([NotNull] this IEnumerable<string> enumerable)
@@ -400,7 +400,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Splits string using given separators, discarding empty entries
+        /// Splits string using given separators, discarding empty entries.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params string[] separators)
@@ -414,7 +414,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Splits string using given separators, discarding empty entries
+        /// Splits string using given separators, discarding empty entries.
         /// </summary>
         [Pure, NotNull, ItemNotNull]
         public static string[] Split([NotNull] this string str, [NotNull] params char[] separators)
@@ -428,7 +428,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a string formed by joining elements of a sequence using the given separator
+        /// Returns a string formed by joining elements of a sequence using the given separator.
         /// </summary>
         [Pure, NotNull]
         public static string JoinToString<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] string separator)

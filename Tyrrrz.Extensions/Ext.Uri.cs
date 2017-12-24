@@ -8,7 +8,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Converts a string to <see cref="Uri"/>
+        /// Converts a string to <see cref="Uri"/>.
         /// </summary>
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri)
@@ -20,7 +20,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts a string to a relative <see cref="Uri"/>, with the other given string representing base uri
+        /// Converts a string to a relative <see cref="Uri"/>, with the other given string representing base uri.
         /// </summary>
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] string baseUri)
@@ -34,7 +34,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Converts a string to relative <see cref="Uri"/>, with the given base <see cref="Uri"/>
+        /// Converts a string to relative <see cref="Uri"/>, with the given base <see cref="Uri"/>.
         /// </summary>
         [Pure, NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] Uri baseUri)
@@ -48,7 +48,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns URL encoded version of a string
+        /// Returns URL encoded version of a string.
         /// </summary>
         [Pure, NotNull]
         public static string UrlEncode([NotNull] this string data)
@@ -60,7 +60,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns URL decoded version of a string
+        /// Returns URL decoded version of a string.
         /// </summary>
         [Pure, NotNull]
         public static string UrlDecode([NotNull] this string data)
@@ -72,7 +72,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Sets the given query parameter to the given value in a uri string
+        /// Sets the given query parameter to the given value in a uri string.
         /// </summary>
         [Pure, NotNull]
         public static string SetQueryParameter([NotNull] this string uri, [NotNull] string key,
@@ -117,7 +117,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Sets the given query parameter to the given value in a <see cref="Uri"/>
+        /// Sets the given query parameter to the given value in a <see cref="Uri"/>.
         /// </summary>
         [Pure, NotNull]
         public static Uri SetQueryParameter([NotNull] this Uri uri, [NotNull] string key, [CanBeNull] string value)

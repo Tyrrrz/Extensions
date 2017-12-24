@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Strips namespaces from elements and their attributes recursively
+        /// Strips namespaces from elements and their attributes recursively.
         /// </summary>
         [Pure, NotNull]
         public static XElement StripNamespaces([NotNull] this XElement element)
@@ -34,7 +34,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Gets the first descendant with the specified name or null if not found
+        /// Gets the first descendant with the specified name or null if not found.
         /// </summary>
         [Pure, CanBeNull]
         public static XElement Descendant([NotNull] this XElement element, [NotNull] XName name)
@@ -48,7 +48,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Gets the first descendant with the specified name or throws an exception if not found
+        /// Gets the first descendant with the specified name or throws an exception if not found.
         /// </summary>
         [Pure, NotNull]
         public static XElement DescendantStrict([NotNull] this XElement element, [NotNull] XName name)
@@ -62,7 +62,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Gets the first (in document order) child element with the specified name or throws an exception if not found
+        /// Gets the first (in document order) child element with the specified name or throws an exception if not found.
         /// </summary>
         [Pure, NotNull]
         public static XElement ElementStrict([NotNull] this XElement element, [NotNull] XName name)
@@ -76,7 +76,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns an attribute with the given name or throws an exception if not found
+        /// Returns an attribute with the given name or throws an exception if not found.
         /// </summary>
         [Pure, NotNull]
         public static XAttribute AttributeStrict([NotNull] this XElement element, [NotNull] XName name)

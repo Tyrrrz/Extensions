@@ -7,7 +7,7 @@ namespace Tyrrrz.Extensions
     public static partial class Ext
     {
         /// <summary>
-        /// Parses string to the given enum
+        /// Parses string to the given enum.
         /// </summary>
         [Pure]
         public static TEnum ParseEnum<TEnum>([NotNull] this string str, bool ignoreCase = true) where TEnum : struct
@@ -19,7 +19,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Parses string to the given enum or returns default value if unsuccessful
+        /// Parses string to the given enum or returns default value if unsuccessful.
         /// </summary>
         [Pure]
         public static TEnum ParseEnumOrDefault<TEnum>([CanBeNull] this string str, bool ignoreCase = true,
@@ -29,7 +29,7 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Returns a random enum value
+        /// Returns a random enum value.
         /// </summary>
         [Pure]
         public static TEnum RandomEnum<TEnum>() where TEnum : struct

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Tyrrrz.Extensions.Types
 {
     /// <summary>
-    /// <see cref="IEqualityComparer{T}"/> implementation that uses a delegate to compare objects
+    /// <see cref="IEqualityComparer{T}"/> implementation that uses a delegate to compare objects.
     /// </summary>
     public class DelegateEqualityComparer<T> : IEqualityComparer<T>
     {
@@ -13,7 +13,7 @@ namespace Tyrrrz.Extensions.Types
         private readonly Func<T, int> _hashGenerator;
 
         /// <summary>
-        /// Initializes with the given comparer and hash generator
+        /// Initializes with the given comparer and hash generator.
         /// </summary>
         public DelegateEqualityComparer([NotNull] Func<T, T, bool> comparer, [NotNull] Func<T, int> hashGenerator)
         {
@@ -22,7 +22,7 @@ namespace Tyrrrz.Extensions.Types
         }
 
         /// <summary>
-        /// Initializes with the default comparer and default hash generator
+        /// Initializes with the default comparer and default hash generator.
         /// </summary>
         public DelegateEqualityComparer()
             : this((x, y) => object.Equals(x, y), o => o.GetHashCode())
