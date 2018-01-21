@@ -29,7 +29,6 @@ using System;
 // ReSharper disable IntroduceOptionalParameters.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
-// ReSharper disable CheckNamespace
 
 namespace JetBrains.Annotations
 {
@@ -86,14 +85,6 @@ namespace JetBrains.Annotations
     internal sealed class ItemCanBeNullAttribute : Attribute { }
 
     /// <summary>
-    /// Implicitly apply [NotNull]/[ItemNotNull] annotation to all the of type members and parameters
-    /// in particular scope where this annotation is used (type declaration or whole assembly).
-    /// </summary>
-    [AttributeUsage(
-      AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Assembly)]
-    internal sealed class ImplicitNotNullAttribute : Attribute { }
-
-    /// <summary>
     /// Indicates that the marked method builds string by format pattern and (optional) arguments.
     /// Parameter, which contains format string, should be given in constructor. The format string
     /// should be in <see cref="string.Format(IFormatProvider,string,object[])"/>-like form.
@@ -119,15 +110,16 @@ namespace JetBrains.Annotations
             FormatParameterName = formatParameterName;
         }
 
-        [NotNull]
-        public string FormatParameterName { get; private set; }
+        [NotNull] public string FormatParameterName { get; private set; }
     }
 
     /// <summary>
     /// For a parameter that is expected to be one of the limited set of values.
     /// Specify fields of which type should be used as values for this parameter.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(
+      AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field,
+      AllowMultiple = true)]
     internal sealed class ValueProviderAttribute : Attribute
     {
         public ValueProviderAttribute([NotNull] string name)
@@ -135,8 +127,7 @@ namespace JetBrains.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; private set; }
+        [NotNull] public string Name { get; private set; }
     }
 
     /// <summary>
@@ -200,8 +191,7 @@ namespace JetBrains.Annotations
             ParameterName = parameterName;
         }
 
-        [CanBeNull]
-        public string ParameterName { get; private set; }
+        [CanBeNull] public string ParameterName { get; private set; }
     }
 
     /// <summary>
@@ -217,15 +207,16 @@ namespace JetBrains.Annotations
     /// <item>Value    ::= true | false | null | notnull | canbenull</item>
     /// </list>
     /// If method has single input parameter, it's name could be omitted.<br/>
-    /// Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same)
-    /// for method output means that the methos doesn't return normally.<br/>
-    /// <c>canbenull</c> annotation is only applicable for output parameters.<br/>
-    /// You can use multiple <c>[ContractAnnotation]</c> for each FDT row,
-    /// or use single attribute with rows separated by semicolon.<br/>
+    /// Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same) for method output
+    /// means that the methos doesn't return normally (throws or terminates the process).<br/>
+    /// Value <c>canbenull</c> is only applicable for output parameters.<br/>
+    /// You can use multiple <c>[ContractAnnotation]</c> for each FDT row, or use single attribute
+    /// with rows separated by semicolon. There is no notion of order rows, all rows are checked
+    /// for applicability and applied per each program state tracked by R# analysis.<br/>
     /// </syntax>
     /// <examples><list>
     /// <item><code>
-    /// [ContractAnnotation("=> halt")]
+    /// [ContractAnnotation("=&gt; halt")]
     /// public void TerminationMethod()
     /// </code></item>
     /// <item><code>
@@ -233,17 +224,17 @@ namespace JetBrains.Annotations
     /// public void Assert(bool condition, string text) // regular assertion method
     /// </code></item>
     /// <item><code>
-    /// [ContractAnnotation("s:null => true")]
+    /// [ContractAnnotation("s:null =&gt; true")]
     /// public bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
     /// </code></item>
     /// <item><code>
     /// // A method that returns null if the parameter is null,
     /// // and not null if the parameter is not null
-    /// [ContractAnnotation("null => null; notnull => notnull")]
+    /// [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
     /// public object Transform(object data) 
     /// </code></item>
     /// <item><code>
-    /// [ContractAnnotation("s:null=>false; =>true,result:notnull; =>false, result:null")]
+    /// [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
     /// public bool TryParse(string s, out Person result)
     /// </code></item>
     /// </list></examples>
@@ -259,8 +250,8 @@ namespace JetBrains.Annotations
             ForceFullStates = forceFullStates;
         }
 
-        [NotNull]
-        public string Contract { get; private set; }
+        [NotNull] public string Contract { get; private set; }
+
         public bool ForceFullStates { get; private set; }
     }
 
@@ -277,6 +268,7 @@ namespace JetBrains.Annotations
     internal sealed class LocalizationRequiredAttribute : Attribute
     {
         public LocalizationRequiredAttribute() : this(true) { }
+
         public LocalizationRequiredAttribute(bool required)
         {
             Required = required;
@@ -328,8 +320,7 @@ namespace JetBrains.Annotations
             BaseType = baseType;
         }
 
-        [NotNull]
-        public Type BaseType { get; private set; }
+        [NotNull] public Type BaseType { get; private set; }
     }
 
     /// <summary>
@@ -355,6 +346,7 @@ namespace JetBrains.Annotations
         }
 
         public ImplicitUseKindFlags UseKindFlags { get; private set; }
+
         public ImplicitUseTargetFlags TargetFlags { get; private set; }
     }
 
@@ -380,10 +372,9 @@ namespace JetBrains.Annotations
             TargetFlags = targetFlags;
         }
 
-        [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
-        [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; }
+
+        [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; }
     }
 
     [Flags]
@@ -426,13 +417,13 @@ namespace JetBrains.Annotations
     internal sealed class PublicAPIAttribute : Attribute
     {
         public PublicAPIAttribute() { }
+
         public PublicAPIAttribute([NotNull] string comment)
         {
             Comment = comment;
         }
 
-        [CanBeNull]
-        public string Comment { get; private set; }
+        [CanBeNull] public string Comment { get; private set; }
     }
 
     /// <summary>
@@ -464,13 +455,13 @@ namespace JetBrains.Annotations
     internal sealed class MustUseReturnValueAttribute : Attribute
     {
         public MustUseReturnValueAttribute() { }
+
         public MustUseReturnValueAttribute([NotNull] string justification)
         {
             Justification = justification;
         }
 
-        [CanBeNull]
-        public string Justification { get; private set; }
+        [CanBeNull] public string Justification { get; private set; }
     }
 
     /// <summary>
@@ -501,13 +492,13 @@ namespace JetBrains.Annotations
     internal sealed class PathReferenceAttribute : Attribute
     {
         public PathReferenceAttribute() { }
+
         public PathReferenceAttribute([NotNull, PathReference] string basePath)
         {
             BasePath = basePath;
         }
 
-        [CanBeNull]
-        public string BasePath { get; private set; }
+        [CanBeNull] public string BasePath { get; private set; }
     }
 
     /// <summary>
@@ -571,7 +562,7 @@ namespace JetBrains.Annotations
         /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
         /// parameter when the template is expanded.
         /// </summary>
-        public string Expression { get; set; }
+        [CanBeNull] public string Expression { get; set; }
 
         /// <summary>
         /// Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
@@ -587,10 +578,10 @@ namespace JetBrains.Annotations
         /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
         /// <see cref="MacroAttribute"/> is applied on a template method.
         /// </summary>
-        public string Target { get; set; }
+        [CanBeNull] public string Target { get; set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcAreaMasterLocationFormatAttribute : Attribute
     {
         public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
@@ -598,11 +589,10 @@ namespace JetBrains.Annotations
             Format = format;
         }
 
-        [NotNull]
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcAreaPartialViewLocationFormatAttribute : Attribute
     {
         public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
@@ -610,11 +600,10 @@ namespace JetBrains.Annotations
             Format = format;
         }
 
-        [NotNull]
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcAreaViewLocationFormatAttribute : Attribute
     {
         public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
@@ -622,22 +611,21 @@ namespace JetBrains.Annotations
             Format = format;
         }
 
-        [NotNull]
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcMasterLocationFormatAttribute : Attribute
     {
-        public AspMvcMasterLocationFormatAttribute(string format)
+        public AspMvcMasterLocationFormatAttribute([NotNull] string format)
         {
             Format = format;
         }
 
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcPartialViewLocationFormatAttribute : Attribute
     {
         public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
@@ -645,11 +633,10 @@ namespace JetBrains.Annotations
             Format = format;
         }
 
-        [NotNull]
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
     internal sealed class AspMvcViewLocationFormatAttribute : Attribute
     {
         public AspMvcViewLocationFormatAttribute([NotNull] string format)
@@ -657,8 +644,7 @@ namespace JetBrains.Annotations
             Format = format;
         }
 
-        [NotNull]
-        public string Format { get; private set; }
+        [NotNull] public string Format { get; private set; }
     }
 
     /// <summary>
@@ -671,13 +657,13 @@ namespace JetBrains.Annotations
     internal sealed class AspMvcActionAttribute : Attribute
     {
         public AspMvcActionAttribute() { }
+
         public AspMvcActionAttribute([NotNull] string anonymousProperty)
         {
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; private set; }
     }
 
     /// <summary>
@@ -689,13 +675,13 @@ namespace JetBrains.Annotations
     internal sealed class AspMvcAreaAttribute : Attribute
     {
         public AspMvcAreaAttribute() { }
+
         public AspMvcAreaAttribute([NotNull] string anonymousProperty)
         {
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; private set; }
     }
 
     /// <summary>
@@ -708,13 +694,13 @@ namespace JetBrains.Annotations
     internal sealed class AspMvcControllerAttribute : Attribute
     {
         public AspMvcControllerAttribute() { }
+
         public AspMvcControllerAttribute([NotNull] string anonymousProperty)
         {
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; private set; }
     }
 
     /// <summary>
@@ -811,13 +797,13 @@ namespace JetBrains.Annotations
     internal sealed class HtmlElementAttributesAttribute : Attribute
     {
         public HtmlElementAttributesAttribute() { }
+
         public HtmlElementAttributesAttribute([NotNull] string name)
         {
             Name = name;
         }
 
-        [CanBeNull]
-        public string Name { get; private set; }
+        [CanBeNull] public string Name { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
@@ -828,8 +814,7 @@ namespace JetBrains.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; private set; }
+        [NotNull] public string Name { get; private set; }
     }
 
     /// <summary>
@@ -937,6 +922,16 @@ namespace JetBrains.Annotations
     internal sealed class RegexPatternAttribute : Attribute { }
 
     /// <summary>
+    /// Prevents the Member Reordering feature from tossing members of the marked class.
+    /// </summary>
+    /// <remarks>
+    /// The attribute must be mentioned in your member reordering patterns
+    /// </remarks>
+    [AttributeUsage(
+      AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Enum)]
+    internal sealed class NoReorderAttribute : Attribute { }
+
+    /// <summary>
     /// XAML attribute. Indicates the type that has <c>ItemsSource</c> property and should be treated
     /// as <c>ItemsControl</c>-derived type, to enable inner items <c>DataContext</c> type resolve.
     /// </summary>
@@ -964,10 +959,9 @@ namespace JetBrains.Annotations
             ControlType = controlType;
         }
 
-        [NotNull]
-        public string TagName { get; private set; }
-        [NotNull]
-        public Type ControlType { get; private set; }
+        [NotNull] public string TagName { get; private set; }
+
+        [NotNull] public Type ControlType { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -987,8 +981,7 @@ namespace JetBrains.Annotations
             Attribute = attribute;
         }
 
-        [NotNull]
-        public string Attribute { get; private set; }
+        [NotNull] public string Attribute { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -1010,8 +1003,7 @@ namespace JetBrains.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; private set; }
+        [NotNull] public string Name { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1023,10 +1015,9 @@ namespace JetBrains.Annotations
             FieldName = fieldName;
         }
 
-        [NotNull]
-        public string Type { get; private set; }
-        [NotNull]
-        public string FieldName { get; private set; }
+        [NotNull] public string Type { get; private set; }
+
+        [NotNull] public string FieldName { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1037,8 +1028,24 @@ namespace JetBrains.Annotations
             Directive = directive;
         }
 
-        [NotNull]
-        public string Directive { get; private set; }
+        [NotNull] public string Directive { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    internal sealed class RazorPageBaseTypeAttribute : Attribute
+    {
+        public RazorPageBaseTypeAttribute([NotNull] string baseType)
+        {
+            BaseType = baseType;
+        }
+        public RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName)
+        {
+            BaseType = baseType;
+            PageName = pageName;
+        }
+
+        [NotNull] public string BaseType { get; private set; }
+        [CanBeNull] public string PageName { get; private set; }
     }
 
     [AttributeUsage(AttributeTargets.Method)]
@@ -1055,13 +1062,4 @@ namespace JetBrains.Annotations
 
     [AttributeUsage(AttributeTargets.Parameter)]
     internal sealed class RazorWriteMethodParameterAttribute : Attribute { }
-
-    /// <summary>
-    /// Prevents the Member Reordering feature from tossing members of the marked class.
-    /// </summary>
-    /// <remarks>
-    /// The attribute must be mentioned in your member reordering patterns
-    /// </remarks>
-    [AttributeUsage(AttributeTargets.All)]
-    internal sealed class NoReorder : Attribute { }
 }
