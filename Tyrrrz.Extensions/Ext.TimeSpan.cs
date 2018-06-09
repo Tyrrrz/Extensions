@@ -11,7 +11,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static TimeSpan Multiply(this TimeSpan timeSpan, double multiplier)
         {
-            return TimeSpan.FromSeconds(timeSpan.TotalSeconds * multiplier);
+            return TimeSpan.FromMilliseconds(timeSpan.TotalMilliseconds * multiplier);
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static TimeSpan Divide(this TimeSpan timeSpan, double divider)
         {
-            return TimeSpan.FromSeconds(timeSpan.TotalSeconds / divider);
+            return TimeSpan.FromMilliseconds(timeSpan.TotalMilliseconds / divider);
         }
     }
 }
