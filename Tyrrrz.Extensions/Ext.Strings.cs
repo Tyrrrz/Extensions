@@ -152,7 +152,7 @@ namespace Tyrrrz.Extensions
             if (sub == null)
                 throw new ArgumentNullException(nameof(sub));
 
-            return str.TrimStart(sub).TrimEnd(sub);
+            return str.TrimStart(sub, comparison).TrimEnd(sub, comparison);
         }
 
         /// <summary>
