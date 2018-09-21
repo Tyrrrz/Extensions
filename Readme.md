@@ -1,4 +1,4 @@
-# Tyrrrz Extensions Library
+# Tyrrrz.Extensions
 
 [![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions)
 [![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions)
@@ -10,4 +10,4 @@ My extensions for rapid development
 
 ## Download
 
-- Using nuget: `Install-Package Tyrrrz.Extensions`
+- [NuGet](https://nuget.org/packages/Tyrrrz.Extensions): `Install-Package Tyrrrz.Extensions`
