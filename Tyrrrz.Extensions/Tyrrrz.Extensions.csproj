@@ -5,7 +5,7 @@
     <Version>1.5.1</Version>
     <Company>Tyrrrz</Company>
     <Authors>$(Company)</Authors>
-    <Copyright>Copyright (C) 2015-2018 Alexey Golub</Copyright>
+    <Copyright>Copyright (C) Alexey Golub</Copyright>
     <Description>Extensions for rapid development</Description>
     <PackageProjectUrl>https://github.com/Tyrrrz/Extensions</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Tyrrrz/Extensions/master/License.txt</PackageLicenseUrl>
