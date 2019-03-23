@@ -8,7 +8,7 @@
     <Copyright>Copyright (C) Alexey Golub</Copyright>
     <Description>Extensions for rapid development</Description>
     <PackageProjectUrl>https://github.com/Tyrrrz/Extensions</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Tyrrrz/Extensions/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
