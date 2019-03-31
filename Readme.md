@@ -10,4 +10,4 @@ My extensions for rapid development
 
 ## Download
 
-- [NuGet](https://nuget.org/packages/Tyrrrz.Extensions): `Install-Package Tyrrrz.Extensions`
+- [NuGet](https://nuget.org/packages/Tyrrrz.Extensions): `dotnet add package Tyrrrz.Extensions`
