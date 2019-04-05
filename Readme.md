@@ -12,7 +12,7 @@ This library contains all extension methods I use in my projects on a regular ba
 ## Download
 
 - [NuGet](https://nuget.org/packages/Tyrrrz.Extensions): `dotnet add package Tyrrrz.Extensions`
-- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/Tyrrrz.Extensions)
+- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/Extensions)
 
 ## Libraries used
 
