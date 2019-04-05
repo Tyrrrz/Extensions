@@ -1,12 +1,16 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Resources;
 using JetBrains.Annotations;
+using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
-    public static partial class Ext
+    /// <summary>
+    /// Extensions for <see href="Assembly" />.
+    /// </summary>
+    public static class AssemblyExtensions
     {
         /// <summary>
         /// Reads the given manifest resource as a string.
@@ -14,22 +18,18 @@ namespace Tyrrrz.Extensions
         [Pure, NotNull]
         public static string GetManifestResourceString([NotNull] this Assembly assembly, [NotNull] string resourceName)
         {
-            if (assembly == null)
-                throw new ArgumentNullException(nameof(assembly));
-            if (resourceName == null)
-                throw new ArgumentNullException(nameof(resourceName));
+            assembly.GuardNotNull(nameof(assembly));
+            resourceName.GuardNotNull(nameof(resourceName));
 
-            // Get manifest stream
+            // Get manifest resource stream
             var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
-                throw new MissingManifestResourceException($"Could not find resource [{resourceName}].");
+                throw new MissingManifestResourceException($"Resource [{resourceName}] doesn't exist.");
 
             // Read stream
             using (stream)
             using (var reader = new StreamReader(stream))
-            {
                 return reader.ReadToEnd();
-            }
         }
     }
 }
