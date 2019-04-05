@@ -15,5 +15,11 @@ namespace Tyrrrz.Extensions.Tests
         {
             Assert.That(input.IsEither(variants), Is.EqualTo(output));
         }
+
+        [Test]
+        public void IsEither_Test()
+        {
+            Assert.That(5.IsEither(1, 2, 3, 4, 5));
+        }
     }
 }

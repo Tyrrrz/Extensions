@@ -158,6 +158,7 @@ namespace Tyrrrz.Extensions
         public static IEnumerable<T> Slice<T>([NotNull] this IEnumerable<T> source, int startAt, int count)
         {
             source.GuardNotNull(nameof(source));
+            startAt.GuardNotNegative(nameof(startAt));
             count.GuardNotNegative(nameof(count));
 
             // If count is zero - return empty

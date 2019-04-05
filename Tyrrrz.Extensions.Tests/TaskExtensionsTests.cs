@@ -17,7 +17,7 @@ namespace Tyrrrz.Extensions.Tests
             var selected = await array.ParallelSelectAsync(i => Task.Run(() => i * 2));
 
             // Assert
-            Assert.That(selected, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(selected, Is.EqualTo(new[] { 0, 2, 4, 6, 8 }));
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace Tyrrrz.Extensions.Tests
             await array.ParallelForEachAsync(i => Task.Run(() => array[i] = i * 2));
 
             // Assert
-            Assert.That(array, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(array, Is.EqualTo(new[] { 0, 2, 4, 6, 8 }));
         }
     }
 }

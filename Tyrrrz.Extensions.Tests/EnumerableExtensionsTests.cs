@@ -12,7 +12,7 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase(null, new object[0])]
         public void EmptyIfNull_Test(IEnumerable<object> input, IEnumerable<object> output)
         {
-            Assert.That(input.EmptyIfNull(), Is.EquivalentTo(output));
+            Assert.That(input.EmptyIfNull(), Is.EqualTo(output));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Tyrrrz.Extensions.Tests
             var hashSet = input.ToHashSet();
 
             // Assert
-            Assert.That(hashSet, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(hashSet, Is.EqualTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
@@ -87,14 +87,98 @@ namespace Tyrrrz.Extensions.Tests
         public void Distinct_Test()
         {
             // Arrange
-            var input = new[] { 1, 2, 3, 4, 5 };
+            var input = new[] { 100, 123, 150, 141, 193 };
 
             // Act
-            var distinct = input.Distinct(i => i % 2 == 0);
+            var distinct = input.Distinct(i => i % 10);
 
             // Assert
-            // TODO
-            Assert.That(distinct, Is.EquivalentTo(new[] { 2, 4 }));
+            Assert.That(distinct, Is.EqualTo(new[] { 100, 123, 141 }));
+        }
+
+        [Test]
+        [TestCase(new object[] { 1, 1, 2, 2, 3, 3 }, 2, new object[] { 1, 1, 3, 3 })]
+        [TestCase(new object[] { 1, 2, 3 }, 5, new object[] { 1, 2, 3 })]
+        public void Except_Test(IEnumerable<object> input, object except, IEnumerable<object> output)
+        {
+            Assert.That(input.Except(except), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(new object[] { null, 1, null, 2 }, new object[] { 1, 2 })]
+        [TestCase(new object[] { 1, 2, 3 }, new object[] { 1, 2, 3 })]
+        public void ExceptDefault_Test(IEnumerable<object> input, IEnumerable<object> output)
+        {
+            Assert.That(input.ExceptDefault(), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 1, 2, new object[] { 2, 3 })]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, 5, new object[] { 1, 2, 3, 4, 5 })]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 2, 0, new object[0])]
+        public void Slice_Test(IEnumerable<object> input, int startAt, int count, IEnumerable<object> output)
+        {
+            Assert.That(input.Slice(startAt, count), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 3, new object[] { 3, 4, 5 })]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 5, new object[] { 1, 2, 3, 4, 5 })]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, new object[0])]
+        public void TakeLast_Test(IEnumerable<object> input, int count, IEnumerable<object> output)
+        {
+            Assert.That(input.TakeLast(count), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 3, new object[] { 1, 2 })]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 5, new object[0])]
+        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, new object[] { 1, 2, 3, 4, 5 })]
+        public void SkipLast_Test(IEnumerable<object> input, int count, IEnumerable<object> output)
+        {
+            Assert.That(input.SkipLast(count), Is.EqualTo(output));
+        }
+
+        [Test]
+        public void TakeLastWhile_Test()
+        {
+            // Arrange
+            var input = new[] { 6, 2, 10, 4, 5 };
+
+            // Act
+            var output = input.TakeLastWhile(i => i < 10);
+
+            // Assert
+            Assert.That(output, Is.EqualTo(new[] { 4, 5 }));
+        }
+
+        [Test]
+        public void SkipLastWhile_Test()
+        {
+            // Arrange
+            var input = new[] { 6, 2, 10, 4, 5 };
+
+            // Act
+            var output = input.SkipLastWhile(i => i < 10);
+
+            // Assert
+            Assert.That(output, Is.EqualTo(new[] { 6, 2, 10 }));
+        }
+
+        [Test]
+        [TestCase(new object[] { 6, 2, 10, 4, 5, 10 }, 10, 2)]
+        [TestCase(new object[] { 6, 2, 10, 4, 5 }, 20, -1)]
+        public void IndexOf_Test(IEnumerable<object> input, object element, int output)
+        {
+            Assert.That(input.IndexOf(element), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(new object[] { 6, 2, 10, 4, 5, 10 }, 10, 5)]
+        [TestCase(new object[] { 6, 2, 10, 4, 5 }, 20, -1)]
+        public void LastIndexOf_Test(IEnumerable<object> input, object element, int output)
+        {
+            Assert.That(input.LastIndexOf(element), Is.EqualTo(output));
         }
     }
 }

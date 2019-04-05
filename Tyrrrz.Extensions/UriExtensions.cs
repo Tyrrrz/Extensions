@@ -124,7 +124,7 @@ namespace Tyrrrz.Extensions
             // If parameter is not set yet - append it to the end
             else
             {
-                // If the URI doesn't end with slash - append it
+                // If the URI doesn't end with a slash - append it
                 if (uriString.ToCharArray().LastOrDefault() != '/')
                     uriString += '/';
 

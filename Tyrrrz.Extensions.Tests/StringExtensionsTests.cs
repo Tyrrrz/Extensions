@@ -18,12 +18,22 @@ namespace Tyrrrz.Extensions.Tests
 
         [Test]
         [TestCase("", true)]
+        [TestCase("  ", false)]
+        [TestCase("test", false)]
+        [TestCase(" test", false)]
+        public void IsEmpty_Test(string input, bool output)
+        {
+            Assert.That(input.IsEmpty(), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase("", true)]
         [TestCase("  ", true)]
         [TestCase("test", false)]
         [TestCase(" test", false)]
-        public void IsEmptyOrWhiteSpace_Test(string input, bool output)
+        public void IsWhiteSpace_Test(string input, bool output)
         {
-            Assert.That(input.IsEmptyOrWhiteSpace(), Is.EqualTo(output));
+            Assert.That(input.IsWhiteSpace(), Is.EqualTo(output));
         }
 
         [Test]

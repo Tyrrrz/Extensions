@@ -21,7 +21,7 @@ namespace Tyrrrz.Extensions
             assembly.GuardNotNull(nameof(assembly));
             resourceName.GuardNotNull(nameof(resourceName));
 
-            // Get manifest stream
+            // Get manifest resource stream
             var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
                 throw new MissingManifestResourceException($"Resource [{resourceName}] doesn't exist.");

@@ -15,12 +15,24 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns an empty string if given a null string, otherwise returns same string.
         /// </summary>
+        [Pure, NotNull]
         public static string EmptyIfNull([CanBeNull] this string s) => s ?? string.Empty;
+
+        /// <summary>
+        /// Returns whether a string is empty.
+        /// </summary>
+        [Pure]
+        public static bool IsEmpty([NotNull] this string s)
+        {
+            s.GuardNotNull(nameof(s));
+            return string.IsNullOrEmpty(s);
+        }
 
         /// <summary>
         /// Returns whether a string is empty or consists of only whitespace.
         /// </summary>
-        public static bool IsEmptyOrWhiteSpace([NotNull] this string s)
+        [Pure]
+        public static bool IsWhiteSpace([NotNull] this string s)
         {
             s.GuardNotNull(nameof(s));
             return string.IsNullOrWhiteSpace(s);
@@ -285,7 +297,7 @@ namespace Tyrrrz.Extensions
         public static IEnumerable<string> ExceptEmptyOrWhiteSpace([NotNull] this IEnumerable<string> source)
         {
             source.GuardNotNull(nameof(source));
-            return source.Where(s => !IsEmptyOrWhiteSpace(s));
+            return source.Where(s => !IsWhiteSpace(s));
         }
 
         /// <summary>
@@ -295,8 +307,6 @@ namespace Tyrrrz.Extensions
         public static string[] Split([NotNull] this string s, [NotNull] params string[] separators)
         {
             s.GuardNotNull(nameof(s));
-            separators.GuardNotNull(nameof(separators));
-
             return s.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -307,8 +317,6 @@ namespace Tyrrrz.Extensions
         public static string[] Split([NotNull] this string s, [NotNull] params char[] separators)
         {
             s.GuardNotNull(nameof(s));
-            separators.GuardNotNull(nameof(separators));
-
             return s.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
 

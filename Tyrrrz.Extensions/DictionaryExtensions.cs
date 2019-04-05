@@ -16,7 +16,6 @@ namespace Tyrrrz.Extensions
         public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dictionary, TKey key)
         {
             dictionary.GuardNotNull(nameof(dictionary));
-
             return dictionary.TryGetValue(key, out var result) ? result : default(TValue);
         }
     }
