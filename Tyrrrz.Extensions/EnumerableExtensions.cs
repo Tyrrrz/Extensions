@@ -348,5 +348,54 @@ namespace Tyrrrz.Extensions
         [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> source, T element) =>
             source.LastIndexOf(element, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Groups contiguous elements into a list based on a predicate.
+        /// The predicate decides whether the next element should be added to the current group.
+        /// If the predicate fails, the current group is closed and a new one, containing this element, is created.
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<IReadOnlyList<T>> GroupContiguous<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] Func<IReadOnlyList<T>, T, bool> groupPredicate)
+        {
+            source.GuardNotNull(nameof(source));
+            groupPredicate.GuardNotNull(nameof(groupPredicate));
+
+            // Create buffer
+            var buffer = new List<T>();
+
+            // Enumerate source
+            foreach (var element in source)
+            {
+                // If buffer is not empty and group predicate failed - yield and reset buffer
+                if (buffer.Any() && !groupPredicate(buffer, element))
+                {
+                    yield return buffer;
+                    buffer = new List<T>(); // new instance to reset reference
+                }
+
+                // Add element to buffer
+                buffer.Add(element);
+            }
+
+            // If buffer still has something after the source has been enumerated - yield
+            if (buffer.Any())
+                yield return buffer;
+        }
+
+        /// <summary>
+        /// Groups contiguous elements into a list based on a predicate.
+        /// The predicate decides whether the next element should be added to the current group.
+        /// If the predicate fails, the current group is closed and a new one, containing this element, is created.
+        /// </summary>
+        [Pure, NotNull]
+        public static IEnumerable<IReadOnlyList<T>> GroupContiguous<T>([NotNull] this IEnumerable<T> source,
+            [NotNull] Func<IReadOnlyList<T>, bool> groupPredicate)
+        {
+            source.GuardNotNull(nameof(source));
+            groupPredicate.GuardNotNull(nameof(groupPredicate));
+
+            return source.GroupContiguous((buffer, _) => groupPredicate(buffer));
+        }
     }
 }

@@ -180,5 +180,18 @@ namespace Tyrrrz.Extensions.Tests
         {
             Assert.That(input.LastIndexOf(element), Is.EqualTo(output));
         }
+
+        [Test]
+        public void GroupContiguous_Test()
+        {
+            // Arrange
+            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+            // Act
+            var groups = input.GroupContiguous(b => b.Count < 3);
+
+            // Assert
+            Assert.That(groups, Is.EqualTo(new[] { new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8 } }));
+        }
     }
 }
