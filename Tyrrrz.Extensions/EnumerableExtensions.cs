@@ -12,7 +12,13 @@ namespace Tyrrrz.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Returns an empty enumerable if the given enumerable is null. Otherwise returns given enumerable.
+        /// Indicates whether the sequence is null or an empty sequence.
+        /// </summary>
+        [Pure]
+        public static bool IsNullOrEmpty<T>([CanBeNull] this IEnumerable<T> source) => source == null || !source.Any();
+
+        /// <summary>
+        /// Returns an empty sequence if the given sequence is null, otherwise returns given sequence.
         /// </summary>
         [Pure, NotNull]
         public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();

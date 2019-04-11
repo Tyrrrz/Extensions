@@ -7,9 +7,18 @@ namespace Tyrrrz.Extensions.Tests
     public class EnumerableExtensionsTests
     {
         [Test]
-        [TestCase(new object[] { 1, 2, 3 }, new object[] { 1, 2, 3 })]
-        [TestCase(new object[0], new object[0])]
+        [TestCase(null, true)]
+        [TestCase(new object[0], true)]
+        [TestCase(new object[] { 1, 2, 3 }, false)]
+        public void IsNullOrEmpty_Test(IEnumerable<object> input, bool output)
+        {
+            Assert.That(input.IsNullOrEmpty(), Is.EqualTo(output));
+        }
+
+        [Test]
         [TestCase(null, new object[0])]
+        [TestCase(new object[0], new object[0])]
+        [TestCase(new object[] { 1, 2, 3 }, new object[] { 1, 2, 3 })]
         public void EmptyIfNull_Test(IEnumerable<object> input, IEnumerable<object> output)
         {
             Assert.That(input.EmptyIfNull(), Is.EqualTo(output));

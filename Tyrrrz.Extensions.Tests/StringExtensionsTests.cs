@@ -8,32 +8,34 @@ namespace Tyrrrz.Extensions.Tests
     public class StringExtensionsTests
     {
         [Test]
+        [TestCase(null, true)]
+        [TestCase("", true)]
+        [TestCase("  ", false)]
+        [TestCase("test", false)]
+        [TestCase(" test", false)]
+        public void IsNullOrEmpty_Test(string input, bool output)
+        {
+            Assert.That(input.IsNullOrEmpty(), Is.EqualTo(output));
+        }
+
+        [Test]
+        [TestCase(null, true)]
+        [TestCase("", true)]
+        [TestCase("  ", true)]
+        [TestCase("test", false)]
+        [TestCase(" test", false)]
+        public void IsNullOrWhiteSpace_Test(string input, bool output)
+        {
+            Assert.That(input.IsNullOrWhiteSpace(), Is.EqualTo(output));
+        }
+
+        [Test]
         [TestCase(null, "")]
         [TestCase("test", "test")]
         [TestCase(" ", " ")]
         public void EmptyIfNull_Test(string input, string output)
         {
             Assert.That(input.EmptyIfNull(), Is.EqualTo(output));
-        }
-
-        [Test]
-        [TestCase("", true)]
-        [TestCase("  ", false)]
-        [TestCase("test", false)]
-        [TestCase(" test", false)]
-        public void IsEmpty_Test(string input, bool output)
-        {
-            Assert.That(input.IsEmpty(), Is.EqualTo(output));
-        }
-
-        [Test]
-        [TestCase("", true)]
-        [TestCase("  ", true)]
-        [TestCase("test", false)]
-        [TestCase(" test", false)]
-        public void IsWhiteSpace_Test(string input, bool output)
-        {
-            Assert.That(input.IsWhiteSpace(), Is.EqualTo(output));
         }
 
         [Test]
@@ -185,9 +187,9 @@ namespace Tyrrrz.Extensions.Tests
 
         [Test]
         [TestCase(new[] { "aaa", "", " ", "bbb" }, new[] { "aaa", "bbb" })]
-        public void ExceptEmptyOrWhiteSpace_Test(IEnumerable<string> input, IEnumerable<string> output)
+        public void ExceptNullOrWhiteSpace_Test(IEnumerable<string> input, IEnumerable<string> output)
         {
-            Assert.That(input.ExceptEmptyOrWhiteSpace(), Is.EqualTo(output));
+            Assert.That(input.ExceptNullOrWhiteSpace(), Is.EqualTo(output));
         }
 
         [Test]

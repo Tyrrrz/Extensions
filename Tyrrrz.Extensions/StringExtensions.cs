@@ -13,30 +13,22 @@ namespace Tyrrrz.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// Returns an empty string if given a null string, otherwise returns same string.
+        /// Indicates whether a string is null or empty.
+        /// </summary>
+        [Pure]
+        public static bool IsNullOrEmpty([CanBeNull] this string s) => string.IsNullOrEmpty(s);
+
+        /// <summary>
+        /// Indicates whether a string is either null, empty, or whitespace.
+        /// </summary>
+        [Pure]
+        public static bool IsNullOrWhiteSpace([CanBeNull] this string s) => string.IsNullOrWhiteSpace(s);
+
+        /// <summary>
+        /// Returns an empty string if given a null string, otherwise returns given string.
         /// </summary>
         [Pure, NotNull]
         public static string EmptyIfNull([CanBeNull] this string s) => s ?? string.Empty;
-
-        /// <summary>
-        /// Returns whether a string is empty.
-        /// </summary>
-        [Pure]
-        public static bool IsEmpty([NotNull] this string s)
-        {
-            s.GuardNotNull(nameof(s));
-            return string.IsNullOrEmpty(s);
-        }
-
-        /// <summary>
-        /// Returns whether a string is empty or consists of only whitespace.
-        /// </summary>
-        [Pure]
-        public static bool IsWhiteSpace([NotNull] this string s)
-        {
-            s.GuardNotNull(nameof(s));
-            return string.IsNullOrWhiteSpace(s);
-        }
 
         /// <summary>
         /// Determines whether the string only consists of digits.
@@ -291,13 +283,13 @@ namespace Tyrrrz.Extensions
         }
 
         /// <summary>
-        /// Discards blank strings from a sequence.
+        /// Discards null, empty and whitespace strings from a sequence.
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<string> ExceptEmptyOrWhiteSpace([NotNull] this IEnumerable<string> source)
+        public static IEnumerable<string> ExceptNullOrWhiteSpace([NotNull] this IEnumerable<string> source)
         {
             source.GuardNotNull(nameof(source));
-            return source.Where(s => !IsWhiteSpace(s));
+            return source.Where(s => !IsNullOrWhiteSpace(s));
         }
 
         /// <summary>
