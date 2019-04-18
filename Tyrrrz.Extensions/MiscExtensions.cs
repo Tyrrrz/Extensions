@@ -27,8 +27,8 @@ namespace Tyrrrz.Extensions
         /// Determines whether an object is equal to any of the elements in a sequence.
         /// </summary>
         [Pure]
-        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> variants)
-            => IsEither(obj, variants, EqualityComparer<T>.Default);
+        public static bool IsEither<T>(this T obj, [NotNull] IEnumerable<T> variants) =>
+            IsEither(obj, variants, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Determines whether the object is equal to any of the parameters.

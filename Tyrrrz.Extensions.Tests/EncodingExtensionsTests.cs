@@ -19,7 +19,7 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [Test]
-        [TestCase(new byte[] {0,13,19,22,99})]
+        [TestCase(new byte[] {0, 13, 19, 22, 99})]
         [TestCase(new byte[0])]
         public void ToBase64_FromBase64_Test(byte[] input)
         {

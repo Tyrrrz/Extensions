@@ -1,11 +1,10 @@
-using System;
 using NUnit.Framework;
 using Tyrrrz.Extensions.Tests.TestData;
 
 namespace Tyrrrz.Extensions.Tests
 {
     [TestFixture]
-    public partial class EnumExtensionsTests
+    public class EnumExtensionsTests
     {
         [Test]
         [TestCase("Two", TestEnum.Two)]

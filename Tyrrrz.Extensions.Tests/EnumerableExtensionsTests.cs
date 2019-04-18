@@ -9,7 +9,7 @@ namespace Tyrrrz.Extensions.Tests
         [Test]
         [TestCase(null, true)]
         [TestCase(new object[0], true)]
-        [TestCase(new object[] { 1, 2, 3 }, false)]
+        [TestCase(new object[] {1, 2, 3}, false)]
         public void IsNullOrEmpty_Test(IEnumerable<object> input, bool output)
         {
             Assert.That(input.IsNullOrEmpty(), Is.EqualTo(output));
@@ -18,7 +18,7 @@ namespace Tyrrrz.Extensions.Tests
         [Test]
         [TestCase(null, new object[0])]
         [TestCase(new object[0], new object[0])]
-        [TestCase(new object[] { 1, 2, 3 }, new object[] { 1, 2, 3 })]
+        [TestCase(new object[] {1, 2, 3}, new object[] {1, 2, 3})]
         public void EmptyIfNull_Test(IEnumerable<object> input, IEnumerable<object> output)
         {
             Assert.That(input.EmptyIfNull(), Is.EqualTo(output));
@@ -28,9 +28,9 @@ namespace Tyrrrz.Extensions.Tests
         public void GetSequenceHashCode_Test()
         {
             // Arrange
-            var first = new[] { 1, 2, 3 };
-            var second = new[] { 3, 2, 1 };
-            var third = new[] { 1, 2, 3 };
+            var first = new[] {1, 2, 3};
+            var second = new[] {3, 2, 1};
+            var third = new[] {1, 2, 3};
 
             // Act
             var firstHashCode = first.GetSequenceHashCode();
@@ -54,20 +54,20 @@ namespace Tyrrrz.Extensions.Tests
         public void ToHashSet_Test()
         {
             // Arrange
-            var input = new[] { 1, 1, 2, 2, 3, 3 };
+            var input = new[] {1, 1, 2, 2, 3, 3};
 
             // Act
             var hashSet = input.ToHashSet();
 
             // Assert
-            Assert.That(hashSet, Is.EqualTo(new[] { 1, 2, 3 }));
+            Assert.That(hashSet, Is.EqualTo(new[] {1, 2, 3}));
         }
 
         [Test]
         public void Random_Test()
         {
             // Arrange
-            var input = new[] { 1, 2, 3 };
+            var input = new[] {1, 2, 3};
 
             // Act
             var random = input.Random();
@@ -80,7 +80,7 @@ namespace Tyrrrz.Extensions.Tests
         public void RandomOrDefault_Test()
         {
             // Arrange
-            var input1 = new[] { 1, 2, 3 };
+            var input1 = new[] {1, 2, 3};
             var input2 = new int[0];
 
             // Act
@@ -96,53 +96,53 @@ namespace Tyrrrz.Extensions.Tests
         public void Distinct_Test()
         {
             // Arrange
-            var input = new[] { 100, 123, 150, 141, 193 };
+            var input = new[] {100, 123, 150, 141, 193};
 
             // Act
             var distinct = input.Distinct(i => i % 10);
 
             // Assert
-            Assert.That(distinct, Is.EqualTo(new[] { 100, 123, 141 }));
+            Assert.That(distinct, Is.EqualTo(new[] {100, 123, 141}));
         }
 
         [Test]
-        [TestCase(new object[] { 1, 1, 2, 2, 3, 3 }, 2, new object[] { 1, 1, 3, 3 })]
-        [TestCase(new object[] { 1, 2, 3 }, 5, new object[] { 1, 2, 3 })]
+        [TestCase(new object[] {1, 1, 2, 2, 3, 3}, 2, new object[] {1, 1, 3, 3})]
+        [TestCase(new object[] {1, 2, 3}, 5, new object[] {1, 2, 3})]
         public void Except_Test(IEnumerable<object> input, object except, IEnumerable<object> output)
         {
             Assert.That(input.Except(except), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase(new object[] { null, 1, null, 2 }, new object[] { 1, 2 })]
-        [TestCase(new object[] { 1, 2, 3 }, new object[] { 1, 2, 3 })]
+        [TestCase(new object[] {null, 1, null, 2}, new object[] {1, 2})]
+        [TestCase(new object[] {1, 2, 3}, new object[] {1, 2, 3})]
         public void ExceptDefault_Test(IEnumerable<object> input, IEnumerable<object> output)
         {
             Assert.That(input.ExceptDefault(), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 1, 2, new object[] { 2, 3 })]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, 5, new object[] { 1, 2, 3, 4, 5 })]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 2, 0, new object[0])]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 1, 2, new object[] {2, 3})]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 0, 5, new object[] {1, 2, 3, 4, 5})]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 2, 0, new object[0])]
         public void Slice_Test(IEnumerable<object> input, int startAt, int count, IEnumerable<object> output)
         {
             Assert.That(input.Slice(startAt, count), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 3, new object[] { 3, 4, 5 })]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 5, new object[] { 1, 2, 3, 4, 5 })]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, new object[0])]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 3, new object[] {3, 4, 5})]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 5, new object[] {1, 2, 3, 4, 5})]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 0, new object[0])]
         public void TakeLast_Test(IEnumerable<object> input, int count, IEnumerable<object> output)
         {
             Assert.That(input.TakeLast(count), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 3, new object[] { 1, 2 })]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 5, new object[0])]
-        [TestCase(new object[] { 1, 2, 3, 4, 5 }, 0, new object[] { 1, 2, 3, 4, 5 })]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 3, new object[] {1, 2})]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 5, new object[0])]
+        [TestCase(new object[] {1, 2, 3, 4, 5}, 0, new object[] {1, 2, 3, 4, 5})]
         public void SkipLast_Test(IEnumerable<object> input, int count, IEnumerable<object> output)
         {
             Assert.That(input.SkipLast(count), Is.EqualTo(output));
@@ -152,39 +152,39 @@ namespace Tyrrrz.Extensions.Tests
         public void TakeLastWhile_Test()
         {
             // Arrange
-            var input = new[] { 6, 2, 10, 4, 5 };
+            var input = new[] {6, 2, 10, 4, 5};
 
             // Act
             var output = input.TakeLastWhile(i => i < 10);
 
             // Assert
-            Assert.That(output, Is.EqualTo(new[] { 4, 5 }));
+            Assert.That(output, Is.EqualTo(new[] {4, 5}));
         }
 
         [Test]
         public void SkipLastWhile_Test()
         {
             // Arrange
-            var input = new[] { 6, 2, 10, 4, 5 };
+            var input = new[] {6, 2, 10, 4, 5};
 
             // Act
             var output = input.SkipLastWhile(i => i < 10);
 
             // Assert
-            Assert.That(output, Is.EqualTo(new[] { 6, 2, 10 }));
+            Assert.That(output, Is.EqualTo(new[] {6, 2, 10}));
         }
 
         [Test]
-        [TestCase(new object[] { 6, 2, 10, 4, 5, 10 }, 10, 2)]
-        [TestCase(new object[] { 6, 2, 10, 4, 5 }, 20, -1)]
+        [TestCase(new object[] {6, 2, 10, 4, 5, 10}, 10, 2)]
+        [TestCase(new object[] {6, 2, 10, 4, 5}, 20, -1)]
         public void IndexOf_Test(IEnumerable<object> input, object element, int output)
         {
             Assert.That(input.IndexOf(element), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase(new object[] { 6, 2, 10, 4, 5, 10 }, 10, 5)]
-        [TestCase(new object[] { 6, 2, 10, 4, 5 }, 20, -1)]
+        [TestCase(new object[] {6, 2, 10, 4, 5, 10}, 10, 5)]
+        [TestCase(new object[] {6, 2, 10, 4, 5}, 20, -1)]
         public void LastIndexOf_Test(IEnumerable<object> input, object element, int output)
         {
             Assert.That(input.LastIndexOf(element), Is.EqualTo(output));
@@ -194,13 +194,13 @@ namespace Tyrrrz.Extensions.Tests
         public void GroupContiguous_Test()
         {
             // Arrange
-            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            var input = new[] {1, 2, 3, 4, 5, 6, 7, 8};
 
             // Act
             var groups = input.GroupContiguous(b => b.Count < 3);
 
             // Assert
-            Assert.That(groups, Is.EqualTo(new[] { new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8 } }));
+            Assert.That(groups, Is.EqualTo(new[] {new[] {1, 2, 3}, new[] {4, 5, 6}, new[] {7, 8}}));
         }
     }
 }

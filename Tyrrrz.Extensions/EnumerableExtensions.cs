@@ -100,7 +100,7 @@ namespace Tyrrrz.Extensions
 
             // If there are no elements - return default
             if (!asReadOnlyList.Any())
-                return default(T);
+                return default;
 
             return asReadOnlyList[RandomEx.GetInt(0, asReadOnlyList.Count)];
         }
@@ -155,7 +155,7 @@ namespace Tyrrrz.Extensions
         /// Discards default values from a sequence.
         /// </summary>
         [Pure, NotNull]
-        public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> source) => source.Except(default(T));
+        public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> source) => source.Except(default);
 
         /// <summary>
         /// Slices a sequence into a subsequence.
@@ -205,7 +205,7 @@ namespace Tyrrrz.Extensions
 
             // If count is greater than element count - return source
             if (count >= asReadOnlyList.Count)
-                return source;
+                return asReadOnlyList;
 
             // Otherwise - slice
             return asReadOnlyList.Slice(asReadOnlyList.Count - count, count);

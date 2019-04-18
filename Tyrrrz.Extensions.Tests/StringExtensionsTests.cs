@@ -186,21 +186,21 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [Test]
-        [TestCase(new[] { "aaa", "", " ", "bbb" }, new[] { "aaa", "bbb" })]
+        [TestCase(new[] {"aaa", "", " ", "bbb"}, new[] {"aaa", "bbb"})]
         public void ExceptNullOrWhiteSpace_Test(IEnumerable<string> input, IEnumerable<string> output)
         {
             Assert.That(input.ExceptNullOrWhiteSpace(), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase("testaaatestaaatestaaa", new[] { "aaa" }, new[] { "test", "test", "test" })]
+        [TestCase("testaaatestaaatestaaa", new[] {"aaa"}, new[] {"test", "test", "test"})]
         public void Split_Test(string input, string[] separators, string[] output)
         {
             Assert.That(input.Split(separators), Is.EqualTo(output));
         }
 
         [Test]
-        [TestCase("testaatestbbbtesta", new[] { 'a', 'b' }, new[] { "test", "test", "test" })]
+        [TestCase("testaatestbbbtesta", new[] {'a', 'b'}, new[] {"test", "test", "test"})]
         public void Split_Test(string input, char[] separators, string[] output)
         {
             // Using fully qualified name because it defaults to member method
@@ -208,7 +208,7 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [Test]
-        [TestCase(new[] { "test", "test" }, ", ", "test, test")]
+        [TestCase(new[] {"test", "test"}, ", ", "test, test")]
         public void JoinToString_Test(IEnumerable<string> input, string separator, string output)
         {
             Assert.That(input.JoinToString(separator), Is.EqualTo(output));

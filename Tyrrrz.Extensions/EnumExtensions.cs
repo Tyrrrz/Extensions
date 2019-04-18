@@ -13,7 +13,7 @@ namespace Tyrrrz.Extensions
         /// Parses an enum value of a given type from a string.
         /// </summary>
         [Pure]
-        public static TEnum ParseEnum<TEnum>([NotNull] this string value, bool ignoreCase = true) where TEnum : struct
+        public static TEnum ParseEnum<TEnum>([NotNull] this string value, bool ignoreCase = true) where TEnum : struct, Enum
         {
             value.GuardNotNull(nameof(value));
             return (TEnum) Enum.Parse(typeof(TEnum), value, ignoreCase);
@@ -23,9 +23,9 @@ namespace Tyrrrz.Extensions
         /// Parses an enum value of a given type from a string or returns default value if unsuccessful.
         /// </summary>
         [Pure]
-        public static TEnum ParseEnumOrDefault<TEnum>([CanBeNull] this string str, bool ignoreCase = true) where TEnum : struct
+        public static TEnum ParseEnumOrDefault<TEnum>([CanBeNull] this string str, bool ignoreCase = true) where TEnum : struct, Enum
         {
-            return Enum.TryParse(str, ignoreCase, out TEnum result) ? result : default(TEnum);
+            return Enum.TryParse(str, ignoreCase, out TEnum result) ? result : default;
         }
     }
 }
