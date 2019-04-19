@@ -5,7 +5,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="IDictionary{T}" /> and <see href="IReadOnlyDictionary{T}" />.
+    /// Extensions for <see cref="IDictionary{TKey, TValue}" /> and <see cref="IReadOnlyDictionary{TKey, TValue}" />.
     /// </summary>
     public static class DictionaryExtensions
     {

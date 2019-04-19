@@ -8,7 +8,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="Task" /> and <see href="Task{T}" />.
+    /// Extensions for <see cref="Task" /> and <see cref="Task{T}" />.
     /// </summary>
     public static class TaskExtensions
     {

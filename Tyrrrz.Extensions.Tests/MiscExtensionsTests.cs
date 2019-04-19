@@ -11,9 +11,9 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase(0, new object[] {1, 2, 3, 4, 5}, false)]
         [TestCase(1, new object[0], false)]
         [TestCase(1, new object[] {0, 0, 0, 1, 1}, true)]
-        public void IsEither_Test(object input, IEnumerable<object> variants, bool output)
+        public void IsEither_Test(object input, IEnumerable<object> variants, bool expectedOutput)
         {
-            Assert.That(input.IsEither(variants), Is.EqualTo(output));
+            Assert.That(input.IsEither(variants), Is.EqualTo(expectedOutput));
         }
 
         [Test]

@@ -13,9 +13,9 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("  ", false)]
         [TestCase("test", false)]
         [TestCase(" test", false)]
-        public void IsNullOrEmpty_Test(string input, bool output)
+        public void IsNullOrEmpty_Test(string input, bool expectedOutput)
         {
-            Assert.That(input.IsNullOrEmpty(), Is.EqualTo(output));
+            Assert.That(input.IsNullOrEmpty(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -24,36 +24,36 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("  ", true)]
         [TestCase("test", false)]
         [TestCase(" test", false)]
-        public void IsNullOrWhiteSpace_Test(string input, bool output)
+        public void IsNullOrWhiteSpace_Test(string input, bool expectedOutput)
         {
-            Assert.That(input.IsNullOrWhiteSpace(), Is.EqualTo(output));
+            Assert.That(input.IsNullOrWhiteSpace(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase(null, "")]
         [TestCase("test", "test")]
         [TestCase(" ", " ")]
-        public void EmptyIfNull_Test(string input, string output)
+        public void EmptyIfNull_Test(string input, string expectedOutput)
         {
-            Assert.That(input.EmptyIfNull(), Is.EqualTo(output));
+            Assert.That(input.EmptyIfNull(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("123", true)]
         [TestCase("test", false)]
         [TestCase("123.5", false)]
-        public void IsNumeric_Test(string input, bool output)
+        public void IsNumeric_Test(string input, bool expectedOutput)
         {
-            Assert.That(input.IsNumeric(), Is.EqualTo(output));
+            Assert.That(input.IsNumeric(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("test", true)]
         [TestCase("123", false)]
         [TestCase("test123", false)]
-        public void IsAlphabetic_Test(string input, bool output)
+        public void IsAlphabetic_Test(string input, bool expectedOutput)
         {
-            Assert.That(input.IsAlphabetic(), Is.EqualTo(output));
+            Assert.That(input.IsAlphabetic(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -61,9 +61,9 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("test", true)]
         [TestCase("test123", true)]
         [TestCase("123.5", false)]
-        public void IsAlphanumeric_Test(string input, bool output)
+        public void IsAlphanumeric_Test(string input, bool expectedOutput)
         {
-            Assert.That(input.IsAlphanumeric(), Is.EqualTo(output));
+            Assert.That(input.IsAlphanumeric(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -71,10 +71,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("test", "st", "test")]
         [TestCase("tetetetest", "te", "st")]
         [TestCase("tESt", "te", "St", StringComparison.OrdinalIgnoreCase)]
-        public void TrimStart_Test(string input, string sub, string output,
+        public void TrimStart_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.TrimStart(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.TrimStart(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -82,10 +82,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("test", "te", "test")]
         [TestCase("testststst", "st", "te")]
         [TestCase("tESt", "st", "tE", StringComparison.OrdinalIgnoreCase)]
-        public void TrimEnd_Test(string input, string sub, string output,
+        public void TrimEnd_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.TrimEnd(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.TrimEnd(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -93,37 +93,37 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("test", "es", "test")]
         [TestCase("tetesttete", "te", "st")]
         [TestCase("teTestTete", "te", "st", StringComparison.OrdinalIgnoreCase)]
-        public void Trim_Test(string input, string sub, string output,
+        public void Trim_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.Trim(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.Trim(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("test", "tset")]
         [TestCase("", "")]
         [TestCase("t", "t")]
-        public void Reverse_Test(string input, string output)
+        public void Reverse_Test(string input, string expectedOutput)
         {
-            Assert.That(input.Reverse(), Is.EqualTo(output));
+            Assert.That(input.Reverse(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("test", 3, "testtesttest")]
         [TestCase("test", 1, "test")]
         [TestCase("test", 0, "")]
-        public void Repeat_Test(string input, int count, string output)
+        public void Repeat_Test(string input, int count, string expectedOutput)
         {
-            Assert.That(input.Repeat(count), Is.EqualTo(output));
+            Assert.That(input.Repeat(count), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase('a', 3, "aaa")]
         [TestCase('a', 1, "a")]
         [TestCase('a', 0, "")]
-        public void Repeat_Test(char input, int count, string output)
+        public void Repeat_Test(char input, int count, string expectedOutput)
         {
-            Assert.That(input.Repeat(count), Is.EqualTo(output));
+            Assert.That(input.Repeat(count), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -131,10 +131,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("aaatestbb", "test", "xyz", "aaaxyzbb")]
         [TestCase("aaabbc", "test", "xyz", "aaabbc")]
         [TestCase("aaaTESTbbTeStc", "test", "xyz", "aaaxyzbbxyzc", StringComparison.OrdinalIgnoreCase)]
-        public void Replace_Test(string input, string oldValue, string newValue, string output,
+        public void Replace_Test(string input, string oldValue, string newValue, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.Replace(oldValue, newValue, comparison), Is.EqualTo(output));
+            Assert.That(input.Replace(oldValue, newValue, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -143,10 +143,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("aaatestbbbtestccc", "xyz", "aaatestbbbtestccc")]
         [TestCase("testaaa", "test", "")]
         [TestCase("aaatEStbbb", "test", "aaa", StringComparison.OrdinalIgnoreCase)]
-        public void SubstringUntil_Test(string input, string sub, string output,
+        public void SubstringUntil_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.SubstringUntil(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.SubstringUntil(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -155,10 +155,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("aaatestbbbtestccc", "xyz", "")]
         [TestCase("aaatest", "test", "")]
         [TestCase("aaatEStbbb", "test", "bbb", StringComparison.OrdinalIgnoreCase)]
-        public void SubstringAfter_Test(string input, string sub, string output,
+        public void SubstringAfter_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.SubstringAfter(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.SubstringAfter(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -167,10 +167,10 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("aaatestbbbtestccc", "xyz", "aaatestbbbtestccc")]
         [TestCase("testaaa", "test", "")]
         [TestCase("aaatEStbbb", "test", "aaa", StringComparison.OrdinalIgnoreCase)]
-        public void SubstringUntilLast_Test(string input, string sub, string output,
+        public void SubstringUntilLast_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.SubstringUntilLast(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.SubstringUntilLast(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -179,39 +179,39 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("aaatestbbbtestccc", "xyz", "")]
         [TestCase("aaatest", "test", "")]
         [TestCase("aaatEStbbb", "test", "bbb", StringComparison.OrdinalIgnoreCase)]
-        public void SubstringAfterLast_Test(string input, string sub, string output,
+        public void SubstringAfterLast_Test(string input, string sub, string expectedOutput,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            Assert.That(input.SubstringAfterLast(sub, comparison), Is.EqualTo(output));
+            Assert.That(input.SubstringAfterLast(sub, comparison), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase(new[] {"aaa", "", " ", "bbb"}, new[] {"aaa", "bbb"})]
-        public void ExceptNullOrWhiteSpace_Test(IEnumerable<string> input, IEnumerable<string> output)
+        public void ExceptNullOrWhiteSpace_Test(IEnumerable<string> input, IEnumerable<string> expectedOutput)
         {
-            Assert.That(input.ExceptNullOrWhiteSpace(), Is.EqualTo(output));
+            Assert.That(input.ExceptNullOrWhiteSpace(), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("testaaatestaaatestaaa", new[] {"aaa"}, new[] {"test", "test", "test"})]
-        public void Split_Test(string input, string[] separators, string[] output)
+        public void Split_Test(string input, string[] separators, string[] expectedOutput)
         {
-            Assert.That(input.Split(separators), Is.EqualTo(output));
+            Assert.That(input.Split(separators), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase("testaatestbbbtesta", new[] {'a', 'b'}, new[] {"test", "test", "test"})]
-        public void Split_Test(string input, char[] separators, string[] output)
+        public void Split_Test(string input, char[] separators, string[] expectedOutput)
         {
             // Using fully qualified name because it defaults to member method
-            Assert.That(StringExtensions.Split(input, separators), Is.EqualTo(output));
+            Assert.That(StringExtensions.Split(input, separators), Is.EqualTo(expectedOutput));
         }
 
         [Test]
         [TestCase(new[] {"test", "test"}, ", ", "test, test")]
-        public void JoinToString_Test(IEnumerable<string> input, string separator, string output)
+        public void JoinToString_Test(IEnumerable<string> input, string separator, string expectedOutput)
         {
-            Assert.That(input.JoinToString(separator), Is.EqualTo(output));
+            Assert.That(input.JoinToString(separator), Is.EqualTo(expectedOutput));
         }
     }
 }

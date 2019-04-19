@@ -7,7 +7,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="Uri" />.
+    /// Extensions for <see cref="Uri" />.
     /// </summary>
     public static class UriExtensions
     {

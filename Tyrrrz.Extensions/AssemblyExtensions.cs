@@ -7,7 +7,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="Assembly" />.
+    /// Extensions for <see cref="Assembly" />.
     /// </summary>
     public static class AssemblyExtensions
     {

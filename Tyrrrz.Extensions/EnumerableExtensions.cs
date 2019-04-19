@@ -7,7 +7,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="IEnumerable{T}" />.
+    /// Extensions for <see cref="IEnumerable{T}" />.
     /// </summary>
     public static class EnumerableExtensions
     {
@@ -15,12 +15,14 @@ namespace Tyrrrz.Extensions
         /// Indicates whether the sequence is null or an empty sequence.
         /// </summary>
         [Pure]
+        [ContractAnnotation("source:null => true")]
         public static bool IsNullOrEmpty<T>([CanBeNull] this IEnumerable<T> source) => source == null || !source.Any();
 
         /// <summary>
         /// Returns an empty sequence if the given sequence is null, otherwise returns given sequence.
         /// </summary>
         [Pure, NotNull]
+        [ContractAnnotation("source:null => notnull")]
         public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();
 
         /// <summary>
@@ -50,24 +52,6 @@ namespace Tyrrrz.Extensions
 
             return result;
         }
-
-        /// <summary>
-        /// Creates a hashset from given sequence.
-        /// </summary>
-        [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source, [NotNull] IEqualityComparer<T> comparer)
-        {
-            source.GuardNotNull(nameof(source));
-            comparer.GuardNotNull(nameof(comparer));
-
-            return new HashSet<T>(source, comparer);
-        }
-
-        /// <summary>
-        /// Creates a hashset from given sequence.
-        /// </summary>
-        [Pure, NotNull]
-        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source) => source.ToHashSet(EqualityComparer<T>.Default);
 
         /// <summary>
         /// Returns a random element in a sequence.

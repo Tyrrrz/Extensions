@@ -5,7 +5,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="Enum" />.
+    /// Extensions for <see cref="Enum" />.
     /// </summary>
     public static class EnumExtensions
     {

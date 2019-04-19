@@ -9,9 +9,9 @@ namespace Tyrrrz.Extensions.Tests
         [Test]
         [TestCase("Two", TestEnum.Two)]
         [TestCase("tWo", TestEnum.Two, true)]
-        public void ParseEnum_Test(string input, TestEnum output, bool ignoreCase = true)
+        public void ParseEnum_Test(string input, TestEnum expectedOutput, bool ignoreCase = true)
         {
-            Assert.That(input.ParseEnum<TestEnum>(ignoreCase), Is.EqualTo(output));
+            Assert.That(input.ParseEnum<TestEnum>(ignoreCase), Is.EqualTo(expectedOutput));
         }
 
         [Test]
@@ -20,9 +20,9 @@ namespace Tyrrrz.Extensions.Tests
         [TestCase("Four", default(TestEnum))]
         [TestCase("", default(TestEnum))]
         [TestCase(null, default(TestEnum))]
-        public void ParseEnumOrDefault_Test(string input, TestEnum output, bool ignoreCase = true)
+        public void ParseEnumOrDefault_Test(string input, TestEnum expectedOutput, bool ignoreCase = true)
         {
-            Assert.That(input.ParseEnumOrDefault<TestEnum>(ignoreCase), Is.EqualTo(output));
+            Assert.That(input.ParseEnumOrDefault<TestEnum>(ignoreCase), Is.EqualTo(expectedOutput));
         }
     }
 }

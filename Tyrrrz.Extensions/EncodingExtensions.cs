@@ -6,7 +6,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="Encoding" />.
+    /// Extensions for <see cref="Encoding" />.
     /// </summary>
     public static class EncodingExtensions
     {

@@ -8,7 +8,7 @@ using Tyrrrz.Extensions.Internal;
 namespace Tyrrrz.Extensions
 {
     /// <summary>
-    /// Extensions for <see href="string" />.
+    /// Extensions for <see cref="string" />.
     /// </summary>
     public static class StringExtensions
     {
@@ -16,18 +16,21 @@ namespace Tyrrrz.Extensions
         /// Indicates whether a string is null or empty.
         /// </summary>
         [Pure]
+        [ContractAnnotation("s:null => true")]
         public static bool IsNullOrEmpty([CanBeNull] this string s) => string.IsNullOrEmpty(s);
 
         /// <summary>
         /// Indicates whether a string is either null, empty, or whitespace.
         /// </summary>
         [Pure]
+        [ContractAnnotation("s:null => true")]
         public static bool IsNullOrWhiteSpace([CanBeNull] this string s) => string.IsNullOrWhiteSpace(s);
 
         /// <summary>
         /// Returns an empty string if given a null string, otherwise returns given string.
         /// </summary>
         [Pure, NotNull]
+        [ContractAnnotation("s:null => notnull")]
         public static string EmptyIfNull([CanBeNull] this string s) => s ?? string.Empty;
 
         /// <summary>
