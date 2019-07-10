@@ -9,8 +9,11 @@ before_build:
 build:
   verbosity: minimal
 
+after_test:
+- choco install codecov && codecov -f "Tyrrrz.Extensions.Tests/bin/%CONFIGURATION%/Coverage.xml" --required
+
 artifacts:
-- path: Tyrrrz.Extensions\bin\$(configuration)\Tyrrrz.Extensions*.nupkg
+- path: Tyrrrz.Extensions/bin/$(configuration)/Tyrrrz.Extensions*.nupkg
   name: Tyrrrz.Extensions.nupkg
 
 deploy:

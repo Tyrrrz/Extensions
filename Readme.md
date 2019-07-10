@@ -1,7 +1,8 @@
 # Tyrrrz.Extensions
 
-[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions)
-[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions)
+[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions/branch/master)
+[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Extensions/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Extensions/branch/master/tests)
+[![Coverage](https://img.shields.io/codecov/c/gh/Tyrrrz/Extensions/master.svg)](https://codecov.io/gh/Tyrrrz/Extensions)
 [![NuGet](https://img.shields.io/nuget/v/Tyrrrz.Extensions.svg)](https://nuget.org/packages/Tyrrrz.Extensions)
 [![NuGet](https://img.shields.io/nuget/dt/Tyrrrz.Extensions.svg)](https://nuget.org/packages/Tyrrrz.Extensions)
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
