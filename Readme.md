@@ -18,6 +18,7 @@ This library contains all extension methods I use in my projects on a regular ba
 ## Libraries used
 
 - [NUnit](https://github.com/nunit/nunit)
+- [Coverlet](https://github.com/tonerdo/coverlet)
 
 ## Donate
 
