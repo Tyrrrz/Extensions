@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -134,5 +135,22 @@ namespace Tyrrrz.Extensions
 
             return new Uri(uriString);
         }
+
+#if !NETSTANDARD1_0
+        /// <summary>
+        /// Opens specified URL using default browser.
+        /// </summary>
+        public static void OpenInBrowser([NotNull] this Uri uri)
+        {
+            var startInfo = new ProcessStartInfo(uri.ToString())
+            {
+                UseShellExecute = true
+            };
+
+            using (Process.Start(startInfo))
+            {
+            }
+        }
+#endif
     }
 }
