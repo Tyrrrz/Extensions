@@ -142,6 +142,8 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static void OpenInBrowser([NotNull] this Uri uri)
         {
+            uri.GuardNotNull(nameof(uri));
+
             var startInfo = new ProcessStartInfo(uri.ToString())
             {
                 UseShellExecute = true
