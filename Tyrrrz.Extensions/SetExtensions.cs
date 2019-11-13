@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
@@ -13,19 +12,16 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Creates a hashset from given sequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source, [NotNull] IEqualityComparer<T> comparer)
         {
-            source.GuardNotNull(nameof(source));
-            comparer.GuardNotNull(nameof(comparer));
-
             return new HashSet<T>(source, comparer);
         }
 
         /// <summary>
         /// Creates a hashset from given sequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source) => source.ToHashSet(EqualityComparer<T>.Default);
 
         /// <summary>
@@ -33,9 +29,6 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static int AddRange<T>([NotNull] this ISet<T> source, [NotNull] IEnumerable<T> items)
         {
-            source.GuardNotNull(nameof(source));
-            items.GuardNotNull(nameof(items));
-
             return items.Count(source.Add);
         }
     }

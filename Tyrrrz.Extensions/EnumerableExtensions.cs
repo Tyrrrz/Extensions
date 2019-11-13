@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
 using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
@@ -14,25 +14,19 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Indicates whether the sequence is null or an empty sequence.
         /// </summary>
-        [Pure]
-        [ContractAnnotation("source:null => true")]
-        public static bool IsNullOrEmpty<T>([CanBeNull] this IEnumerable<T> source) => source == null || !source.Any();
+        public static bool IsNullOrEmpty<T>([NotNullWhen(false), MaybeNull] this IEnumerable<T> source) => source == null || !source.Any();
 
         /// <summary>
         /// Returns an empty sequence if the given sequence is null, otherwise returns given sequence.
         /// </summary>
-        [Pure, NotNull]
-        [ContractAnnotation("source:null => notnull")]
-        public static IEnumerable<T> EmptyIfNull<T>([CanBeNull] this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();
+        [return: NotNull]
+        public static IEnumerable<T> EmptyIfNull<T>([MaybeNull] this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();
 
         /// <summary>
         /// Calculates aggregated hash code of all elements in a sequence.
         /// </summary>
-        [Pure]
         public static int GetSequenceHashCode<T>([NotNull] this IEnumerable<T> source, bool ignoreOrder = false)
         {
-            source.GuardNotNull(nameof(source));
-
             // Calculate all hashes
             var hashes = source.Select(i => i?.GetHashCode() ?? 0);
 
@@ -56,11 +50,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a random element in a sequence.
         /// </summary>
-        [Pure]
+        [return: NotNull]
         public static T Random<T>([NotNull] this IEnumerable<T> source)
         {
-            source.GuardNotNull(nameof(source));
-
             // Buffer all elements
             var asReadOnlyList = source as IReadOnlyList<T> ?? source.ToArray();
 
@@ -74,17 +66,15 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a random element in a sequence or default if there are no elements.
         /// </summary>
-        [Pure, CanBeNull]
+        [return: MaybeNull]
         public static T RandomOrDefault<T>([NotNull] this IEnumerable<T> source)
         {
-            source.GuardNotNull(nameof(source));
-
             // Buffer all elements
             var asReadOnlyList = source as IReadOnlyList<T> ?? source.ToArray();
 
             // If there are no elements - return default
             if (!asReadOnlyList.Any())
-                return default;
+                return default!;
 
             return asReadOnlyList[RandomEx.GetInt(0, asReadOnlyList.Count)];
         }
@@ -92,14 +82,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns elements with distinct keys.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> source,
             [NotNull] Func<T, TKey> keySelector, [NotNull] IEqualityComparer<TKey> keyComparer)
         {
-            source.GuardNotNull(nameof(source));
-            keySelector.GuardNotNull(nameof(keySelector));
-            keyComparer.GuardNotNull(nameof(keyComparer));
-
             // Use a hashset to maintain uniqueness of keys
             var keyHashSet = new HashSet<TKey>(keyComparer);
             foreach (var element in source)
@@ -112,45 +98,38 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns elements with distinct keys.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> Distinct<T, TKey>([NotNull] this IEnumerable<T> source, [NotNull] Func<T, TKey> keySelector) =>
             source.Distinct(keySelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
         /// Discards elements from a sequence that are equal to given value.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> source, T value,
             [NotNull] IEqualityComparer<T> comparer)
         {
-            source.GuardNotNull(nameof(source));
-            comparer.GuardNotNull(nameof(comparer));
-
             return source.Where(i => !comparer.Equals(i, value));
         }
 
         /// <summary>
         /// Discards elements from a sequence that are equal to given value.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> Except<T>([NotNull] this IEnumerable<T> source, T value) => source.Except(value, EqualityComparer<T>.Default);
 
         /// <summary>
         /// Discards default values from a sequence.
         /// </summary>
-        [Pure, NotNull]
-        public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> source) => source.Except(default);
+        [return: NotNull]
+        public static IEnumerable<T> ExceptDefault<T>([NotNull] this IEnumerable<T> source) => source.Except(default!);
 
         /// <summary>
         /// Slices a sequence into a subsequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> Slice<T>([NotNull] this IEnumerable<T> source, int startAt, int count)
         {
-            source.GuardNotNull(nameof(source));
-            startAt.GuardNotNegative(nameof(startAt));
-            count.GuardNotNegative(nameof(count));
-
             // If count is zero - return empty
             if (count == 0)
                 yield break;
@@ -174,12 +153,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a specified number of contiguous elements at the end of a sequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> TakeLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
-            source.GuardNotNull(nameof(source));
-            count.GuardNotNegative(nameof(count));
-
             // If count is 0 - return empty
             if (count == 0)
                 return Enumerable.Empty<T>();
@@ -198,12 +174,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Bypasses a specified number of contiguous elements at the end of a sequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> SkipLast<T>([NotNull] this IEnumerable<T> source, int count)
         {
-            source.GuardNotNull(nameof(source));
-            count.GuardNotNegative(nameof(count));
-
             // If count is 0 - return source
             if (count == 0)
                 return source;
@@ -222,26 +195,20 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns elements from the end of a sequence as long as a specified condition is true.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> TakeLastWhile<T>([NotNull] this IEnumerable<T> source,
             [NotNull] Func<T, bool> predicate)
         {
-            source.GuardNotNull(nameof(source));
-            predicate.GuardNotNull(nameof(predicate));
-
             return source.Reverse().TakeWhile(predicate).Reverse();
         }
 
         /// <summary>
         /// Bypasses elements from the end of a sequence as long as a specified condition is true.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<T> SkipLastWhile<T>([NotNull] this IEnumerable<T> source,
             [NotNull] Func<T, bool> predicate)
         {
-            source.GuardNotNull(nameof(source));
-            predicate.GuardNotNull(nameof(predicate));
-
             return source.Reverse().SkipWhile(predicate).Reverse();
         }
 
@@ -249,12 +216,8 @@ namespace Tyrrrz.Extensions
         /// Returns index of the first element in a sequence that matches the predicate.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> source, [NotNull] Func<T, bool> predicate)
         {
-            source.GuardNotNull(nameof(source));
-            predicate.GuardNotNull(nameof(predicate));
-
             var i = 0;
             foreach (var element in source)
             {
@@ -274,13 +237,9 @@ namespace Tyrrrz.Extensions
         /// Returns index of the first element in a sequence equal to given value.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> source, T element,
             [NotNull] IEqualityComparer<T> comparer)
         {
-            source.GuardNotNull(nameof(source));
-            comparer.GuardNotNull(nameof(comparer));
-
             return source.IndexOf(i => comparer.Equals(i, element));
         }
 
@@ -288,7 +247,6 @@ namespace Tyrrrz.Extensions
         /// Returns index of the first element in a sequence equal to given value.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int IndexOf<T>([NotNull] this IEnumerable<T> source, T element) =>
             source.IndexOf(element, EqualityComparer<T>.Default);
 
@@ -296,12 +254,8 @@ namespace Tyrrrz.Extensions
         /// Returns index of the last element in a sequence that matches the predicate.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> source, [NotNull] Func<T, bool> predicate)
         {
-            source.GuardNotNull(nameof(source));
-            predicate.GuardNotNull(nameof(predicate));
-
             // Buffer all elements
             var asReadOnlyList = source as IReadOnlyList<T> ?? source.ToArray();
 
@@ -321,13 +275,9 @@ namespace Tyrrrz.Extensions
         /// Returns index of the last element in a sequence equal to given value.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> source, T element,
             [NotNull] IEqualityComparer<T> comparer)
         {
-            source.GuardNotNull(nameof(source));
-            comparer.GuardNotNull(nameof(comparer));
-
             return source.LastIndexOf(i => comparer.Equals(i, element));
         }
 
@@ -335,7 +285,6 @@ namespace Tyrrrz.Extensions
         /// Returns index of the last element in a sequence equal to given value.
         /// If there is no such element - returns -1;
         /// </summary>
-        [Pure]
         public static int LastIndexOf<T>([NotNull] this IEnumerable<T> source, T element) =>
             source.LastIndexOf(element, EqualityComparer<T>.Default);
 
@@ -344,13 +293,10 @@ namespace Tyrrrz.Extensions
         /// The predicate decides whether the next element should be added to the current group.
         /// If the predicate fails, the current group is closed and a new one, containing this element, is created.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<IReadOnlyList<T>> GroupContiguous<T>([NotNull] this IEnumerable<T> source,
             [NotNull] Func<IReadOnlyList<T>, T, bool> groupPredicate)
         {
-            source.GuardNotNull(nameof(source));
-            groupPredicate.GuardNotNull(nameof(groupPredicate));
-
             // Create buffer
             var buffer = new List<T>();
 
@@ -378,13 +324,10 @@ namespace Tyrrrz.Extensions
         /// The predicate decides whether the next element should be added to the current group.
         /// If the predicate fails, the current group is closed and a new one, containing this element, is created.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<IReadOnlyList<T>> GroupContiguous<T>([NotNull] this IEnumerable<T> source,
             [NotNull] Func<IReadOnlyList<T>, bool> groupPredicate)
         {
-            source.GuardNotNull(nameof(source));
-            groupPredicate.GuardNotNull(nameof(groupPredicate));
-
             return source.GroupContiguous((buffer, _) => groupPredicate(buffer));
         }
     }

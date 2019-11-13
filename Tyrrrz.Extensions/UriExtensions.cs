@@ -1,9 +1,8 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
@@ -15,47 +14,37 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Converts a string to <see cref="Uri"/>.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static Uri ToUri([NotNull] this string uri)
         {
-            uri.GuardNotNull(nameof(uri));
             return new UriBuilder(uri).Uri;
         }
 
         /// <summary>
         /// Converts a string to relative <see cref="Uri"/>.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] Uri baseUri)
         {
-            uri.GuardNotNull(nameof(uri));
-            baseUri.GuardNotNull(nameof(baseUri));
-
             return new Uri(baseUri, new Uri(uri, UriKind.Relative));
         }
 
         /// <summary>
         /// Converts a string to a relative <see cref="Uri"/> with the other string representing base URI.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static Uri ToUri([NotNull] this string uri, [NotNull] string baseUri)
         {
-            uri.GuardNotNull(nameof(uri));
-            baseUri.GuardNotNull(nameof(baseUri));
-
             return uri.ToUri(baseUri.ToUri());
         }
 
         /// <summary>
         /// Rewrites URI by setting a query parameter to given value.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static Uri SetQueryParameter([NotNull] this Uri uri,
-            [NotNull] string key, [CanBeNull] string value)
+            [NotNull] string key, [MaybeNull] string value)
         {
-            uri.GuardNotNull(nameof(uri));
-            key.GuardNotNull(nameof(key));
-
             // Convert URI to string
             var uriString = uri.ToString();
 
@@ -97,13 +86,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Rewrites URI by setting a route parameter to given value.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static Uri SetRouteParameter([NotNull] this Uri uri,
-            [NotNull] string key, [CanBeNull] string value)
+            [NotNull] string key, [MaybeNull] string value)
         {
-            uri.GuardNotNull(nameof(uri));
-            key.GuardNotNull(nameof(key));
-
             // Convert URI to string
             var uriString = uri.ToString();
 
@@ -142,8 +128,6 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static void OpenInBrowser([NotNull] this Uri uri)
         {
-            uri.GuardNotNull(nameof(uri));
-
             var startInfo = new ProcessStartInfo(uri.ToString())
             {
                 UseShellExecute = true

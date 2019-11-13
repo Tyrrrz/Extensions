@@ -101,9 +101,9 @@ namespace Tyrrrz.Extensions.Tests
         }
 
         [Test]
-        [TestCase(new object[] {null, 1, null, 2}, new object[] {1, 2})]
+        [TestCase(new object?[] {null, 1, null, 2}, new object[] {1, 2})]
         [TestCase(new object[] {1, 2, 3}, new object[] {1, 2, 3})]
-        public void ExceptDefault_Test(IEnumerable<object> source, IEnumerable<object> expectedOutput)
+        public void ExceptDefault_Test(IEnumerable<object?> source, IEnumerable<object> expectedOutput)
         {
             Assert.That(source.ExceptDefault(), Is.EqualTo(expectedOutput));
         }

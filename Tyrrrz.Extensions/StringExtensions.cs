@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
@@ -15,64 +14,50 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Indicates whether a string is null or empty.
         /// </summary>
-        [Pure]
-        [ContractAnnotation("s:null => true")]
-        public static bool IsNullOrEmpty([CanBeNull] this string s) => string.IsNullOrEmpty(s);
+        public static bool IsNullOrEmpty([NotNullWhen(false), MaybeNull] this string s) => string.IsNullOrEmpty(s);
 
         /// <summary>
         /// Indicates whether a string is either null, empty, or whitespace.
         /// </summary>
-        [Pure]
-        [ContractAnnotation("s:null => true")]
-        public static bool IsNullOrWhiteSpace([CanBeNull] this string s) => string.IsNullOrWhiteSpace(s);
+        public static bool IsNullOrWhiteSpace([NotNullWhen(false), MaybeNull] this string s) => string.IsNullOrWhiteSpace(s);
 
         /// <summary>
         /// Returns an empty string if given a null string, otherwise returns given string.
         /// </summary>
-        [Pure, NotNull]
-        [ContractAnnotation("s:null => notnull")]
-        public static string EmptyIfNull([CanBeNull] this string s) => s ?? string.Empty;
+        [return: NotNull]
+        public static string EmptyIfNull([MaybeNull] this string s) => s ?? string.Empty;
 
         /// <summary>
         /// Determines whether the string only consists of digits.
         /// </summary>
-        [Pure]
         public static bool IsNumeric([NotNull] this string s)
         {
-            s.GuardNotNull(nameof(s));
             return s.ToCharArray().All(char.IsDigit);
         }
 
         /// <summary>
         /// Determines whether the string only consists of letters.
         /// </summary>
-        [Pure]
         public static bool IsAlphabetic([NotNull] this string s)
         {
-            s.GuardNotNull(nameof(s));
             return s.ToCharArray().All(char.IsLetter);
         }
 
         /// <summary>
         /// Determines whether the string only consists of letters and/or digits.
         /// </summary>
-        [Pure]
         public static bool IsAlphanumeric([NotNull] this string s)
         {
-            s.GuardNotNull(nameof(s));
             return s.ToCharArray().All(char.IsLetterOrDigit);
         }
 
         /// <summary>
         /// Removes all leading occurrences of a substring in the given string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string TrimStart([NotNull] this string s, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             while (s.StartsWith(sub, comparison))
                 s = s.Substring(sub.Length);
 
@@ -82,13 +67,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Removes all trailing occurrences of a substring in the given string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string TrimEnd([NotNull] this string s, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             while (s.EndsWith(sub, comparison))
                 s = s.Substring(0, s.Length - sub.Length);
 
@@ -98,24 +80,19 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Removes all leading and trailing occurrences of a substring in the given string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string Trim([NotNull] this string s, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             return s.TrimStart(sub, comparison).TrimEnd(sub, comparison);
         }
 
         /// <summary>
         /// Reverses order of characters in a string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string Reverse([NotNull] this string s)
         {
-            s.GuardNotNull(nameof(s));
-
             // If length is 1 char or less - return same string
             if (s.Length <= 1)
                 return s;
@@ -131,12 +108,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a string formed by repeating the given string given number of times.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string Repeat([NotNull] this string s, int count)
         {
-            s.GuardNotNull(nameof(s));
-            count.GuardNotNegative(nameof(count));
-
             // If count is 0 - return empty string
             if (count == 0)
                 return string.Empty;
@@ -152,11 +126,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a string formed by repeating the given character given number of times.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string Repeat(this char c, int count)
         {
-            count.GuardNotNegative(nameof(count));
-
             // If count is 0 - return empty string
             if (count == 0)
                 return string.Empty;
@@ -167,14 +139,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string Replace([NotNull] this string s, [NotNull] string oldValue, [NotNull] string newValue,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            oldValue.GuardNotNull(nameof(oldValue));
-            newValue.GuardNotNull(nameof(newValue));
-
             var sb = new StringBuilder();
 
             var offset = 0;
@@ -204,13 +172,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Retrieves a substring that ends at the position of first occurrence of the given other string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string SubstringUntil([NotNull] this string s, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             // Find substring
             var index = s.IndexOf(sub, comparison);
 
@@ -225,13 +190,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Retrieves a substring that starts at the position of first occurrence of the given other string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string SubstringAfter([NotNull] this string s, [NotNull] string sub,
             StringComparison comparison = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             // Find substring
             var index = s.IndexOf(sub, comparison);
 
@@ -246,13 +208,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Retrieves a substring that ends at the position of last occurrence of the given other string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string SubstringUntilLast([NotNull] this string s, [NotNull] string sub,
             StringComparison comparsion = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             // Find substring
             var index = s.LastIndexOf(sub, comparsion);
 
@@ -267,13 +226,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Retrieves a substring that starts at the position of last occurrence of the given other string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string SubstringAfterLast([NotNull] this string s, [NotNull] string sub,
             StringComparison comparsion = StringComparison.Ordinal)
         {
-            s.GuardNotNull(nameof(s));
-            sub.GuardNotNull(nameof(sub));
-
             // Find substring
             var index = s.LastIndexOf(sub, comparsion);
 
@@ -288,42 +244,36 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Discards null, empty and whitespace strings from a sequence.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static IEnumerable<string> ExceptNullOrWhiteSpace([NotNull] this IEnumerable<string> source)
         {
-            source.GuardNotNull(nameof(source));
             return source.Where(s => !IsNullOrWhiteSpace(s));
         }
 
         /// <summary>
         /// Splits string using given separators, discarding empty entries.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string[] Split([NotNull] this string s, [NotNull] params string[] separators)
         {
-            s.GuardNotNull(nameof(s));
             return s.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
         /// Splits string using given separators, discarding empty entries.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string[] Split([NotNull] this string s, [NotNull] params char[] separators)
         {
-            s.GuardNotNull(nameof(s));
             return s.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
         /// Returns a string formed by joining elements of a sequence using the given separator.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string JoinToString<T>([NotNull] this IEnumerable<T> source, [NotNull] string separator)
         {
-            source.GuardNotNull(nameof(source));
-            separator.GuardNotNull(nameof(separator));
-
             return string.Join(separator, source);
         }
     }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tyrrrz.Extensions
 {
@@ -13,10 +12,8 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a value that corresponds to the given key or default if the key doesn't exist.
         /// </summary>
-        [Pure]
-        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dictionary, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dictionary, [NotNull] TKey key)
         {
-            dictionary.GuardNotNull(nameof(dictionary));
             return dictionary.TryGetValue(key, out var result) ? result : default;
         }
 #endif

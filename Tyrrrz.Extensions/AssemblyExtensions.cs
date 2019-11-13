@@ -1,8 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Resources;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
@@ -14,12 +13,9 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Reads the given manifest resource as a string.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static string GetManifestResourceString([NotNull] this Assembly assembly, [NotNull] string resourceName)
         {
-            assembly.GuardNotNull(nameof(assembly));
-            resourceName.GuardNotNull(nameof(resourceName));
-
             // Get manifest resource stream
             var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)

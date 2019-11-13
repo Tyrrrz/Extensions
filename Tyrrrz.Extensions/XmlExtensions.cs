@@ -1,7 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
 
 namespace Tyrrrz.Extensions
 {
@@ -13,12 +12,10 @@ namespace Tyrrrz.Extensions
         /// <summary>
         /// Returns a new element with namespaces recursively stripped from tags and attributes.
         /// </summary>
-        [Pure, NotNull]
+        [return: NotNull]
         public static XElement StripNamespaces([NotNull] this XElement element)
         {
             // Based on http://stackoverflow.com/a/1147012
-
-            element.GuardNotNull(nameof(element));
 
             var result = new XElement(element);
             foreach (var e in result.DescendantsAndSelf())

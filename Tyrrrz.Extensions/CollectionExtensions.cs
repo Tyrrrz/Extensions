@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-using Tyrrrz.Extensions.Internal;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tyrrrz.Extensions
 {
@@ -14,9 +13,6 @@ namespace Tyrrrz.Extensions
         /// </summary>
         public static void AddRange<T>([NotNull] this ICollection<T> collection, [NotNull] IEnumerable<T> items)
         {
-            collection.GuardNotNull(nameof(collection));
-            items.GuardNotNull(nameof(items));
-
             foreach (var item in items)
                 collection.Add(item);
         }
